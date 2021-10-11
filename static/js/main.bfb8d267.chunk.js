@@ -1,2 +1,0 @@
-(this["webpackJsonpcards-react"]=this["webpackJsonpcards-react"]||[]).push([[0],{10:function(e,t,c){"use strict";c.r(t);var n=c(1),r=c.n(n),s=c(3),i=c.n(s),a=(c(8),c(0)),d=function(){return Object(a.jsx)("div",{children:Object(a.jsx)("h1",{children:"Hello, gh-pages"})})};i.a.render(Object(a.jsx)(r.a.StrictMode,{children:Object(a.jsx)(d,{})}),document.getElementById("root"))},8:function(e,t,c){}},[[10,1,2]]]);
-//# sourceMappingURL=main.bfb8d267.chunk.js.map
