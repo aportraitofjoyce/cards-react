@@ -1,0 +1,18 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    border-bottom: 1px solid var(--light);
+}
+
+.container {
+    width: 1280px;
+    display: flex;
+    gap: 16px;
+    padding: 0 24px;
+}
