@@ -1,11 +1,15 @@
 import React from 'react'
 import {AppRouter} from './AppRouter'
-import {BrowserRouter} from 'react-router-dom'
+import {HashRouter} from 'react-router-dom'
 import {Header} from '../components/Header/Header'
+import {Provider} from 'react-redux'
+import {store} from '../store/store'
 
 export const App = () => (
-    <BrowserRouter>
-        <Header/>
-        <AppRouter/>
-    </BrowserRouter>
+    <HashRouter>
+        <Provider store={store}>
+            <Header/>
+            <AppRouter/>
+        </Provider>
+    </HashRouter>
 )
