@@ -5,6 +5,9 @@ import {Header} from '../components/Header/Header'
 import {Provider} from 'react-redux'
 import {store} from '../store/store'
 
+//test commit
+
+
 export const App = () => (
     <HashRouter>
         <Provider store={store}>
