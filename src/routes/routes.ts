@@ -6,6 +6,7 @@ import {UiKit} from '../components/UIKit/UiKit'
 import {Error} from '../pages/Error/Error'
 import {PasswordRecovery} from '../pages/PasswordRecovery/PasswordRecovery'
 import {NewPassword} from '../pages/NewPassword/NewPassword'
+import {CheckEmail} from "../pages/CheckEmail/CheckEmail";
 
 export enum PATH {
     HOME = '/',
@@ -15,6 +16,7 @@ export enum PATH {
     REGISTER = '/register',
     PASSWORD_RECOVERY = '/password-recovery',
     NEW_PASSWORD = '/new-password',
+    CHECK_EMAIL = '/check-email',
     UI_KIT = '/ui-kit',
 }
 
@@ -31,6 +33,7 @@ export const publicRoutes: Routes[] = [
     {path: PATH.REGISTER, component: Register},
     {path: PATH.PASSWORD_RECOVERY, component: PasswordRecovery},
     {path: PATH.NEW_PASSWORD, component: NewPassword},
+    {path: PATH.CHECK_EMAIL, component: CheckEmail},
     {path: PATH.UI_KIT, component: UiKit},
     {path: PATH.ERROR, component: Error},
 ]
