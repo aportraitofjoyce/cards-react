@@ -13,6 +13,7 @@ export const Header: FC = () => {
                 <Link to={PATH.REGISTER}>Register</Link>
                 <Link to={PATH.PASSWORD_RECOVERY}>Password Recovery</Link>
                 <Link to={PATH.NEW_PASSWORD}>New Password</Link>
+                <Link to={PATH.CHECK_EMAIL}>Check email</Link>
                 <Link to={PATH.UI_KIT}>UI Kit</Link>
             </nav>
         </div>
