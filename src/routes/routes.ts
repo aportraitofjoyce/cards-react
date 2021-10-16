@@ -14,8 +14,8 @@ export enum PATH {
     PROFILE = '/profile',
     LOGIN = '/login',
     REGISTER = '/register',
-    PASSWORD_RECOVERY = '/password-recovery',
-    NEW_PASSWORD = '/new-password',
+    PASSWORD_RECOVERY = '/passrecovery',
+    NEW_PASSWORD = '/newpass',
     CHECK_EMAIL = '/check-email',
     UI_KIT = '/ui-kit',
 }
