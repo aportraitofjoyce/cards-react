@@ -5,8 +5,6 @@ import {Header} from '../components/Header/Header'
 import {Provider} from 'react-redux'
 import {store} from '../store/store'
 
-// TEST
-
 export const App: FC = () => {
     return (
         <HashRouter>

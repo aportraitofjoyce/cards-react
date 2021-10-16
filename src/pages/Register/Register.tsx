@@ -1,9 +1,9 @@
 import React, {FC} from 'react'
 
-export const SignIn: FC = () => {
+export const Register: FC = () => {
     return (
         <div>
-            <h1>Sign In</h1>
+            <h1>Register</h1>
         </div>
     )
 }

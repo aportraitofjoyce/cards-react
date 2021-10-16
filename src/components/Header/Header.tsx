@@ -9,8 +9,8 @@ export const Header: FC = () => {
             <nav className={s.container}>
                 <Link to={PATH.HOME}>Home</Link>
                 <Link to={PATH.PROFILE}>Profile</Link>
-                <Link to={PATH.SIGN_IN}>Sign In</Link>
-                <Link to={PATH.SIGN_UP}>Sign Up</Link>
+                <Link to={PATH.LOGIN}>Login</Link>
+                <Link to={PATH.REGISTER}>Register</Link>
                 <Link to={PATH.PASSWORD_RECOVERY}>Password Recovery</Link>
                 <Link to={PATH.NEW_PASSWORD}>New Password</Link>
                 <Link to={PATH.UI_KIT}>UI Kit</Link>
