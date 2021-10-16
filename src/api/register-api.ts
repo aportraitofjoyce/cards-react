@@ -9,5 +9,4 @@ export type RegisterUsersData = {
 export const registerAPI = {
     register: (data: RegisterUsersData) => axiosInstance
         .post<RegisterUsersData, AxiosResponse<{ error?: string }>>('/auth/register', data)
-        .then(res => res.data)
 }

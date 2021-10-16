@@ -39,7 +39,7 @@ export const Input: FC<InputTextProps> = props => {
 
     return (
         <div className={s.container}>
-            <input type={'text'}
+            <input type={type || 'text'}
                    onChange={onChangeCallback}
                    onKeyPress={onKeyPressCallback}
                    className={inputClassNames}
