@@ -1,4 +1,82 @@
 import {TypedUseSelectorHook, useSelector} from 'react-redux'
 import {RootState} from '../store/store'
+import {ChangeEvent, useEffect, useState} from 'react'
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export const useInput = (initialValue: string, validators: Validators) => {
+    const [value, setValue] = useState<string>(initialValue)
+    const [touched, setTouched] = useState<boolean>(false)
+    const validation = useValidation(value, validators)
+
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
+    const onBlur = () => setTouched(true)
+
+    return {
+        value,
+        touched,
+        onChange,
+        onBlur,
+        validation
+    }
+}
+
+type Validators = {
+    isRequired?: boolean
+    minLength?: number
+    maxLength?: number
+    isEmail?: boolean
+}
+
+export const useValidation = (value: string, validators: Validators) => {
+    const [isValid, setIsValid] = useState<boolean>(false)
+
+    const [isRequired, setIsRequired] = useState<string>('')
+    const [isEmail, setIsEmail] = useState<string>('')
+    const [minLength, setMinLength] = useState<string>('')
+    const [maxLength, setMaxLength] = useState<string>('')
+
+    useEffect(() => {
+        for (const validator in validators) {
+            switch (validator) {
+                case 'isRequired':
+                    !value
+                        ? setIsRequired('Field is required')
+                        : setIsRequired('')
+                    break
+
+                case 'minLength':
+                    value.length < validators[validator]!
+                        ? setMinLength(`Min length must be more than ${validators[validator]!}`)
+                        : setMinLength('')
+                    break
+
+                case 'maxLength':
+                    value.length > validators[validator]!
+                        ? setMaxLength(`Max length must be less than ${validators[validator]!}`)
+                        : setMaxLength('')
+                    break
+
+                case 'isEmail':
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        .test(String(value).toLowerCase())
+                        ? setIsEmail('')
+                        : setIsEmail('Wrong email address')
+                    break
+
+            }
+        }
+    }, [value])
+
+    useEffect(() => {
+        (isRequired || isEmail || minLength || maxLength) ? setIsValid(false) : setIsValid(true)
+    }, [validators])
+
+    return {
+        isValid,
+        isRequired,
+        isEmail,
+        minLength,
+        maxLength
+    }
+}

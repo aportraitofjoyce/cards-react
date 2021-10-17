@@ -1,5 +1,5 @@
-import {Instance} from "./axios-instance";
 import {AxiosResponse} from "axios";
+import {instance} from './axios-instance'
 
 export type LoginRequestType = {
     email: string,
@@ -24,7 +24,7 @@ export type LoginResponseType = {
 export const loginApi = {
     login(email: string, password: string,
           rememberMe: boolean) {
-        return Instance.post<LoginRequestType, AxiosResponse<LoginResponseType>>(`/auth/login`, {
+        return instance.post<LoginRequestType, AxiosResponse<LoginResponseType>>(`/auth/login`, {
             email,
             password,
             rememberMe
