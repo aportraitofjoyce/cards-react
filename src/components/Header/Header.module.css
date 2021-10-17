@@ -17,6 +17,17 @@
     padding: 0 24px;
 }
 
-.active {
-    color: var(--secondary)
+.container a {
+    color: var(--light);
+    text-decoration: none;
+}
+
+.container a:hover,
+.container span:hover {
+    color: var(--primary);
+    cursor: pointer;
+}
+
+a.active {
+    color: var(--primary);
 }
