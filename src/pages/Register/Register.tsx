@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {ChangeEvent, FC, useEffect, useState} from 'react'
 import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
 import {useTypedSelector} from '../../hooks/hooks'
@@ -13,82 +13,96 @@ type RegisterFormFields = {
     confirmPassword: string
 }
 
+type RegisterFormFieldsTouched = {
+    email: boolean
+    password: boolean
+    confirmPassword: boolean
+}
+
 export const Register: FC = () => {
     const registerSuccess = useTypedSelector(state => state.register.registerSuccess)
     const dispatch = useDispatch()
 
-    const [formData, setFormData] = useState<RegisterFormFields>({
+    const [formFields, setFormFields] = useState<RegisterFormFields>({
         email: '',
         password: '',
         confirmPassword: ''
+    })
+
+    const [formTouched, setFormTouched] = useState<RegisterFormFieldsTouched>({
+        email: false,
+        password: false,
+        confirmPassword: false
     })
 
     const [formErrors, setFormErrors] = useState<RegisterFormFields>({
-        email: '',
-        password: '',
-        confirmPassword: ''
+        email: 'Field is required',
+        password: 'Field is required',
+        confirmPassword: 'Field is required'
     })
-    console.log(formErrors)
 
-    const validation = () => {
-        !formData.email ? setFormErrors({...formErrors, email: 'Field is required'}) : setFormErrors({
-            ...formErrors,
-            email: ''
-        })
+    const [formValid, setFormValid] = useState<boolean>(false)
 
-        !formData.password ? setFormErrors({
-            ...formErrors,
-            password: 'Password is required'
-        }) : setFormErrors({...formErrors, password: ''})
+    const validateEmail = (email: string) => {
+        return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            .test(String(email).toLowerCase())
+    }
 
-        !formData.confirmPassword ? setFormErrors({
-            ...formErrors,
-            confirmPassword: 'Password is required'
-        }) : setFormErrors({...formErrors, confirmPassword: ''})
+    const onEmailFieldChangeHandler = (text: string) => {
+        setFormFields({...formFields, email: text})
 
+        !validateEmail(text)
+            ? setFormErrors({...formErrors, email: 'Wrong email address'})
+            : setFormErrors({...formErrors, email: ''})
+    }
 
-        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
-            setFormErrors({...formErrors, email: 'Invalid email address'})
-        } else {
-            setFormErrors({...formErrors, email: ''})
-        }
+    const onPasswordFieldChangeHandler = (text: string) => {
+        setFormFields({...formFields, password: text})
 
-        formData.password.length < 7 || formData.password.length > 30
+        text.length < 7 || text.length > 30
             ? setFormErrors({...formErrors, password: 'Must be 7-30 characters'})
             : setFormErrors({...formErrors, password: ''})
 
-        formData.confirmPassword.length < 7 || formData.confirmPassword.length > 30
+        text.length === 0 &&
+        setFormErrors({...formErrors, password: 'Field is required'})
+    }
+
+    const onPasswordConfirmFieldChangeHandler = (text: string) => {
+        setFormFields({...formFields, confirmPassword: text})
+
+        text.length < 7 || text.length > 30
             ? setFormErrors({...formErrors, confirmPassword: 'Must be 7-30 characters'})
             : setFormErrors({...formErrors, confirmPassword: ''})
 
-        formData.password !== formData.confirmPassword
-            ? setFormErrors({
-                ...formErrors,
-                password: 'Passwords are not the same',
-                confirmPassword: 'Passwords are not the same'
-            })
-            : setFormErrors({...formErrors, password: '', confirmPassword: ''})
+        text.length === 0 &&
+        setFormErrors({...formErrors, confirmPassword: 'Field is required'})
     }
 
-    const emailFieldHandler = (text: string) => {
-        setFormData({...formData, email: text})
-        validation()
-    }
-
-    const passwordFieldHandler = (text: string) => {
-        setFormData({...formData, password: text})
-        validation()
-    }
-
-    const passwordConfirmFieldHandler = (text: string) => {
-        setFormData({...formData, confirmPassword: text})
-        validation()
+    const onBlurHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        switch (e.currentTarget.id) {
+            case 'registerEmail':
+                setFormTouched({...formTouched, email: true})
+                break
+            case 'registerPassword':
+                setFormTouched({...formTouched, password: true})
+                break
+            case 'registerConfirmPassword':
+                setFormTouched({...formTouched, confirmPassword: true})
+                break
+        }
     }
 
     const onSubmit = () => {
-        dispatch(register({email: formData.email, password: formData.password}))
+        dispatch(register({email: formFields.email, password: formFields.password}))
     }
 
+    useEffect(() => {
+        (formErrors.email || formErrors.password || formErrors.confirmPassword)
+            ? setFormValid(false)
+            : setFormValid(true)
+    }, [formErrors])
+
+    console.log(formErrors.email || formErrors.password || formErrors.confirmPassword)
     return (
         <div>
             {registerSuccess && <Redirect to={PATH.LOGIN}/>}
@@ -100,31 +114,37 @@ export const Register: FC = () => {
                 <Input id={'registerEmail'}
                        type={'email'}
                        placeholder={'Enter you email address...'}
-                       value={formData.email}
-                       onChangeText={emailFieldHandler}/>
-                {formErrors.email && <span style={{color: 'red'}}>{formErrors.email}</span>}
+                       value={formFields.email}
+                       onBlur={e => onBlurHandler(e)}
+                       onChangeText={onEmailFieldChangeHandler}/>
+
+                {(formTouched.email && formErrors.email) &&
+				<span style={{color: 'red'}}>{formErrors.email}</span>}
+
 
                 <label htmlFor={'registerPassword'}>Password</label>
                 <Input id={'registerPassword'}
                        type={'text'}
                        placeholder={'Enter your password...'}
-                       value={formData.password}
-                       onChangeText={passwordFieldHandler}/>
+                       value={formFields.password}
+                       onBlur={e => onBlurHandler(e)}
+                       onChangeText={onPasswordFieldChangeHandler}/>
 
-                {formErrors.password && <span style={{color: 'red'}}>{formErrors.password}</span>}
+                {(formTouched.password && formErrors.password) &&
+				<span style={{color: 'red'}}>{formErrors.password}</span>}
+
 
                 <label htmlFor={'registerConfirmPassword'}>Confirm Password</label>
                 <Input id={'registerConfirmPassword'}
                        type={'text'}
                        placeholder={'Confirm your password...'}
-                       onChangeText={passwordConfirmFieldHandler}/>
+                       onBlur={e => onBlurHandler(e)}
+                       onChangeText={onPasswordConfirmFieldChangeHandler}/>
 
-                {formErrors.confirmPassword && <span style={{color: 'red'}}>{formErrors.confirmPassword}</span>}
+                {(formTouched.confirmPassword && formErrors.confirmPassword) &&
+				<span style={{color: 'red'}}>{formErrors.confirmPassword}</span>}
 
-                <div style={{display: 'flex', gap: 24}}>
-                    <Button>Cancel</Button>
-                    <Button type={'submit'}>Register</Button>
-                </div>
+                <Button disabled={!formValid} type={'submit'}>Register</Button>
             </form>
         </div>
     )
