@@ -7,16 +7,10 @@ import {PATH} from '../../routes/routes'
 import {register} from '../../store/reducers/register-reducer'
 import {useDispatch} from 'react-redux'
 
-type RegisterFormFields = {
-    email: string
-    password: string
-    confirmPassword: string
-}
-
-type RegisterFormFieldsTouched = {
-    email: boolean
-    password: boolean
-    confirmPassword: boolean
+type RegisterFormFields<T = string> = {
+    email: T
+    password: T
+    confirmPassword: T
 }
 
 export const Register: FC = () => {
@@ -29,16 +23,16 @@ export const Register: FC = () => {
         confirmPassword: ''
     })
 
-    const [formTouched, setFormTouched] = useState<RegisterFormFieldsTouched>({
-        email: false,
-        password: false,
-        confirmPassword: false
-    })
-
     const [formErrors, setFormErrors] = useState<RegisterFormFields>({
         email: 'Field is required',
         password: 'Field is required',
         confirmPassword: 'Field is required'
+    })
+
+    const [formTouched, setFormTouched] = useState<RegisterFormFields<boolean>>({
+        email: false,
+        password: false,
+        confirmPassword: false
     })
 
     const [formValid, setFormValid] = useState<boolean>(false)
@@ -48,34 +42,28 @@ export const Register: FC = () => {
             .test(String(email).toLowerCase())
     }
 
-    const onEmailFieldChangeHandler = (text: string) => {
-        setFormFields({...formFields, email: text})
+    const onEmailFieldChangeHandler = (fieldText: string) => {
+        setFormFields({...formFields, email: fieldText})
 
-        !validateEmail(text)
+        !validateEmail(fieldText)
             ? setFormErrors({...formErrors, email: 'Wrong email address'})
             : setFormErrors({...formErrors, email: ''})
     }
 
-    const onPasswordFieldChangeHandler = (text: string) => {
-        setFormFields({...formFields, password: text})
+    const onPasswordFieldChangeHandler = (fieldText: string) => {
+        setFormFields({...formFields, password: fieldText})
 
-        text.length < 7 || text.length > 30
+        fieldText.length < 7 || fieldText.length > 30
             ? setFormErrors({...formErrors, password: 'Must be 7-30 characters'})
             : setFormErrors({...formErrors, password: ''})
-
-        text.length === 0 &&
-        setFormErrors({...formErrors, password: 'Field is required'})
     }
 
-    const onPasswordConfirmFieldChangeHandler = (text: string) => {
-        setFormFields({...formFields, confirmPassword: text})
+    const onPasswordConfirmFieldChangeHandler = (fieldText: string) => {
+        setFormFields({...formFields, confirmPassword: fieldText})
 
-        text.length < 7 || text.length > 30
-            ? setFormErrors({...formErrors, confirmPassword: 'Must be 7-30 characters'})
+        formFields.password !== fieldText
+            ? setFormErrors({...formErrors, confirmPassword: 'Passwords must be the same'})
             : setFormErrors({...formErrors, confirmPassword: ''})
-
-        text.length === 0 &&
-        setFormErrors({...formErrors, confirmPassword: 'Field is required'})
     }
 
     const onBlurHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -102,7 +90,6 @@ export const Register: FC = () => {
             : setFormValid(true)
     }, [formErrors])
 
-    console.log(formErrors.email || formErrors.password || formErrors.confirmPassword)
     return (
         <div>
             {registerSuccess && <Redirect to={PATH.LOGIN}/>}
