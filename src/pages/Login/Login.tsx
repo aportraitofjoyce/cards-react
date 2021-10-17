@@ -31,7 +31,6 @@ export const Login: FC = () => {
         <div>
             <h1>Sign In</h1>
             <form onSubmit={onSubmit}>
-                <h1>{data.name}</h1>
                 <label htmlFor="loginEmail">Email</label>
                 <Input
                     id={'loginEmail'}
