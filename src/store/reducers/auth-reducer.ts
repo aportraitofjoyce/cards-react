@@ -1,6 +1,6 @@
 import {authAPI, ChangeUsersInfoPayload, RegistrationsData, UsersInfoResponse} from '../../api/auth-api'
 import {AppDispatch} from '../store'
-import {AxiosResponse} from 'axios'
+import {setAppError, setAppInitialized, setAppStatus} from './app-reducer'
 
 // Types
 enum AUTH_ACTIONS_TYPES {
@@ -20,14 +20,12 @@ type InitialState = {
     userInfo: UsersInfoResponse | null
 }
 
-
 // State
 const initialState: InitialState = {
     registrationSuccess: false,
     isLoggedIn: false,
     userInfo: null
 }
-
 
 // Reducer
 export const authReducer = (state = initialState, action: AuthActions): InitialState => {
@@ -46,7 +44,6 @@ export const authReducer = (state = initialState, action: AuthActions): InitialS
     }
 }
 
-
 // Actions
 const setRegistrationSuccess = (status: boolean) => ({
     type: AUTH_ACTIONS_TYPES.SET_REGISTRATION_SUCCESS,
@@ -63,15 +60,18 @@ const setIsLoggedIn = (status: boolean) => ({
     payload: {status}
 } as const)
 
-
 // Thunks
 export const registration = (registrationsData: RegistrationsData) => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatus('loading'))
         await authAPI.registration(registrationsData)
         dispatch(setRegistrationSuccess(true))
+        dispatch(setAppStatus('succeeded'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        console.log({...e})
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError(error))
+        alert(error)
     } finally {
         dispatch(setRegistrationSuccess(false))
     }
@@ -79,29 +79,44 @@ export const registration = (registrationsData: RegistrationsData) => async (dis
 
 export const logout = () => async (dispatch: AppDispatch) => {
     try {
-        const response = await authAPI.logout()
+        dispatch(setAppStatus('loading'))
+        await authAPI.logout()
         dispatch(setUsersInfo(null))
         dispatch(setIsLoggedIn(false))
-    } catch (e) {
+        dispatch(setAppStatus('succeeded'))
+    } catch (e: any) {
+        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError(error))
     }
 }
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatus('loading'))
         const response = await authAPI.checkAuth()
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
+        dispatch(setAppStatus('succeeded'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        console.log({...e})
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError(error))
+    } finally {
+        dispatch(setAppInitialized(true))
     }
 }
 
 export const changeUsersInfo = (info: ChangeUsersInfoPayload) => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatus('loading'))
         const response = await authAPI.changeUsersInfo(info)
         dispatch(setUsersInfo(response.data))
-    } catch (e) {
+        dispatch(setAppStatus('succeeded'))
+    } catch (e: any) {
+        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError(error))
     }
 }
 

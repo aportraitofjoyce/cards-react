@@ -13,6 +13,7 @@ export const Profile: FC = () => {
     const publicCardPacksCount = useSelector<RootState, number>(state => state.login.publicCardPacksCount)
 
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(checkAuth())
     }, [dispatch])

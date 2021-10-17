@@ -7,6 +7,7 @@ import {logout} from '../../store/reducers/auth-reducer'
 
 export const Header: FC = () => {
     const dispatch = useDispatch()
+
     const logoutHandler = () => {
         dispatch(logout())
     }
