@@ -1,4 +1,4 @@
-import {axiosInstance} from './axios-instance'
+import {instance} from './axios-instance'
 import {AxiosResponse} from 'axios'
 
 export type RegisterUsersData = {
@@ -7,6 +7,6 @@ export type RegisterUsersData = {
 }
 
 export const registerAPI = {
-    register: (data: RegisterUsersData) => axiosInstance
+    register: (data: RegisterUsersData) => instance
         .post<RegisterUsersData, AxiosResponse<{ error?: string }>>('/auth/register', data)
 }
