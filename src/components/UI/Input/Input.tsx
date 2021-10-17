@@ -39,11 +39,11 @@ export const Input: FC<InputTextProps> = props => {
 
     return (
         <div className={s.container}>
-            <input type={'text'}
+            <input type={props.type}
                    onChange={onChangeCallback}
                    onKeyPress={onKeyPressCallback}
                    className={inputClassNames}
-                   placeholder={'Введите текст...'}
+                   placeholder={props.placeholder}
                    {...restProps}/>
             {error && <span className={spanClassNames}>{error}</span>}
         </div>
