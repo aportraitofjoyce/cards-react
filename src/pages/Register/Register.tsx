@@ -1,11 +1,77 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react'
 import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
-import {useTypedSelector} from '../../hooks/hooks'
+import {useInput, useTypedSelector} from '../../hooks/hooks'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {register} from '../../store/reducers/register-reducer'
 import {useDispatch} from 'react-redux'
+
+
+export const Register: FC = () => {
+    const registerSuccess = useTypedSelector(state => state.register.registerSuccess)
+    const dispatch = useDispatch()
+
+    const email = useInput('', {isRequired: true, isEmail: true})
+    const password = useInput('', {minLength: 7, maxLength: 25})
+    const confirmPassword = useInput('', {minLength: 7, maxLength: 25})
+
+    const onSubmit = () => {
+        dispatch(register({email: email.value, password: password.value}))
+    }
+    console.log(email.validation)
+
+    return (
+        <div>
+            {registerSuccess && <Redirect to={PATH.LOGIN}/>}
+
+            <h1>Register</h1>
+
+            <form onSubmit={onSubmit} style={{display: 'flex', flexDirection: 'column', gap: 24}}>
+                <label htmlFor={'registerEmail'}>Email</label>
+                <Input id={'registerEmail'}
+                       type={'email'}
+                       placeholder={'Enter you email address...'}
+                       value={email.value}
+                       onBlur={email.onBlur}
+                       onChange={email.onChange}/>
+
+                {(email.touched && email.validation) &&
+				<span style={{color: 'red'}}>{email.validation.isRequired || email.validation.isEmail}</span>}
+
+                <label htmlFor={'registerPassword'}>Password</label>
+                <Input id={'registerPassword'}
+                       type={'text'}
+                       placeholder={'Enter your password...'}
+                       value={password.value}
+                       onBlur={password.onBlur}
+                       onChange={password.onChange}/>
+
+                {(password.touched && password.validation) &&
+				<span style={{color: 'red'}}>{password.validation.minLength || password.validation.maxLength}</span>}
+
+
+                <label htmlFor={'registerConfirmPassword'}>Confirm Password</label>
+                <Input id={'registerConfirmPassword'}
+                       type={'text'}
+                       placeholder={'Confirm your password...'}
+                       value={confirmPassword.value}
+                       onBlur={confirmPassword.onBlur}
+                       onChange={confirmPassword.onChange}/>
+
+                {(confirmPassword.touched && confirmPassword.validation) &&
+				<span
+					style={{color: 'red'}}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
+
+                <Button type={'submit'}
+                        disabled={!email.validation.isValid || !password.validation.isValid || !confirmPassword.validation.isValid}>
+                    Register
+                </Button>
+            </form>
+        </div>
+    )
+}
+
 
 type RegisterFormFields<T = string> = {
     email: T
@@ -13,7 +79,7 @@ type RegisterFormFields<T = string> = {
     confirmPassword: T
 }
 
-export const Register: FC = () => {
+export const Register2: FC = () => {
     const registerSuccess = useTypedSelector(state => state.register.registerSuccess)
     const dispatch = useDispatch()
 
@@ -61,7 +127,7 @@ export const Register: FC = () => {
     const onPasswordConfirmFieldChangeHandler = (fieldText: string) => {
         setFormFields({...formFields, confirmPassword: fieldText})
 
-        formFields.password !== fieldText
+        fieldText !== formFields.password
             ? setFormErrors({...formErrors, confirmPassword: 'Passwords must be the same'})
             : setFormErrors({...formErrors, confirmPassword: ''})
     }
@@ -125,6 +191,7 @@ export const Register: FC = () => {
                 <Input id={'registerConfirmPassword'}
                        type={'text'}
                        placeholder={'Confirm your password...'}
+                       value={formFields.confirmPassword}
                        onBlur={e => onBlurHandler(e)}
                        onChangeText={onPasswordConfirmFieldChangeHandler}/>
 
