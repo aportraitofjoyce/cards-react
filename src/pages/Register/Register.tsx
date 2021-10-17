@@ -19,7 +19,6 @@ export const Register: FC = () => {
     const onSubmit = () => {
         dispatch(register({email: email.value, password: password.value}))
     }
-    console.log(email.validation)
 
     return (
         <div>
@@ -32,9 +31,7 @@ export const Register: FC = () => {
                 <Input id={'registerEmail'}
                        type={'email'}
                        placeholder={'Enter you email address...'}
-                       value={email.value}
-                       onBlur={email.onBlur}
-                       onChange={email.onChange}/>
+                       {...email}/>
 
                 {(email.touched && email.validation) &&
 				<span style={{color: 'red'}}>{email.validation.isRequired || email.validation.isEmail}</span>}
@@ -43,9 +40,7 @@ export const Register: FC = () => {
                 <Input id={'registerPassword'}
                        type={'text'}
                        placeholder={'Enter your password...'}
-                       value={password.value}
-                       onBlur={password.onBlur}
-                       onChange={password.onChange}/>
+                       {...password}/>
 
                 {(password.touched && password.validation) &&
 				<span style={{color: 'red'}}>{password.validation.minLength || password.validation.maxLength}</span>}
@@ -55,9 +50,7 @@ export const Register: FC = () => {
                 <Input id={'registerConfirmPassword'}
                        type={'text'}
                        placeholder={'Confirm your password...'}
-                       value={confirmPassword.value}
-                       onBlur={confirmPassword.onBlur}
-                       onChange={confirmPassword.onChange}/>
+                       {...confirmPassword}/>
 
                 {(confirmPassword.touched && confirmPassword.validation) &&
 				<span
@@ -72,13 +65,13 @@ export const Register: FC = () => {
     )
 }
 
-
 type RegisterFormFields<T = string> = {
     email: T
     password: T
     confirmPassword: T
 }
 
+/*
 export const Register2: FC = () => {
     const registerSuccess = useTypedSelector(state => state.register.registerSuccess)
     const dispatch = useDispatch()
@@ -202,4 +195,4 @@ export const Register2: FC = () => {
             </form>
         </div>
     )
-}
+}*/

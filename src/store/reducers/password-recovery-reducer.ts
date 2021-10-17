@@ -29,7 +29,7 @@ export const forgotPassTC = (email: string) => async (dispatch: Dispatch) => {
         const payload: ForgotRequestType = {
             email,
             from: 'test-front-admin,<sberBank_security@gmail.com>',
-            message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToLocal}>link</a></div>`
+            message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToGithubPages}>link</a></div>`
         };
         dispatch(setEmailRecovery(email));
         await passwordApi.forgot(payload);

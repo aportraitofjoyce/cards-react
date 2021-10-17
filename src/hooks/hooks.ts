@@ -72,7 +72,6 @@ export const useValidation = (value: string, validators: Validators) => {
         (isRequired || isEmail || minLength || maxLength) ? setIsValid(false) : setIsValid(true)
     }, [validators])
 
-
     return {
         isValid,
         isRequired,
