@@ -6,7 +6,7 @@ export const passwordApi = {
         return instance.post<ForgotRequestType, AxiosResponse<ResponseType>>(`/auth/forgot`, payload);
     },
     setNewPassword(payload: SetNewPasswordRequestType) {
-        return instance.post<SetNewPasswordRequestType, AxiosResponse<ResponseType>>(`/auth/forgot`, payload);
+        return instance.post<SetNewPasswordRequestType, AxiosResponse<ResponseType>>(`/auth/set-new-password`, payload);
     }
 }
 
@@ -23,6 +23,7 @@ export type SetNewPasswordRequestType = {
     resetPassToken: string
 }
 
+// респонс повторяется
 export type ResponseType = {
     info: string,
     error?: string

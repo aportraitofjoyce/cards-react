@@ -4,7 +4,7 @@ import {Login} from '../pages/Login/Login'
 import {Register} from '../pages/Register/Register'
 import {UiKit} from '../components/UIKit/UiKit'
 import {Error} from '../pages/Error/Error'
-import {PasswordRecovery} from '../pages/PasswordRecovery/PasswordRecovery'
+import {ForgotPassword} from '../pages/PasswordRecovery/ForgotPassword'
 import {NewPassword} from '../pages/NewPassword/NewPassword'
 import {CheckEmail} from "../pages/PasswordRecovery/CheckEmail/CheckEmail";
 
@@ -31,7 +31,7 @@ export const publicRoutes: Routes[] = [
     {path: PATH.PROFILE, component: Profile},
     {path: PATH.LOGIN, component: Login},
     {path: PATH.REGISTER, component: Register},
-    {path: PATH.PASSWORD_RECOVERY, component: PasswordRecovery},
+    {path: PATH.PASSWORD_RECOVERY, component: ForgotPassword},
     {path: PATH.NEW_PASSWORD, component: NewPassword},
     {path: PATH.CHECK_EMAIL, component: CheckEmail},
     {path: PATH.UI_KIT, component: UiKit},

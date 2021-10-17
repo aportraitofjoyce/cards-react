@@ -2,33 +2,36 @@ import React, {FC, useState} from 'react'
 import s from './NewPassword.module.css'
 import {Button} from "../../components/UI/Button/Button";
 import {Input} from "../../components/UI/Input/Input";
-import {useDispatch} from "react-redux";
-import {Redirect, useParams} from "react-router-dom";
 import {PATH} from "../../routes/routes";
-import {useHistory} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setNewPasswordTC} from "../../store/reducers/password-recovery-reducer";
 
+
+//TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
 
 export const NewPassword: FC = () => {
-    const [firstPass, setFirstPass] = useState<string>('');
-    const [secondPass, setSecondPass] = useState<string>('');
+    const [firstPass, setFirstPass] = useState<string>(''); // первый инпут
+    const [secondPass, setSecondPass] = useState<string>('');// второй инпут
 
-    // const dispatch = useDispatch();
-    // const {token} = useParams<{ token: string }>()
-
+    const dispatch = useDispatch();
+    const {token} = useParams<{ token: string }>()
     const history = useHistory();
 
 
     const onSubmit = () => {
-        const passIdentical = firstPass === secondPass;
-        if (!passIdentical) {
+        const passIdentical = firstPass === secondPass; //данные обоих инпутов должны быть равно
+        if (!passIdentical) { // если данные разные
             alert('пароли не совпадают')
-        } else {
+        } else { // если совпадают
             alert('пароли совпадают')
+            dispatch(setNewPasswordTC(token, firstPass))
             history.push(PATH.LOGIN)
         }
-        setFirstPass('');
+        setFirstPass(''); // обнуление инпутов
         setSecondPass('');
     }
+
 
     return (
         <div className={s.wrapper}>
