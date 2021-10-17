@@ -28,7 +28,6 @@ export const NewPassword: FC = () => {
         }
         setFirstPass('');
         setSecondPass('');
-
     }
 
     return (

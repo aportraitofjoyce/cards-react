@@ -6,7 +6,7 @@ import {UiKit} from '../components/UIKit/UiKit'
 import {Error} from '../pages/Error/Error'
 import {PasswordRecovery} from '../pages/PasswordRecovery/PasswordRecovery'
 import {NewPassword} from '../pages/NewPassword/NewPassword'
-import {CheckEmail} from "../pages/CheckEmail/CheckEmail";
+import {CheckEmail} from "../pages/PasswordRecovery/CheckEmail/CheckEmail";
 
 export enum PATH {
     HOME = '/',
