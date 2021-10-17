@@ -1,23 +1,23 @@
 import {FC} from 'react'
 import {Profile} from '../pages/Profile/Profile'
 import {Login} from '../pages/Login/Login'
-import {Register} from '../pages/Register/Register'
-import {UiKit} from '../components/UIKit/UiKit'
+import {Registration} from '../pages/Registration/Registration'
 import {Error} from '../pages/Error/Error'
 import {ForgotPassword} from '../pages/PasswordRecovery/ForgotPassword'
 import {NewPassword} from '../pages/NewPassword/NewPassword'
-import {CheckEmail} from "../pages/PasswordRecovery/CheckEmail/CheckEmail";
+import {CheckEmail} from '../pages/PasswordRecovery/CheckEmail/CheckEmail'
+import {Home} from '../pages/Home/Home'
 
 export enum PATH {
     HOME = '/',
-    ERROR = '',
+    EMPTY = '',
+    ERROR = '/404',
     PROFILE = '/profile',
     LOGIN = '/login',
-    REGISTER = '/register',
-    PASSWORD_RECOVERY = '/passrecovery',
-    NEW_PASSWORD = '/newpass',
+    REGISTRATION = '/registration',
+    PASSWORD_RECOVERY = '/password-recovery',
+    NEW_PASSWORD = '/new-password',
     CHECK_EMAIL = '/check-email',
-    UI_KIT = '/ui-kit',
 }
 
 type Routes = {
@@ -27,13 +27,12 @@ type Routes = {
 }
 
 export const publicRoutes: Routes[] = [
-    {path: PATH.HOME, component: Profile, exact: true},
+    {path: PATH.HOME, component: Home, exact: true},
     {path: PATH.PROFILE, component: Profile},
+    {path: PATH.REGISTRATION, component: Registration},
     {path: PATH.LOGIN, component: Login},
-    {path: PATH.REGISTER, component: Register},
     {path: PATH.PASSWORD_RECOVERY, component: ForgotPassword},
     {path: PATH.NEW_PASSWORD, component: NewPassword},
     {path: PATH.CHECK_EMAIL, component: CheckEmail},
-    {path: PATH.UI_KIT, component: UiKit},
     {path: PATH.ERROR, component: Error},
 ]

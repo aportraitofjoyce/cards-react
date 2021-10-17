@@ -5,8 +5,8 @@ import {ChangeEvent, useEffect, useState} from 'react'
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export const useInput = (initialValue: string, validators: Validators) => {
-    const [value, setValue] = useState<string>(initialValue)
-    const [touched, setTouched] = useState<boolean>(false)
+    const [value, setValue] = useState(initialValue)
+    const [touched, setTouched] = useState(false)
     const validation = useValidation(value, validators)
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
@@ -29,12 +29,12 @@ type Validators = {
 }
 
 export const useValidation = (value: string, validators: Validators) => {
-    const [isValid, setIsValid] = useState<boolean>(false)
+    const [isValid, setIsValid] = useState(false)
 
-    const [isRequired, setIsRequired] = useState<string>('')
-    const [isEmail, setIsEmail] = useState<string>('')
-    const [minLength, setMinLength] = useState<string>('')
-    const [maxLength, setMaxLength] = useState<string>('')
+    const [isRequired, setIsRequired] = useState('')
+    const [isEmail, setIsEmail] = useState('')
+    const [minLength, setMinLength] = useState('')
+    const [maxLength, setMaxLength] = useState('')
 
     useEffect(() => {
         for (const validator in validators) {

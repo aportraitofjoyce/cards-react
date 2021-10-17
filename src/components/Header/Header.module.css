@@ -16,3 +16,7 @@
     gap: 16px;
     padding: 0 24px;
 }
+
+.active {
+    color: var(--secondary)
+}
