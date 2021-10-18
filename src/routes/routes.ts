@@ -17,6 +17,7 @@ export enum PATH {
     REGISTRATION = '/registration',
     PASSWORD_RECOVERY = '/password-recovery',
     NEW_PASSWORD = '/new-password',
+    NEW_PASSWORD_WITH_TOKEN = '/new-password/:token?',
     CHECK_EMAIL = '/check-email',
 }
 
@@ -32,7 +33,7 @@ export const publicRoutes: Routes[] = [
     {path: PATH.REGISTRATION, component: Registration},
     {path: PATH.LOGIN, component: Login},
     {path: PATH.PASSWORD_RECOVERY, component: ForgotPassword},
-    {path: PATH.NEW_PASSWORD, component: NewPassword},
+    {path: PATH.NEW_PASSWORD_WITH_TOKEN, component: NewPassword},
     {path: PATH.CHECK_EMAIL, component: CheckEmail},
     {path: PATH.ERROR, component: Error},
 ]

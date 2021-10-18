@@ -149,7 +149,7 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
         const payload: ForgotRequestType = {
             email,
             from: 'test-front-admin,<sberBank_security@gmail.com>',
-            message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href='${linkInRecoverEmailToGithubPages}'>link</a></div>`
+            message: `<div style='background-color: #ffb700; padding: 15px'>password recovery link: <a href='${linkInRecoverEmailToLocal}'>link</a></div>`
         }
         dispatch(setAppStatus('loading'))
         await authAPI.passwordRecovery(payload)
@@ -162,7 +162,7 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
     }
 }
 
-export const newPassword = (password: string, resetPasswordToken: string | undefined) => async (dispatch: AppDispatch) => {
+export const newPassword = (password: string, resetPasswordToken: string) => async (dispatch: AppDispatch) => {
     try {
         const response = await authAPI.newPassword({password, resetPasswordToken})
         if (response.status === 200) alert('пароль изменён')
