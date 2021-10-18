@@ -15,6 +15,7 @@ enum AUTH_ACTIONS_TYPES {
     SET_USERS_INFO = 'AUTH/SET_USERS_INFO',
     SET_IS_LOGGED_IN = 'AUTH/SET_IS_LOGGED_IN',
     SET_EMAIL_RECOVERY = 'AUTH/SET_EMAIL_RECOVERY',
+    SET_SUCCESS_PASSWORD = 'AUTH/SET_SUCCESS_PASSWORD',
 }
 
 export type AuthActions =
@@ -22,12 +23,14 @@ export type AuthActions =
     | ReturnType<typeof setUsersInfo>
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof setEmailRecovery>
+    | ReturnType<typeof setSuccessPassword>
 
 type InitialState = {
     registrationSuccess: boolean
     isLoggedIn: boolean
     recoveryEmail: string | null
     userInfo: UsersInfoResponse | null
+    setSuccess: boolean
 }
 
 // State
@@ -35,7 +38,8 @@ const initialState: InitialState = {
     registrationSuccess: false,
     isLoggedIn: false,
     recoveryEmail: null,
-    userInfo: null
+    userInfo: null,
+    setSuccess: false
 }
 
 // Reducer
@@ -52,6 +56,9 @@ export const authReducer = (state = initialState, action: AuthActions): InitialS
 
         case AUTH_ACTIONS_TYPES.SET_EMAIL_RECOVERY:
             return {...state, recoveryEmail: action.payload.email}
+
+        case AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD:
+            return {...state, setSuccess: action.payload.changePassSuccess}
 
         default:
             return state
@@ -78,6 +85,12 @@ const setEmailRecovery = (email: string) => ({
     type: AUTH_ACTIONS_TYPES.SET_EMAIL_RECOVERY,
     payload: {email}
 } as const)
+
+const setSuccessPassword = (changePassSuccess: boolean) => ({
+    type: AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD,
+    payload: {changePassSuccess}
+} as const)
+
 
 // Thunks
 export const registration = (registrationsData: RegistrationsData) => async (dispatch: AppDispatch) => {
@@ -164,8 +177,12 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
 
 export const newPassword = (password: string, resetPasswordToken: string) => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatus('loading'))
         const response = await authAPI.newPassword({password, resetPasswordToken})
-        if (response.status === 200) alert('пароль изменён')
+        if (response.status === 200) {
+            dispatch(setSuccessPassword(true))
+            dispatch(setAppStatus('succeeded'))
+        }
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppStatus('failed'))
