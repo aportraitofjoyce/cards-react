@@ -2,8 +2,7 @@ import React, {FC, useState} from 'react'
 import s from './NewPassword.module.css'
 import {Button} from "../../components/UI/Button/Button";
 import {Input} from "../../components/UI/Input/Input";
-import {PATH} from "../../routes/routes";
-import {Redirect, useHistory, useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {setNewPasswordTC} from "../../store/reducers/password-recovery-reducer";
 
@@ -11,22 +10,24 @@ import {setNewPasswordTC} from "../../store/reducers/password-recovery-reducer";
 //TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
 
 export const NewPassword: FC = () => {
-    const [firstPass, setFirstPass] = useState<string>(''); // первый инпут
-    const [secondPass, setSecondPass] = useState<string>('');// второй инпут
-
     const dispatch = useDispatch();
-    const {token} = useParams<{ token: string }>()
+    const {token} = useParams<{ token: string | undefined }>()
     const history = useHistory();
 
 
-    const onSubmit = () => {
+    const [firstPass, setFirstPass] = useState<string>(''); // первый инпут
+    const [secondPass, setSecondPass] = useState<string>('');// второй инпут
+
+
+    const onSubmit = (e: any) => {
+        debugger
+        e.preventDefault();
         const passIdentical = firstPass === secondPass; //данные обоих инпутов должны быть равно
         if (!passIdentical) { // если данные разные
             alert('пароли не совпадают')
         } else { // если совпадают
             alert('пароли совпадают')
-            dispatch(setNewPasswordTC(token, firstPass))
-            history.push(PATH.LOGIN)
+            dispatch(setNewPasswordTC(firstPass, token))
         }
         setFirstPass(''); // обнуление инпутов
         setSecondPass('');
@@ -43,7 +44,7 @@ export const NewPassword: FC = () => {
                     <label htmlFor="inputNewPassword">NewPassword</label>
                     <Input
                         id={'inputNewPassword'}
-                        type={'password'}
+                        type={'text'}
                         onChange={(e) => setFirstPass(e.currentTarget.value)}
                         value={firstPass}
                         placeholder={'New password'}
@@ -52,7 +53,7 @@ export const NewPassword: FC = () => {
                     <label htmlFor="RepeatNewPassword">RepeatNewPassword</label>
                     <Input
                         id={'RepeatNewPassword'}
-                        type={'password'}
+                        type={'text'}
                         onChange={(e) => setSecondPass(e.currentTarget.value)}
                         value={secondPass}
                         placeholder={'Repeat new password'}

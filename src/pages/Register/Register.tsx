@@ -34,7 +34,7 @@ export const Register: FC = () => {
                        {...email}/>
 
                 {(email.touched && email.validation) &&
-				<span style={{color: 'red'}}>{email.validation.isRequired || email.validation.isEmail}</span>}
+                <span style={{color: 'red'}}>{email.validation.isRequired || email.validation.isEmail}</span>}
 
                 <label htmlFor={'registerPassword'}>Password</label>
                 <Input id={'registerPassword'}
@@ -43,7 +43,7 @@ export const Register: FC = () => {
                        {...password}/>
 
                 {(password.touched && password.validation) &&
-				<span style={{color: 'red'}}>{password.validation.minLength || password.validation.maxLength}</span>}
+                <span style={{color: 'red'}}>{password.validation.minLength || password.validation.maxLength}</span>}
 
 
                 <label htmlFor={'registerConfirmPassword'}>Confirm Password</label>
@@ -53,8 +53,8 @@ export const Register: FC = () => {
                        {...confirmPassword}/>
 
                 {(confirmPassword.touched && confirmPassword.validation) &&
-				<span
-					style={{color: 'red'}}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
+                <span
+                    style={{color: 'red'}}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
 
                 <Button type={'submit'}
                         disabled={!email.validation.isValid || !password.validation.isValid || !confirmPassword.validation.isValid}>
