@@ -1,9 +1,13 @@
-import {authAPI, ChangeUsersInfoPayload, RegistrationsData, UsersInfoResponse} from '../../api/auth-api'
+import {
+    authAPI,
+    ChangeUsersInfoPayload,
+    ForgotRequestType,
+    RegistrationsData,
+    UsersInfoResponse
+} from '../../api/auth-api'
 import {AppDispatch} from '../store'
 import {setAppError, setAppInitialized, setAppStatus} from './app-reducer'
 import {PATH} from '../../routes/routes'
-import {ForgotRequestType, passwordApi, SetNewPasswordRequestType} from '../../api/password-api'
-import {Dispatch} from 'redux'
 
 // Types
 enum AUTH_ACTIONS_TYPES {
@@ -151,7 +155,6 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
         await authAPI.passwordRecovery(payload)
         dispatch(setEmailRecovery(email))
         dispatch(setAppStatus('succeeded'))
-        dispatch(newPassword('', ''))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppStatus('failed'))
@@ -161,7 +164,7 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
 
 export const newPassword = (password: string, resetPasswordToken: string | undefined) => async (dispatch: AppDispatch) => {
     try {
-        const response = await passwordApi.setNewPassword({password, resetPasswordToken})
+        const response = await authAPI.newPassword({password, resetPasswordToken})
         if (response.status === 200) alert('пароль изменён')
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
