@@ -3,20 +3,20 @@ import {Dispatch} from "redux";
 
 const SET_USER_DATA = 'SET_USER_DATA'
 
-type InitialStateType = {
+type LoginInitialState = {
     name: string,
     avatar: string,
     publicCardPacksCount: number,
 }
 
-const initialState: InitialStateType = {
+const initialState: LoginInitialState = {
     name: '',
     avatar: '',
     publicCardPacksCount: 0,
 }
 
 
-export const loginReducer = (state = initialState, action: LoginActionType): InitialStateType => {
+export const loginReducer = (state = initialState, action: LoginActionType): LoginInitialState => {
     switch (action.type) {
         case SET_USER_DATA: {
             return {
