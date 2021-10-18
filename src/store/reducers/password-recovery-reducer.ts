@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {ForgotRequestType, passwordApi} from "../../api/password-api";
+import {ForgotRequestType, passwordApi, SetNewPasswordRequestType} from "../../api/password-api";
 import {PATH} from "../../routes/routes";
 
 type InitialStateType = {
@@ -20,34 +20,45 @@ export const passwordRecoveryReducer = (state = initialState, action: ActionsTyp
 }
 
 //THUNKS
-//TODO при деплое на GH-PAGES изменить на linkInRecoverEmailToGithubPages
+//TODO при деплое на GH-PAGES изменить в payload:message <a href на linkInRecoverEmailToGithubPages
+//добавил / в пути. надо проверить на gh-pages
 export const forgotPassTC = (email: string) => async (dispatch: Dispatch) => {
-    const linkInRecoverEmailToLocal = `http://localhost:3000/cards-react#${PATH.NEW_PASSWORD}/$token$`
-    const linkInRecoverEmailToGithubPages = `https://aportraitofjoyce.github.io/cards-react#${PATH.NEW_PASSWORD}/$token$`
+    const linkInRecoverEmailToLocal = `http://localhost:3000/cards-react/#${PATH.NEW_PASSWORD}/$token$`
+    const linkInRecoverEmailToGithubPages = `https://aportraitofjoyce.github.io/cards-react/#${PATH.NEW_PASSWORD}/$token$`
 
     try {
         const payload: ForgotRequestType = {
             email,
             from: 'test-front-admin,<sberBank_security@gmail.com>',
-            message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToGithubPages}>link</a></div>`
+            message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToLocal}>link</a></div>`
         };
         dispatch(setEmailRecovery(email));
         await passwordApi.forgot(payload);
-    } catch (error) {
-        console.log('some error forgotPassTC');
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + 'some error')
+        alert(error)
     }
 }
 
-export const setNewPasswordTC = (token: string, password: string) => async (dispatch: Dispatch) => {
+export const setNewPasswordTC = (password: string, resetPasswordToken: string | undefined) => async (dispatch: Dispatch) => {
+    debugger
     try {
-        const payload = {
-            password: password,
-            resetPassToken: token
+        const payload: SetNewPasswordRequestType = {
+            password,
+            resetPasswordToken
         }
-        await passwordApi.setNewPassword(payload);
-        alert('пароль изменён');
-    } catch (error) {
-        console.log('some error setNewPasswordTC');
+        let res = await passwordApi.setNewPassword(payload);
+
+        if (res.status === 200) {
+            alert('пароль изменён')
+        }
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + 'some error')
+        alert(error)
     }
 }
 

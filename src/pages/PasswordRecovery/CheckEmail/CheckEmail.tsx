@@ -1,12 +1,18 @@
 import React from "react";
 import s from './CheckEmail.module.css'
 import {useSelector} from "react-redux";
-import {RootStateType} from "../../../store/store";
+import {RootState} from "../../../store/store";
+import {PATH} from "../../../routes/routes";
+import {useHistory} from "react-router-dom";
 
 
 export const CheckEmail = () => {
-    const email = useSelector<RootStateType, string>(state => state.password.email)
+    const email = useSelector<RootState, string>(state => state.password.email)
+    const history = useHistory();
 
+    setTimeout(() => {
+        return history.push(PATH.LOGIN)
+    }, 3000)
 
     return (
         <div className={s.checkEmail}>
