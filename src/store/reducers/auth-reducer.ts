@@ -16,6 +16,7 @@ enum AUTH_ACTIONS_TYPES {
     SET_IS_LOGGED_IN = 'AUTH/SET_IS_LOGGED_IN',
     SET_EMAIL_RECOVERY = 'AUTH/SET_EMAIL_RECOVERY',
     SET_SUCCESS_PASSWORD = 'AUTH/SET_SUCCESS_PASSWORD',
+    SEND_RECOVERY_EMAIL_SUCCESS = 'AUTH/SEND_RECOVERY_EMAIL_SUCCESS',
 }
 
 export type AuthActions =
@@ -24,13 +25,15 @@ export type AuthActions =
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof setEmailRecovery>
     | ReturnType<typeof setSuccessPassword>
+    | ReturnType<typeof setSendEmailSuccess>
 
 type InitialState = {
-    registrationSuccess: boolean
-    isLoggedIn: boolean
-    recoveryEmail: string | null
-    userInfo: UsersInfoResponse | null
-    setSuccess: boolean
+    registrationSuccess: boolean,
+    isLoggedIn: boolean,
+    recoveryEmail: string | null,
+    userInfo: UsersInfoResponse | null,
+    setSuccessNewPass: boolean,
+    sendSuccessEmail: boolean,
 }
 
 // State
@@ -39,7 +42,8 @@ const initialState: InitialState = {
     isLoggedIn: false,
     recoveryEmail: null,
     userInfo: null,
-    setSuccess: false
+    setSuccessNewPass: false,
+    sendSuccessEmail: false,
 }
 
 // Reducer
@@ -58,7 +62,10 @@ export const authReducer = (state = initialState, action: AuthActions): InitialS
             return {...state, recoveryEmail: action.payload.email}
 
         case AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD:
-            return {...state, setSuccess: action.payload.changePassSuccess}
+            return {...state, setSuccessNewPass: action.payload.changePassSuccess}
+
+        case AUTH_ACTIONS_TYPES.SEND_RECOVERY_EMAIL_SUCCESS:
+            return {...state, sendSuccessEmail: action.payload.successSend}
 
         default:
             return state
@@ -91,6 +98,10 @@ const setSuccessPassword = (changePassSuccess: boolean) => ({
     payload: {changePassSuccess}
 } as const)
 
+const setSendEmailSuccess = (successSend: boolean) => ({
+    type: AUTH_ACTIONS_TYPES.SEND_RECOVERY_EMAIL_SUCCESS,
+    payload: {successSend}
+} as const)
 
 // Thunks
 export const registration = (registrationsData: RegistrationsData) => async (dispatch: AppDispatch) => {
@@ -166,6 +177,7 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
         }
         dispatch(setAppStatus('loading'))
         await authAPI.passwordRecovery(payload)
+        dispatch(setSendEmailSuccess(true))
         dispatch(setEmailRecovery(email))
         dispatch(setAppStatus('succeeded'))
     } catch (e: any) {

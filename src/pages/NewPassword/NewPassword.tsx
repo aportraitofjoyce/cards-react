@@ -13,7 +13,7 @@ import {PATH} from "../../routes/routes";
 export const NewPassword: FC = () => {
     const dispatch = useDispatch()
     const {token} = useParams<{ token: string }>()
-    const successChange = useTypedSelector(state => state.auth.setSuccess)
+    const successChangePassword = useTypedSelector(state => state.auth.setSuccessNewPass)
 
 
     const [firstPass, setFirstPass] = useState<string>('') // первый инпут
@@ -31,12 +31,10 @@ export const NewPassword: FC = () => {
         setSecondPass('')
     }
 
-    if (successChange) {
-        return <Redirect to={PATH.LOGIN}/>
-    }
 
     return (
         <div className={s.wrapper}>
+            {successChangePassword && <Redirect to={PATH.LOGIN}/>}
             <div className={s.container}>
                 <form className={s.form} onSubmit={onSubmit}>
                     <h1>IT-incubator</h1>
