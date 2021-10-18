@@ -59,7 +59,7 @@ export const Login: FC = () => {
                 <Button type={"submit"}>Login</Button>
                 <div>
                     <p>Don’t have an account?</p>
-                    <NavLink to={PATH.REGISTER}>
+                    <NavLink to={PATH.REGISTRATION}>
                         <h4>Sign Up</h4>
                     </NavLink>
                 </div>

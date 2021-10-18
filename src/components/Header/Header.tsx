@@ -1,22 +1,29 @@
 import React, {FC} from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import s from './Header.module.css'
+import {useDispatch} from 'react-redux'
+import {logout} from '../../store/reducers/auth-reducer'
 
 export const Header: FC = () => {
+    const dispatch = useDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
+
     return (
         <div className={s.wrapper}>
             <nav className={s.container}>
-                <Link to={PATH.HOME}>Home</Link>
-                <Link to={PATH.PROFILE}>Profile</Link>
-                <Link to={PATH.LOGIN}>Login</Link>
-                <Link to={PATH.REGISTER}>Register</Link>
-                <Link to={PATH.PASSWORD_RECOVERY}>Password Recovery</Link>
-                <Link to={PATH.NEW_PASSWORD}>New Password</Link>
-                <Link to={PATH.CHECK_EMAIL}>Check email</Link>
-                <Link to={PATH.UI_KIT}>UI Kit</Link>
+                <NavLink activeClassName={s.active} to={PATH.HOME} exact>Home</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.PROFILE} style={{marginRight: 64}}>Profile</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.REGISTRATION}>Registration</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.LOGIN}>Login</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.PASSWORD_RECOVERY}>Password Recovery</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.CHECK_EMAIL}>Check email</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.NEW_PASSWORD}>New Password</NavLink>
+                <span onClick={logoutHandler}>Logout</span>
             </nav>
         </div>
-
     )
 }
