@@ -1,6 +1,4 @@
-import {ThunkDispatch} from "redux-thunk";
 import {loginApi} from "../../api/login-api";
-import {RootState} from "../store";
 import {Dispatch} from "redux";
 
 const SET_USER_DATA = 'SET_USER_DATA'

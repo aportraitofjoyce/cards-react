@@ -2,16 +2,19 @@ import React, {FC, FormEvent, useState} from 'react'
 import s from './NewPassword.module.css'
 import {Button} from '../../components/UI/Button/Button'
 import {Input} from '../../components/UI/Input/Input'
-import {useHistory, useParams} from 'react-router-dom'
+import {Redirect, useParams} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {newPassword} from '../../store/reducers/auth-reducer'
+import {useTypedSelector} from "../../hooks/hooks";
+import {PATH} from "../../routes/routes";
 
 //TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
 
 export const NewPassword: FC = () => {
     const dispatch = useDispatch()
     const {token} = useParams<{ token: string }>()
-    const history = useHistory()
+    const successChangePassword = useTypedSelector(state => state.auth.setSuccessNewPass)
+
 
     const [firstPass, setFirstPass] = useState<string>('') // первый инпут
     const [secondPass, setSecondPass] = useState<string>('')// второй инпут
@@ -22,7 +25,6 @@ export const NewPassword: FC = () => {
         if (!passIdentical) { // если данные разные
             alert('пароли не совпадают')
         } else { // если совпадают
-            alert('пароли совпадают')
             dispatch(newPassword(firstPass, token))
         }
         setFirstPass('') // обнуление инпутов
@@ -32,6 +34,7 @@ export const NewPassword: FC = () => {
 
     return (
         <div className={s.wrapper}>
+            {successChangePassword && <Redirect to={PATH.LOGIN}/>}
             <div className={s.container}>
                 <form className={s.form} onSubmit={onSubmit}>
                     <h1>IT-incubator</h1>

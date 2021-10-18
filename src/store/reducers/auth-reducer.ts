@@ -15,6 +15,8 @@ enum AUTH_ACTIONS_TYPES {
     SET_USERS_INFO = 'AUTH/SET_USERS_INFO',
     SET_IS_LOGGED_IN = 'AUTH/SET_IS_LOGGED_IN',
     SET_EMAIL_RECOVERY = 'AUTH/SET_EMAIL_RECOVERY',
+    SET_SUCCESS_PASSWORD = 'AUTH/SET_SUCCESS_PASSWORD',
+    SEND_RECOVERY_EMAIL_SUCCESS = 'AUTH/SEND_RECOVERY_EMAIL_SUCCESS',
 }
 
 export type AuthActions =
@@ -22,12 +24,16 @@ export type AuthActions =
     | ReturnType<typeof setUsersInfo>
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof setEmailRecovery>
+    | ReturnType<typeof setSuccessPassword>
+    | ReturnType<typeof setSendEmailSuccess>
 
 type InitialState = {
-    registrationSuccess: boolean
-    isLoggedIn: boolean
-    recoveryEmail: string | null
-    userInfo: UsersInfoResponse | null
+    registrationSuccess: boolean,
+    isLoggedIn: boolean,
+    recoveryEmail: string | null,
+    userInfo: UsersInfoResponse | null,
+    setSuccessNewPass: boolean,
+    sendSuccessEmail: boolean,
 }
 
 // State
@@ -35,7 +41,9 @@ const initialState: InitialState = {
     registrationSuccess: false,
     isLoggedIn: false,
     recoveryEmail: null,
-    userInfo: null
+    userInfo: null,
+    setSuccessNewPass: false,
+    sendSuccessEmail: false,
 }
 
 // Reducer
@@ -52,6 +60,12 @@ export const authReducer = (state = initialState, action: AuthActions): InitialS
 
         case AUTH_ACTIONS_TYPES.SET_EMAIL_RECOVERY:
             return {...state, recoveryEmail: action.payload.email}
+
+        case AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD:
+            return {...state, setSuccessNewPass: action.payload.changePassSuccess}
+
+        case AUTH_ACTIONS_TYPES.SEND_RECOVERY_EMAIL_SUCCESS:
+            return {...state, sendSuccessEmail: action.payload.successSend}
 
         default:
             return state
@@ -77,6 +91,16 @@ const setIsLoggedIn = (status: boolean) => ({
 const setEmailRecovery = (email: string) => ({
     type: AUTH_ACTIONS_TYPES.SET_EMAIL_RECOVERY,
     payload: {email}
+} as const)
+
+const setSuccessPassword = (changePassSuccess: boolean) => ({
+    type: AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD,
+    payload: {changePassSuccess}
+} as const)
+
+const setSendEmailSuccess = (successSend: boolean) => ({
+    type: AUTH_ACTIONS_TYPES.SEND_RECOVERY_EMAIL_SUCCESS,
+    payload: {successSend}
 } as const)
 
 // Thunks
@@ -153,6 +177,7 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
         }
         dispatch(setAppStatus('loading'))
         await authAPI.passwordRecovery(payload)
+        dispatch(setSendEmailSuccess(true))
         dispatch(setEmailRecovery(email))
         dispatch(setAppStatus('succeeded'))
     } catch (e: any) {
@@ -164,8 +189,12 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
 
 export const newPassword = (password: string, resetPasswordToken: string) => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatus('loading'))
         const response = await authAPI.newPassword({password, resetPasswordToken})
-        if (response.status === 200) alert('пароль изменён')
+        if (response.status === 200) {
+            dispatch(setSuccessPassword(true))
+            dispatch(setAppStatus('succeeded'))
+        }
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppStatus('failed'))
