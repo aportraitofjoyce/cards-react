@@ -1,10 +1,11 @@
 import React, {FC, useState} from 'react'
-import {Button} from "../../components/UI/Button/Button";
-import {Input} from "../../components/UI/Input/Input";
-import {useDispatch} from "react-redux";
-import {forgotPassTC} from "../../store/reducers/password-recovery-reducer";
-import {useHistory} from "react-router-dom";
-import {PATH} from "../../routes/routes";
+import {Button} from '../../components/UI/Button/Button'
+import {Input} from '../../components/UI/Input/Input'
+import {useDispatch} from 'react-redux'
+import {useHistory} from 'react-router-dom'
+import {PATH} from '../../routes/routes'
+import {passwordRecovery} from '../../store/reducers/auth-reducer'
+
 
 export const ForgotPassword: FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -15,7 +16,7 @@ export const ForgotPassword: FC = () => {
     const onsubmit = () => {
         if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) { //валидация email
             alert('письмо отправлено на почту')
-            dispatch(forgotPassTC(email))
+            dispatch(passwordRecovery(email))
             history.push(PATH.CHECK_EMAIL)
         } else {
             alert('email is not valid')

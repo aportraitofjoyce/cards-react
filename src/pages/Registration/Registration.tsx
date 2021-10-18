@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, FormEvent} from 'react'
 import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
 import {useInput, useTypedSelector} from '../../hooks/hooks'
@@ -16,7 +16,8 @@ export const Registration: FC = () => {
     const password = useInput('', {minLength: 7, maxLength: 25})
     const confirmPassword = useInput('', {minLength: 7, maxLength: 25})
 
-    const onSubmit = (e: any) => {
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault()
         dispatch(registration({email: email.value, password: password.value}))
     }
 

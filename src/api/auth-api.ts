@@ -35,10 +35,26 @@ export type ChangeUsersInfoPayload = {
     avatar: string
 }
 
+export type  ForgotRequestType = {
+    email: string,
+    from: string,
+    message: string
+}
+
+export type SetNewPasswordRequestType = {
+    password: string,
+    resetPasswordToken: string | undefined
+}
+
+export type PasswordResponse = {
+    info: string,
+    error: string
+}
+
 // API
 export const authAPI = {
-    registration: (registrationData: RegistrationsData) => instance
-        .post<RegistrationsData, AxiosResponse<ResponseError>>('/auth/register', registrationData),
+    registration: (payload: RegistrationsData) => instance
+        .post<RegistrationsData, AxiosResponse<ResponseError>>('/auth/register', payload),
 
     logout: () => instance
         .delete<LogoutResponse>('/auth/me'),
@@ -46,11 +62,14 @@ export const authAPI = {
     checkAuth: () => instance
         .post<{}, AxiosResponse<UsersInfoResponse>>('/auth/me', {}),
 
-    changeUsersInfo: (info: ChangeUsersInfoPayload) => instance
-        .put<ChangeUsersInfoPayload, AxiosResponse<UsersInfoResponse>>('/auth/me', info),
-
+    changeUsersInfo: (payload: ChangeUsersInfoPayload) => instance
+        .put<ChangeUsersInfoPayload, AxiosResponse<UsersInfoResponse>>('/auth/me', payload),
 
     login: () => instance,
-    passwordRecovery: () => instance,
-    newPassword: () => instance
+
+    passwordRecovery: (payload: ForgotRequestType) => instance
+        .post<ForgotRequestType, AxiosResponse<PasswordResponse>>(`/auth/forgot`, payload),
+
+    newPassword: (payload: SetNewPasswordRequestType) => instance
+        .post<SetNewPasswordRequestType, AxiosResponse<PasswordResponse>>(`/auth/set-new-password`, payload)
 }

@@ -1,36 +1,35 @@
-import React, {FC, useState} from 'react'
+import React, {FC, FormEvent, useState} from 'react'
 import s from './NewPassword.module.css'
-import {Button} from "../../components/UI/Button/Button";
-import {Input} from "../../components/UI/Input/Input";
-import {useHistory, useParams} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {setNewPasswordTC} from "../../store/reducers/password-recovery-reducer";
+import {Button} from '../../components/UI/Button/Button'
+import {Input} from '../../components/UI/Input/Input'
+import {useHistory, useParams} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import {newPassword} from '../../store/reducers/auth-reducer'
 
 
 //TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
 
 export const NewPassword: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const {token} = useParams<{ token: string | undefined }>()
-    const history = useHistory();
+    const history = useHistory()
 
 
-    const [firstPass, setFirstPass] = useState<string>(''); // первый инпут
-    const [secondPass, setSecondPass] = useState<string>('');// второй инпут
+    const [firstPass, setFirstPass] = useState<string>('') // первый инпут
+    const [secondPass, setSecondPass] = useState<string>('')// второй инпут
 
 
-    const onSubmit = (e: any) => {
-        debugger
-        e.preventDefault();
-        const passIdentical = firstPass === secondPass; //данные обоих инпутов должны быть равно
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault()
+        const passIdentical = firstPass === secondPass //данные обоих инпутов должны быть равно
         if (!passIdentical) { // если данные разные
             alert('пароли не совпадают')
         } else { // если совпадают
             alert('пароли совпадают')
-            dispatch(setNewPasswordTC(firstPass, token))
+            dispatch(newPassword(firstPass, token))
         }
-        setFirstPass(''); // обнуление инпутов
-        setSecondPass('');
+        setFirstPass('') // обнуление инпутов
+        setSecondPass('')
     }
 
 
@@ -41,7 +40,7 @@ export const NewPassword: FC = () => {
                     <h1>IT-incubator</h1>
                     <h2>Create new password</h2>
 
-                    <label htmlFor="inputNewPassword">NewPassword</label>
+                    <label htmlFor='inputNewPassword'>NewPassword</label>
                     <Input
                         id={'inputNewPassword'}
                         type={'text'}
@@ -50,7 +49,7 @@ export const NewPassword: FC = () => {
                         placeholder={'New password'}
                     />
 
-                    <label htmlFor="RepeatNewPassword">RepeatNewPassword</label>
+                    <label htmlFor='RepeatNewPassword'>RepeatNewPassword</label>
                     <Input
                         id={'RepeatNewPassword'}
                         type={'text'}
