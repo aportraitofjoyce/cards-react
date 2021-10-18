@@ -6,6 +6,7 @@ import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {useDispatch} from 'react-redux'
 import {registration} from '../../store/reducers/auth-reducer'
+import s from './Registration.module.css'
 
 
 export const Registration: FC = () => {
@@ -27,35 +28,38 @@ export const Registration: FC = () => {
 
             <h1>Registration</h1>
 
-            <form onSubmit={onSubmit} style={{display: 'flex', flexDirection: 'column', gap: 24}}>
-                <label htmlFor={'registerEmail'}>Email</label>
-                <Input id={'registerEmail'}
-                       type={'email'}
-                       placeholder={'Enter you email address...'}
-                       {...email}/>
+            <form onSubmit={onSubmit} className={s.container}>
+                <label htmlFor={'registerEmail'}>Email
+                    <Input id={'registerEmail'}
+                           type={'email'}
+                           placeholder={'Enter you email address...'}
+                           {...email}/>
+                </label>
 
                 {(email.touched && email.validation) &&
-				<span style={{color: 'red'}}>{email.validation.isRequired || email.validation.isEmail}</span>}
+				<span className={s.error}>{email.validation.isRequired || email.validation.isEmail}</span>}
 
-                <label htmlFor={'registerPassword'}>Password</label>
-                <Input id={'registerPassword'}
-                       type={'text'}
-                       placeholder={'Enter your password...'}
-                       {...password}/>
+                <label htmlFor={'registerPassword'}>Password
+                    <Input id={'registerPassword'}
+                           type={'text'}
+                           placeholder={'Enter your password...'}
+                           {...password}/>
+                </label>
 
                 {(password.touched && password.validation) &&
-				<span style={{color: 'red'}}>{password.validation.minLength || password.validation.maxLength}</span>}
+				<span className={s.error}>{password.validation.minLength || password.validation.maxLength}</span>}
 
 
-                <label htmlFor={'registerConfirmPassword'}>Confirm Password</label>
-                <Input id={'registerConfirmPassword'}
-                       type={'text'}
-                       placeholder={'Confirm your password...'}
-                       {...confirmPassword}/>
+                <label htmlFor={'registerConfirmPassword'}>Confirm Password
+                    <Input id={'registerConfirmPassword'}
+                           type={'text'}
+                           placeholder={'Confirm your password...'}
+                           {...confirmPassword}/>
+                </label>
 
                 {(confirmPassword.touched && confirmPassword.validation) &&
 				<span
-					style={{color: 'red'}}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
+					className={s.error}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
 
                 <Button type={'submit'}
                         disabled={!email.validation.isValid || !password.validation.isValid || !confirmPassword.validation.isValid}>
