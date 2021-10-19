@@ -21,7 +21,7 @@ export const Alert: FC<AlertProps> = props => {
         setIsOpen(open)
         const timeoutID = setTimeout(() => {
             closeSnackbar()
-        }, 5000)
+        }, 3500)
 
         return () => clearTimeout(timeoutID)
     }, [closeSnackbar, open])

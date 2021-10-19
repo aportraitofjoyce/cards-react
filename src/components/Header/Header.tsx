@@ -13,7 +13,7 @@ export const Header: FC = () => {
 
     return (
         <div className={s.wrapper}>
-            <nav className={s.container} style={{display: 'flex', justifyContent: 'space-between'}}>
+            <nav className={s.container}>
                 <Link to={PATH.HOME}><ReactIcon/></Link>
                 <NavLink activeClassName={s.active} to={PATH.PROFILE}>Profile</NavLink>
 

@@ -25,7 +25,7 @@ export type AuthInitialState = {
     registrationSuccess: boolean
     isLoggedIn: boolean
     recoveryEmail: string
-    userInfo: UsersInfoResponse
+    userInfo: UsersInfoResponse | null
     setSuccessNewPass: boolean
     sendSuccessEmail: boolean
 }
@@ -34,7 +34,7 @@ const initialState: AuthInitialState = {
     registrationSuccess: false,
     isLoggedIn: false,
     recoveryEmail: '',
-    userInfo: {} as UsersInfoResponse,
+    userInfo: null,
     setSuccessNewPass: false,
     sendSuccessEmail: false,
 }
@@ -69,7 +69,7 @@ export const setRegistrationSuccess = (status: boolean) => ({
     payload: {status}
 } as const)
 
-export const setUsersInfo = (info: UsersInfoResponse) => ({
+export const setUsersInfo = (info: UsersInfoResponse | null) => ({
     type: AUTH_ACTIONS_TYPES.SET_USERS_INFO,
     payload: info
 } as const)
@@ -112,7 +112,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
         const response = await authAPI.logout()
-        dispatch(setUsersInfo({} as UsersInfoResponse))
+        dispatch(setUsersInfo(null))
         dispatch(setIsLoggedIn(false))
         dispatch(setAppInfo(response.data.info))
     } catch (e) {

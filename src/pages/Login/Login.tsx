@@ -55,10 +55,9 @@ export const Login: FC = () => {
 
                 <Button type={'submit'}>Login</Button>
 
-                <div>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, textAlign: 'center', marginTop: 32}}>
                     <Link to={PATH.PASSWORD_RECOVERY}><h4>Forgot your password?</h4></Link>
-                    <p>Don’t have an account?</p>
-                    <Link to={PATH.REGISTRATION}><h4>Sign Up</h4></Link>
+                    <Link to={PATH.REGISTRATION}><h4>Don’t have an account? Sign Up!</h4></Link>
                 </div>
             </form>
         </div>

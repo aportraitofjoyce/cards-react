@@ -63,8 +63,7 @@ export const Registration: FC = () => {
                     Register
                 </Button>
 
-                <p>Already have an account?</p>
-                <Link to={PATH.LOGIN}><h4>Sign In</h4></Link>
+                <Link to={PATH.LOGIN} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, textAlign: 'center', marginTop: 32}}><h4>Already have an account? Sign In</h4></Link>
             </form>
         </div>
     )
