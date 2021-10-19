@@ -27,7 +27,7 @@ export const Checkbox: FC<CheckboxProps> = props => {
     const classNames = `${s.checkbox}${className ? className : ''}`
 
     return (
-        <label>
+        <label className={s.label}>
             <input type={'checkbox'}
                    onChange={onChangeCallback}
                    className={classNames}

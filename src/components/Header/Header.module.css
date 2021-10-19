@@ -6,13 +6,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 56px;
+    height: 72px;
     border-bottom: 1px solid var(--light);
 }
 
 .container {
     width: 1280px;
     display: flex;
+    align-items: center;
     gap: 16px;
     padding: 0 24px;
 }

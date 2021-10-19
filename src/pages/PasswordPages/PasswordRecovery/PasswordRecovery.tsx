@@ -22,17 +22,17 @@ export const PasswordRecovery: FC = () => {
     return (
         <div>
             <h1>Forgot your password?</h1>
+
             <form onSubmit={onsubmit}>
                 <label htmlFor={'password-recovery-email'}>
-                    Email
+                    Enter your address and we will send you further instructions
                     <Input type={'email'}
                            id={'password-recovery-email'}
-                           placeholder={'enter your email'}
+                           placeholder={'Enter your email...'}
                            value={email}
                            onChange={e => setEmail(e.currentTarget.value)}/>
                 </label>
 
-                <div>Enter your address and we will send you further instructions</div>
                 <Button>Send instructions</Button>
             </form>
         </div>

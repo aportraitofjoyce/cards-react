@@ -48,14 +48,15 @@ export const Login: FC = () => {
                            onChange={e => setValues({...values, password: e.currentTarget.value})}/>
                 </label>
 
-                <Link to={PATH.PASSWORD_RECOVERY}><h4>Forgot your password?</h4></Link>
-
                 <Checkbox checked={values.rememberMe}
-                          onChange={e => setValues({...values, rememberMe: e.currentTarget.checked})}/>
+                          onChange={e => setValues({...values, rememberMe: e.currentTarget.checked})}>
+                    Remember me
+                </Checkbox>
 
                 <Button type={'submit'}>Login</Button>
 
                 <div>
+                    <Link to={PATH.PASSWORD_RECOVERY}><h4>Forgot your password?</h4></Link>
                     <p>Don’t have an account?</p>
                     <Link to={PATH.REGISTRATION}><h4>Sign Up</h4></Link>
                 </div>

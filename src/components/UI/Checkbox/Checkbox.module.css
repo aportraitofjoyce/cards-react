@@ -12,6 +12,11 @@
     border: none;
 }
 
+.label {
+    flex-direction: row;
+    align-items: center;
+}
+
 .checkbox:checked::before {
     content: '';
     position: absolute;
