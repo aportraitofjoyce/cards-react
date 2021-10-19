@@ -1,6 +1,6 @@
 import {authAPI, ChangeUsersInfoData, LoginData, RegistrationsData, UsersInfoResponse} from '../../api/auth-api'
 import {AppDispatch} from '../store'
-import {setAppError, setAppInitialized, setAppIsLoading} from './app-reducer'
+import {setAppError, setAppInfo, setAppInitialized, setAppIsLoading} from './app-reducer'
 import {passwordRecoveryMessage} from '../../utils/passwordRecoveryMessage'
 
 enum AUTH_ACTIONS_TYPES {
@@ -96,8 +96,9 @@ export const setSendEmailSuccess = (successSend: boolean) => ({
 export const registration = (registrationsData: RegistrationsData) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
-        await authAPI.registration(registrationsData)
+        const response = await authAPI.registration(registrationsData)
         dispatch(setRegistrationSuccess(true))
+        dispatch(setAppInfo('Successful registration! Now you can login'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -113,6 +114,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
         await authAPI.logout()
         dispatch(setUsersInfo({} as UsersInfoResponse))
         dispatch(setIsLoggedIn(false))
+        dispatch(setAppInfo('Stay safe! See you later!'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -127,6 +129,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
         const response = await authAPI.checkAuth()
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
+        dispatch(setAppInfo('Hello friend!'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -141,6 +144,7 @@ export const changeUsersInfo = (info: ChangeUsersInfoData) => async (dispatch: A
         dispatch(setAppIsLoading(true))
         const response = await authAPI.changeUsersInfo(info)
         dispatch(setUsersInfo(response.data.updatedUser))
+        dispatch(setAppInfo('You have changed your info!'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -155,6 +159,7 @@ export const login = (loginData: LoginData) => async (dispatch: AppDispatch) => 
         const response = await authAPI.login(loginData)
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
+        dispatch(setAppInfo('Successful login! Good luck!'))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -167,14 +172,16 @@ export const login = (loginData: LoginData) => async (dispatch: AppDispatch) => 
 export const passwordRecovery = (email: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
-        await authAPI.passwordRecovery(passwordRecoveryMessage(email))
+        const response = await authAPI.passwordRecovery(passwordRecoveryMessage(email))
         dispatch(setSendEmailSuccess(true))
+        dispatch(setAppInfo(response.data.info))
         dispatch(setEmailRecovery(email))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
     } finally {
         dispatch(setAppIsLoading(false))
+        dispatch(setSendEmailSuccess(false))
     }
 }
 
@@ -184,6 +191,7 @@ export const newPassword = (password: string, resetPasswordToken: string) => asy
         const response = await authAPI.newPassword({password, resetPasswordToken})
         if (response.status === 200) {
             dispatch(setSuccessPassword(true))
+            dispatch(setAppInfo(response.data.info))
         }
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')

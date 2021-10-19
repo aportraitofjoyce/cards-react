@@ -28,9 +28,7 @@ beforeEach(() => {
             rememberMe: false,
             error: ''
         },
-        loginSuccess:false,
         setSuccessNewPass: false,
-        loginSuccess: false,
         sendSuccessEmail: false
     }
 })

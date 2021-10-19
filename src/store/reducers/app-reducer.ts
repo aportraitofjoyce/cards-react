@@ -34,7 +34,7 @@ export const appReducer = (state = initialState, action: AppActions): AppInitial
         case APP_ACTIONS_TYPES.SET_APP_ERROR:
             return {...state, error: action.payload.error}
         case APP_ACTIONS_TYPES.SET_APP_INFO:
-            return {...state, error: action.payload.info}
+            return {...state, info: action.payload.info}
         default:
             return state
     }

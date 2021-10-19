@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {FC, FormEvent, useState} from 'react'
 import {Button} from '../../../components/UI/Button/Button'
 import {Input} from '../../../components/UI/Input/Input'
 import {useDispatch} from 'react-redux'
@@ -12,7 +12,8 @@ export const PasswordRecovery: FC = () => {
     const [email, setEmail] = useState<string>('')
     const dispatch = useDispatch()
 
-    const onsubmit = () => {
+    const onsubmit = (e: FormEvent) => {
+        e.preventDefault()
         dispatch(passwordRecovery(email))
     }
 
