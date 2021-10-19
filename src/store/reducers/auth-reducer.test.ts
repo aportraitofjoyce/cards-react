@@ -5,10 +5,10 @@ import {
     setIsLoggedIn,
     setRegistrationSuccess,
     setSuccessPassword, setUsersInfo
-} from "./auth-reducer";
+} from './auth-reducer'
 
 
-let startState: AuthInitialState;
+let startState: AuthInitialState
 
 beforeEach(() => {
     startState = {
@@ -35,37 +35,37 @@ beforeEach(() => {
 
 describe('Auth reducer', () => {
     it('Registration was successful', () => {
-        const action = setRegistrationSuccess(true);
+        const action = setRegistrationSuccess(true)
 
-        const endState = authReducer(startState, action);
+        const endState = authReducer(startState, action)
 
-        expect(startState).not.toBe(endState);
+        expect(startState).not.toBe(endState)
         expect(endState.registrationSuccess).toBeTruthy()
-    });
+    })
     it('Successfully logged in', () => {
-        const action = setIsLoggedIn(true);
+        const action = setIsLoggedIn(true)
 
-        const endState = authReducer(startState, action);
+        const endState = authReducer(startState, action)
 
-        expect(startState).not.toBe(endState);
+        expect(startState).not.toBe(endState)
         expect(endState.isLoggedIn).toBeTruthy()
-    });
+    })
     it('Email for password recovery has been created', () => {
-        const action = setEmailRecovery('some@gmail.com');
+        const action = setEmailRecovery('some@gmail.com')
 
-        const endState = authReducer(startState, action);
+        const endState = authReducer(startState, action)
 
-        expect(startState).not.toBe(endState);
+        expect(startState).not.toBe(endState)
         expect(endState.recoveryEmail).toBe('some@gmail.com')
-    });
+    })
     it('New password has been successfully changed', () => {
-        const action = setSuccessPassword(true);
+        const action = setSuccessPassword(true)
 
-        const endState = authReducer(startState, action);
+        const endState = authReducer(startState, action)
 
-        expect(startState).not.toBe(endState);
+        expect(startState).not.toBe(endState)
         expect(endState.setSuccessNewPass).toBeTruthy()
-    });
+    })
     it('User information should be set in state', () => {
         const testData = {
             _id: '1223434535435',
@@ -81,15 +81,15 @@ describe('Auth reducer', () => {
             error: '',
         }
 
-        const action = setUsersInfo(testData);
+        const action = setUsersInfo(testData)
 
-        const endState = authReducer(startState, action);
+        const endState = authReducer(startState, action)
 
-        expect(endState).not.toBe(startState);
-        expect(endState.userInfo?.name).toBe('Nyanya');
-        expect(endState.userInfo?.email).toBe('some@gmail.com');
-        expect(endState.userInfo?.publicCardPacksCount).toBe(3);
-    });
+        expect(endState).not.toBe(startState)
+        expect(endState.userInfo?.name).toBe('Nyanya')
+        expect(endState.userInfo?.email).toBe('some@gmail.com')
+        expect(endState.userInfo?.publicCardPacksCount).toBe(3)
+    })
 
 
 })
