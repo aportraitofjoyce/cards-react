@@ -7,6 +7,7 @@ import {PATH} from '../../routes/routes'
 import {useDispatch} from 'react-redux'
 import {registration} from '../../store/reducers/auth-reducer'
 import s from './Registration.module.css'
+import {setAppError} from '../../store/reducers/app-reducer'
 
 
 export const Registration: FC = () => {
@@ -19,13 +20,15 @@ export const Registration: FC = () => {
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        dispatch(registration({email: email.value, password: password.value}))
+        password.value === confirmPassword.value
+            ? dispatch(registration({email: email.value, password: password.value}))
+            : dispatch(setAppError('PASSWORDS!'))
     }
+
+    if (registrationSuccess) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div>
-            {registrationSuccess && <Redirect to={PATH.LOGIN}/>}
-
             <h1>Registration</h1>
 
             <form onSubmit={onSubmit} className={s.container}>

@@ -1,10 +1,10 @@
 import React, {FC, useState} from 'react'
-import {Button} from '../../components/UI/Button/Button'
-import {Input} from '../../components/UI/Input/Input'
+import {Button} from '../../../components/UI/Button/Button'
+import {Input} from '../../../components/UI/Input/Input'
 import {useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
-import {PATH} from '../../routes/routes'
-import {passwordRecovery} from '../../store/reducers/auth-reducer'
+import {PATH} from '../../../routes/routes'
+import {passwordRecovery} from '../../../store/reducers/auth-reducer'
 
 
 export const ForgotPassword: FC = () => {

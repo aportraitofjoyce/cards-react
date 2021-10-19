@@ -1,12 +1,12 @@
 import React, {FC, FormEvent, useState} from 'react'
 import s from './NewPassword.module.css'
-import {Button} from '../../components/UI/Button/Button'
-import {Input} from '../../components/UI/Input/Input'
+import {Button} from '../../../components/UI/Button/Button'
+import {Input} from '../../../components/UI/Input/Input'
 import {Redirect, useParams} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
-import {newPassword} from '../../store/reducers/auth-reducer'
-import {useTypedSelector} from "../../hooks/hooks";
-import {PATH} from "../../routes/routes";
+import {newPassword} from '../../../store/reducers/auth-reducer'
+import {useTypedSelector} from "../../../hooks/hooks";
+import {PATH} from "../../../routes/routes";
 
 //TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
 

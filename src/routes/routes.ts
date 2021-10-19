@@ -3,9 +3,9 @@ import {Profile} from '../pages/Profile/Profile'
 import {Login} from '../pages/Login/Login'
 import {Registration} from '../pages/Registration/Registration'
 import {Error} from '../pages/Error/Error'
-import {ForgotPassword} from '../pages/PasswordRecovery/ForgotPassword'
-import {NewPassword} from '../pages/NewPassword/NewPassword'
-import {CheckEmail} from '../pages/PasswordRecovery/CheckEmail/CheckEmail'
+import {ForgotPassword} from '../pages/PasswordPages/PasswordRecovery/ForgotPassword'
+import {NewPassword} from '../pages/PasswordPages/NewPassword/NewPassword'
+import {CheckEmail} from '../pages/PasswordPages/CheckEmail/CheckEmail'
 import {Home} from '../pages/Home/Home'
 
 export enum PATH {

@@ -49,6 +49,11 @@ export type UsersInfoResponse = {
     error?: string
 }
 
+type UpdateUserResponse = {
+    updatedUser: UsersInfoResponse
+    error?: string
+}
+
 export type PasswordResponse = {
     info: string,
     error: string
@@ -66,7 +71,7 @@ export const authAPI = {
         .post<{}, AxiosResponse<UsersInfoResponse>>('/auth/me', {}),
 
     changeUsersInfo: (payload: ChangeUsersInfoData) => instance
-        .put<ChangeUsersInfoData, AxiosResponse<UsersInfoResponse>>('/auth/me', payload),
+        .put<ChangeUsersInfoData, AxiosResponse<UpdateUserResponse>>('/auth/me', payload),
 
     login: (payload: LoginData) => instance
         .post<LoginData, AxiosResponse<UsersInfoResponse>>(`/auth/login`, payload),

@@ -22,7 +22,6 @@ export type AuthActions =
 
 export type AuthInitialState = {
     registrationSuccess: boolean
-    loginSuccess: boolean
     isLoggedIn: boolean
     recoveryEmail: string
     userInfo: UsersInfoResponse
@@ -32,7 +31,6 @@ export type AuthInitialState = {
 
 const initialState: AuthInitialState = {
     registrationSuccess: false,
-    loginSuccess: false,
     isLoggedIn: false,
     recoveryEmail: '',
     userInfo: {} as UsersInfoResponse,
@@ -103,7 +101,6 @@ export const registration = (registrationsData: RegistrationsData) => async (dis
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
-        alert(error)
     } finally {
         dispatch(setRegistrationSuccess(false))
         dispatch(setAppIsLoading(false))
@@ -143,7 +140,7 @@ export const changeUsersInfo = (info: ChangeUsersInfoData) => async (dispatch: A
     try {
         dispatch(setAppIsLoading(true))
         const response = await authAPI.changeUsersInfo(info)
-        dispatch(setUsersInfo(response.data))
+        dispatch(setUsersInfo(response.data.updatedUser))
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
@@ -161,7 +158,6 @@ export const login = (loginData: LoginData) => async (dispatch: AppDispatch) => 
     } catch (e: any) {
         const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
         dispatch(setAppError(error))
-        dispatch(setIsLoggedIn(false))
     } finally {
         dispatch(setAppIsLoading(false))
 
