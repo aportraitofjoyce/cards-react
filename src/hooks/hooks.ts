@@ -66,11 +66,11 @@ export const useValidation = (value: string, validators: Validators) => {
 
             }
         }
-    }, [value])
+    }, [value, validators])
 
     useEffect(() => {
         (isRequired || isEmail || minLength || maxLength) ? setIsValid(false) : setIsValid(true)
-    }, [validators])
+    }, [isRequired, isEmail, minLength, maxLength])
 
     return {
         isValid,

@@ -1,8 +1,7 @@
 import {authAPI, ChangeUsersInfoData, LoginData, RegistrationsData, UsersInfoResponse} from '../../api/auth-api'
 import {AppDispatch} from '../store'
-import {setAppError, setAppInfo, setAppInitialized, setAppIsLoading} from './app-reducer'
+import {setAppInfo, setAppInitialized, setAppIsLoading} from './app-reducer'
 import {passwordRecoveryMessage} from '../../utils/passwordRecoveryMessage'
-import {Axios} from 'axios'
 import {errorsHandler} from '../../utils/errors'
 
 enum AUTH_ACTIONS_TYPES {
@@ -129,7 +128,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
         const response = await authAPI.checkAuth()
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
-        dispatch(setAppInfo(`Hello ${response.data.name}`))
+        dispatch(setAppInfo(`Hello, dear ${response.data.name}!`))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
@@ -143,7 +142,7 @@ export const changeUsersInfo = (info: ChangeUsersInfoData) => async (dispatch: A
         dispatch(setAppIsLoading(true))
         const response = await authAPI.changeUsersInfo(info)
         dispatch(setUsersInfo(response.data.updatedUser))
-        dispatch(setAppInfo('You have changed your info!'))
+        dispatch(setAppInfo('You\'ve successfully changed your info!'))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
@@ -157,7 +156,7 @@ export const login = (loginData: LoginData) => async (dispatch: AppDispatch) => 
         const response = await authAPI.login(loginData)
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
-        dispatch(setAppInfo('Successful login! Good luck!'))
+        dispatch(setAppInfo(`Successful login, ${response.data.name}`))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {

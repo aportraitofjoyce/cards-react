@@ -29,7 +29,7 @@ export const PasswordRecovery: FC = () => {
                            id={'password-recovery-email'}
                            placeholder={'enter your email'}
                            value={email}
-                           onChange={(e) => setEmail(e.currentTarget.value)}/>
+                           onChange={e => setEmail(e.currentTarget.value)}/>
                 </label>
 
                 <div>Enter your address and we will send you further instructions</div>

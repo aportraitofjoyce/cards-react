@@ -1,8 +1,8 @@
-import React, {FC, FormEvent} from 'react'
+import React, {FC, FormEvent, useState} from 'react'
 import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
-import {useInput, useTypedSelector} from '../../hooks/hooks'
-import {Redirect} from 'react-router-dom'
+import {useTypedSelector} from '../../hooks/hooks'
+import {Link, Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {useDispatch} from 'react-redux'
 import {registration} from '../../store/reducers/auth-reducer'
@@ -12,15 +12,17 @@ export const Registration: FC = () => {
     const {registrationSuccess} = useTypedSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const email = useInput('', {isRequired: true, isEmail: true})
-    const password = useInput('', {minLength: 7, maxLength: 25})
-    const confirmPassword = useInput('', {minLength: 7, maxLength: 25})
+    const [values, setValues] = useState({
+        email: '',
+        password: '',
+        confirmPassword: ''
+    })
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        password.value === confirmPassword.value
-            ? dispatch(registration({email: email.value, password: password.value}))
-            : dispatch(setAppError('PASSWORDS!'))
+        values.password === values.confirmPassword
+            ? dispatch(registration({email: values.email, password: values.password}))
+            : dispatch(setAppError('CHECK YOUR PASSWORDS!'))
     }
 
     if (registrationSuccess) return <Redirect to={PATH.LOGIN}/>
@@ -30,41 +32,39 @@ export const Registration: FC = () => {
             <h1>Registration</h1>
 
             <form onSubmit={onSubmit}>
-                <label htmlFor={'registration-email'}>Email
+                <label htmlFor={'registration-email'}>
+                    Email
                     <Input id={'registration-email'}
                            type={'email'}
                            placeholder={'Enter you email address...'}
-                           {...email}/>
+                           value={values.email}
+                           onChange={e => setValues({...values, email: e.currentTarget.value})}/>
                 </label>
 
-                {(email.touched && email.validation) &&
-				<span>{email.validation.isRequired || email.validation.isEmail}</span>}
-
-                <label htmlFor={'registration-password'}>Password
+                <label htmlFor={'registration-password'}>
+                    Password
                     <Input id={'registration-password'}
-                           type={'text'}
+                           type={'password'}
                            placeholder={'Enter your password...'}
-                           {...password}/>
+                           value={values.password}
+                           onChange={e => setValues({...values, password: e.currentTarget.value})}/>
                 </label>
 
-                {(password.touched && password.validation) &&
-				<span>{password.validation.minLength || password.validation.maxLength}</span>}
-
-
-                <label htmlFor={'registration-confirm-password'}>Confirm Password
+                <label htmlFor={'registration-confirm-password'}>
+                    Confirm Password
                     <Input id={'registration-confirm-password'}
-                           type={'text'}
+                           type={'password'}
                            placeholder={'Confirm your password...'}
-                           {...confirmPassword}/>
+                           value={values.confirmPassword}
+                           onChange={e => setValues({...values, confirmPassword: e.currentTarget.value})}/>
                 </label>
 
-                {(confirmPassword.touched && confirmPassword.validation) &&
-				<span>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
-
-                <Button type={'submit'}
-                        disabled={!email.validation.isValid || !password.validation.isValid || !confirmPassword.validation.isValid}>
+                <Button type={'submit'}>
                     Register
                 </Button>
+
+                <p>Already have an account?</p>
+                <Link to={PATH.LOGIN}><h4>Sign In</h4></Link>
             </form>
         </div>
     )

@@ -12,7 +12,7 @@ export const AppRouter: FC = () => {
 
     useEffect(() => {
         dispatch(checkAuth())
-    }, [])
+    }, [dispatch])
 
     if (!isInitialized) return <Progress/>
 

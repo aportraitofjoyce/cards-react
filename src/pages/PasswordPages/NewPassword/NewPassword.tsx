@@ -6,18 +6,23 @@ import {useDispatch} from 'react-redux'
 import {newPassword} from '../../../store/reducers/auth-reducer'
 import {useTypedSelector} from '../../../hooks/hooks'
 import {PATH} from '../../../routes/routes'
+import {setAppError} from '../../../store/reducers/app-reducer'
 
 export const NewPassword: FC = () => {
     const dispatch = useDispatch()
     const {token} = useParams<{ token: string }>()
     const successChangePassword = useTypedSelector(state => state.auth.setSuccessNewPass)
 
-    const [firstPass, setFirstPass] = useState<string>('')
-    const [secondPass, setSecondPass] = useState<string>('')
+    const [values, setValues] = useState({
+        password: '',
+        confirmPassword: ''
+    })
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        firstPass === secondPass && dispatch(newPassword(firstPass, token))
+        values.password === values.confirmPassword
+            ? dispatch(newPassword(values.password, token))
+            : dispatch(setAppError('CHECK YOUR PASSWORDS!'))
     }
 
     if (successChangePassword) return <Redirect to={PATH.LOGIN}/>
@@ -26,24 +31,22 @@ export const NewPassword: FC = () => {
         <div>
             <h1>Create new password</h1>
             <form onSubmit={onSubmit}>
-                <label htmlFor='inputNewPassword'>
+                <label htmlFor={'password-recovery-new-password'}>
                     New Password
-                    <Input
-                        id={'inputNewPassword'}
-                        type={'text'}
-                        onChange={(e) => setFirstPass(e.currentTarget.value)}
-                        value={firstPass}
-                        placeholder={'New password'}/>
+                    <Input id={'password-recovery-new-password'}
+                           type={'password'}
+                           placeholder={'Enter new password...'}
+                           value={values.password}
+                           onChange={e => setValues({...values, password: e.currentTarget.value})}/>
                 </label>
 
-                <label htmlFor='RepeatNewPassword'>
-                    Repeat New Password
-                    <Input
-                        id={'RepeatNewPassword'}
-                        type={'text'}
-                        onChange={(e) => setSecondPass(e.currentTarget.value)}
-                        value={secondPass}
-                        placeholder={'Repeat new password'}/>
+                <label htmlFor={'password-recovery-new-confirm-password'}>
+                    Confirm New Password
+                    <Input id={'password-recovery-new-confirm-password'}
+                           type={'password'}
+                           placeholder={'Confirm new password...'}
+                           value={values.confirmPassword}
+                           onChange={e => setValues({...values, confirmPassword: e.currentTarget.value})}/>
                 </label>
 
                 <Button type={'submit'}>Create new password</Button>

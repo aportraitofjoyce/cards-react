@@ -10,21 +10,19 @@ export const Header: FC = () => {
     const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
-    const logoutHandler = () => {
-        dispatch(logout())
-    }
-
     return (
         <div className={s.wrapper}>
-            <nav className={s.container}>
-                <NavLink activeClassName={s.active} to={PATH.HOME} exact>Home</NavLink>
-                <NavLink activeClassName={s.active} to={PATH.PROFILE} style={{marginRight: 64}}>Profile</NavLink>
-                <NavLink activeClassName={s.active} to={PATH.REGISTRATION}>Registration</NavLink>
-                {!isLoggedIn && <NavLink activeClassName={s.active} to={PATH.LOGIN}>Login</NavLink>}
-                <NavLink activeClassName={s.active} to={PATH.PASSWORD_RECOVERY}>Password Recovery</NavLink>
-                <NavLink activeClassName={s.active} to={PATH.CHECK_EMAIL}>Check email</NavLink>
-                <NavLink activeClassName={s.active} to={PATH.NEW_PASSWORD}>New Password</NavLink>
-                {isLoggedIn && <span onClick={logoutHandler}>Logout</span>}
+            <nav className={s.container} style={{display: 'flex', justifyContent: 'space-between'}}>
+                {!isLoggedIn && <>
+					<NavLink activeClassName={s.active} to={PATH.HOME} exact>LOGO</NavLink>
+					<NavLink activeClassName={s.active} to={PATH.LOGIN}>Login</NavLink>
+				</>}
+
+                {isLoggedIn && <>
+					<NavLink activeClassName={s.active} to={PATH.HOME} exact>LOGO</NavLink>
+					<NavLink activeClassName={s.active} to={PATH.PROFILE}>Profile</NavLink>
+					<span onClick={() => dispatch(logout())}>Logout</span>
+				</>}
             </nav>
         </div>
     )
