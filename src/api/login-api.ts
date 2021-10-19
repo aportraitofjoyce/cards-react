@@ -22,12 +22,7 @@ export type LoginResponseType = {
 }
 
 export const loginApi = {
-    login(email: string, password: string,
-          rememberMe: boolean) {
-        return instance.post<LoginRequestType, AxiosResponse<LoginResponseType>>(`/auth/login`, {
-            email,
-            password,
-            rememberMe
-        })
+    login(data: LoginRequestType) {
+        return instance.post<LoginRequestType, AxiosResponse<LoginResponseType>>(`/auth/login`, data)
     },
 }

@@ -1,61 +1,163 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {Input} from "../../components/UI/Input/Input";
 import {Button} from "../../components/UI/Button/Button";
 import {Checkbox} from "../../components/UI/Checkbox/Checkbox";
 import {NavLink, useHistory} from "react-router-dom";
 import {PATH} from '../../routes/routes';
 import {useDispatch} from "react-redux";
-import {userPostLogin} from "../../store/reducers/login-reducer";
+import {TouchedStatusType, userPostLogin} from "../../store/reducers/login-reducer";
 import {useTypedSelector} from "../../hooks/hooks";
 
 export const Login: FC = () => {
 
-    const data = useTypedSelector(state => state.login)
+    const status = useTypedSelector(state => state.login.status)
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [remember, setRemember] = useState<boolean>(false)
+    // Custom Hooks
+    const useValidation = (value: string, validations: ValidationsType) => {
+        const [isValid, setIsValid] = useState<boolean>(false)
+
+        const [requireValid, setRequiredValid] = useState<string>('')
+        const [emailValid, setEmailValid] = useState<string>('')
+        const [minLength, setMinLength] = useState<string>('')
+        const [maxLength, setMaxLength] = useState<string>('')
+
+        useEffect(() => {
+            for (const validation in validations) {
+                switch (validation) {
+                    case 'requireValid':
+                        !value ? setRequiredValid('Field is required') : setRequiredValid('')
+                        break;
+                    case 'minLength':
+                        value.length < validations[validation]!
+                            ? setMinLength(`Min length must be more than ${validations[validation]!}`)
+                            : setMinLength('')
+                        break;
+                    case 'maxLength':
+                        value.length > validations[validation]!
+                            ? setMaxLength(`Max length must be less than ${validations[validation]!}`)
+                            : setMaxLength('')
+                        break;
+                    case 'emailValid':
+                        /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,4}$/i.test(String(value).toLowerCase())
+                            ? setEmailValid('')
+                            : setEmailValid('Wrong email address')
+                        break;
+                }
+            }
+        }, [value])
+
+        useEffect(() => {
+            (requireValid || emailValid || minLength || maxLength) ? setIsValid(false) : setIsValid(true)
+        }, [validations])
+
+        return {
+            isValid,
+            emailValid,
+            requireValid,
+            minLength,
+            maxLength,
+        }
+    }
+
+    type ValidationsType = {
+        requireValid?: boolean,
+        emailValid?: boolean,
+        maxLength?: number,
+        minLength?: number,
+    }
+
+
+
+    const useInput = (initialValue: string, validation: ValidationsType) => {
+
+        const [value, setValue] = useState<string>(initialValue)
+        // const [touched, setTouched] = useState<boolean>(false)
+        const [touched, setTouched] = useState<TouchedStatusType>('notTouched')
+        const [checked, setChecked] = useState<boolean>(false)
+        const isValidation = useValidation(value, validation)
+
+        const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setValue(e.currentTarget.value)
+            setChecked(e.currentTarget.checked)
+        }
+
+        const onBlur = () => {
+            setTouched('isTouched')
+        }
+
+        return {
+            value,
+            touched,
+            checked,
+            onChange,
+            onBlur,
+            isValidation,
+        }
+    }
+
+
+    const email = useInput('', {requireValid: true, emailValid: true})
+    const password = useInput('', {requireValid: true, maxLength: 25, minLength: 7})
+    const remember = useInput('', {})
+
     const dispatch = useDispatch()
     const history = useHistory();
 
 
     const onSubmit = () => {
-            dispatch(userPostLogin(email, password, remember))
-            setEmail('')
-            setPassword('')
-            history.push(PATH.PROFILE)
-        console.log(data)
+        dispatch(userPostLogin({email: email.value, password: password.value, rememberMe: remember.checked}))
+        return (status === 'succeeded') ? history.push(PATH.PROFILE) : history.push(PATH.REGISTER)
+    }
+
+    const disabledButton = () => {
+        return !(email.isValidation.isValid && password.isValidation.isValid);
     }
 
     return (
         <div>
             <h1>Sign In</h1>
             <form onSubmit={onSubmit}>
+
                 <label htmlFor="loginEmail">Email</label>
                 <Input
                     id={'loginEmail'}
                     type={"email"}
                     placeholder={'Enter your email address'}
-                    value={email}
-                    onChange={(e) => setEmail(e.currentTarget.value)}
+                    {...email}
                 />
+
+                {(email.touched === 'isTouched' && email.isValidation) &&
+                <div style={{color: 'red'}}>
+                    {
+                        email.isValidation.requireValid
+                        || email.isValidation.emailValid}
+                </div>
+                }
+
                 <label htmlFor="loginPassword">Password</label>
                 <Input
                     id={'loginPassword'}
                     type={"password"}
                     placeholder={'Enter your password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
+                    {...password}
                 />
+
+                {(password.touched === 'isTouched' && password.isValidation) &&
+                <div style={{color: 'red'}}>
+                    {
+                        password.isValidation.requireValid
+                        || password.isValidation.maxLength
+                        || password.isValidation.minLength
+                    }
+                </div>
+                }
                 <NavLink to={PATH.PASSWORD_RECOVERY}>
                     <h4>Forgot Password</h4>
                 </NavLink>
                 <Checkbox
-                    // value={remember}
-                    checked={remember}
-                    onChange={(e) => setRemember(e.currentTarget.checked)}
+                    {...remember}
                 >Remember me</Checkbox>
-                <Button type={"submit"}>Login</Button>
+                <Button type={"submit"} disabled={disabledButton()}>Login</Button>
                 <div>
                     <p>Don’t have an account?</p>
                     <NavLink to={PATH.REGISTER}>
