@@ -30,7 +30,6 @@ export const Profile: FC = () => {
                 <img src={avatar}
                      alt={name}
                      style={{maxWidth: 400, maxHeight: 400}}/>
-                <button>Change avatar</button>
                 <div>{name}</div>
                 <div>{publicCardPacksCount}</div>
 

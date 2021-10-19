@@ -1,69 +1,53 @@
 import React, {FC, FormEvent, useState} from 'react'
-import s from './NewPassword.module.css'
 import {Button} from '../../../components/UI/Button/Button'
 import {Input} from '../../../components/UI/Input/Input'
 import {Redirect, useParams} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {newPassword} from '../../../store/reducers/auth-reducer'
-import {useTypedSelector} from "../../../hooks/hooks";
-import {PATH} from "../../../routes/routes";
-
-//TODO сервер ограничивает максимальное кол-во символов пароля. доделать валидацию кол-ва символов с фронта и (или) ловить ошибку с бэка
+import {useTypedSelector} from '../../../hooks/hooks'
+import {PATH} from '../../../routes/routes'
 
 export const NewPassword: FC = () => {
     const dispatch = useDispatch()
     const {token} = useParams<{ token: string }>()
     const successChangePassword = useTypedSelector(state => state.auth.setSuccessNewPass)
 
-
-    const [firstPass, setFirstPass] = useState<string>('') // первый инпут
-    const [secondPass, setSecondPass] = useState<string>('')// второй инпут
+    const [firstPass, setFirstPass] = useState<string>('')
+    const [secondPass, setSecondPass] = useState<string>('')
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
-        const passIdentical = firstPass === secondPass //данные обоих инпутов должны быть равно
-        if (!passIdentical) { // если данные разные
-            alert('пароли не совпадают')
-        } else { // если совпадают
-            dispatch(newPassword(firstPass, token))
-        }
-        setFirstPass('') // обнуление инпутов
-        setSecondPass('')
+        firstPass === secondPass && dispatch(newPassword(firstPass, token))
     }
-    console.log(token)
 
+    if (successChangePassword) return <Redirect to={PATH.LOGIN}/>
 
     return (
-        <div className={s.wrapper}>
-            {successChangePassword && <Redirect to={PATH.LOGIN}/>}
-            <div className={s.container}>
-                <form className={s.form} onSubmit={onSubmit}>
-                    <h1>IT-incubator</h1>
-                    <h2>Create new password</h2>
-
-                    <label htmlFor='inputNewPassword'>NewPassword</label>
+        <div>
+            <h1>Create new password</h1>
+            <form onSubmit={onSubmit}>
+                <label htmlFor='inputNewPassword'>
+                    New Password
                     <Input
                         id={'inputNewPassword'}
                         type={'text'}
                         onChange={(e) => setFirstPass(e.currentTarget.value)}
                         value={firstPass}
-                        placeholder={'New password'}
-                    />
+                        placeholder={'New password'}/>
+                </label>
 
-                    <label htmlFor='RepeatNewPassword'>RepeatNewPassword</label>
+                <label htmlFor='RepeatNewPassword'>
+                    Repeat New Password
                     <Input
                         id={'RepeatNewPassword'}
                         type={'text'}
                         onChange={(e) => setSecondPass(e.currentTarget.value)}
                         value={secondPass}
-                        placeholder={'Repeat new password'}
-                    />
+                        placeholder={'Repeat new password'}/>
+                </label>
 
-                    <h3>Create new password and will send you further instructions to email</h3>
-
-                    <Button type={'submit'}>Create new password</Button>
-                </form>
-            </div>
+                <Button type={'submit'}>Create new password</Button>
+            </form>
         </div>
     )
 }

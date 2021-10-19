@@ -6,9 +6,7 @@ import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {useDispatch} from 'react-redux'
 import {registration} from '../../store/reducers/auth-reducer'
-import s from './Registration.module.css'
 import {setAppError} from '../../store/reducers/app-reducer'
-
 
 export const Registration: FC = () => {
     const {registrationSuccess} = useTypedSelector(state => state.auth)
@@ -31,38 +29,37 @@ export const Registration: FC = () => {
         <div>
             <h1>Registration</h1>
 
-            <form onSubmit={onSubmit} className={s.container}>
-                <label htmlFor={'registerEmail'}>Email
-                    <Input id={'registerEmail'}
+            <form onSubmit={onSubmit}>
+                <label htmlFor={'registration-email'}>Email
+                    <Input id={'registration-email'}
                            type={'email'}
                            placeholder={'Enter you email address...'}
                            {...email}/>
                 </label>
 
                 {(email.touched && email.validation) &&
-				<span className={s.error}>{email.validation.isRequired || email.validation.isEmail}</span>}
+				<span>{email.validation.isRequired || email.validation.isEmail}</span>}
 
-                <label htmlFor={'registerPassword'}>Password
-                    <Input id={'registerPassword'}
+                <label htmlFor={'registration-password'}>Password
+                    <Input id={'registration-password'}
                            type={'text'}
                            placeholder={'Enter your password...'}
                            {...password}/>
                 </label>
 
                 {(password.touched && password.validation) &&
-				<span className={s.error}>{password.validation.minLength || password.validation.maxLength}</span>}
+				<span>{password.validation.minLength || password.validation.maxLength}</span>}
 
 
-                <label htmlFor={'registerConfirmPassword'}>Confirm Password
-                    <Input id={'registerConfirmPassword'}
+                <label htmlFor={'registration-confirm-password'}>Confirm Password
+                    <Input id={'registration-confirm-password'}
                            type={'text'}
                            placeholder={'Confirm your password...'}
                            {...confirmPassword}/>
                 </label>
 
                 {(confirmPassword.touched && confirmPassword.validation) &&
-				<span
-					className={s.error}>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
+				<span>{confirmPassword.validation.minLength || confirmPassword.validation.maxLength}</span>}
 
                 <Button type={'submit'}
                         disabled={!email.validation.isValid || !password.validation.isValid || !confirmPassword.validation.isValid}>

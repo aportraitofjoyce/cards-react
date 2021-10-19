@@ -3,7 +3,7 @@ import {Profile} from '../pages/Profile/Profile'
 import {Login} from '../pages/Login/Login'
 import {Registration} from '../pages/Registration/Registration'
 import {Error} from '../pages/Error/Error'
-import {ForgotPassword} from '../pages/PasswordPages/PasswordRecovery/ForgotPassword'
+import {PasswordRecovery} from '../pages/PasswordPages/PasswordRecovery/PasswordRecovery'
 import {NewPassword} from '../pages/PasswordPages/NewPassword/NewPassword'
 import {CheckEmail} from '../pages/PasswordPages/CheckEmail/CheckEmail'
 import {Home} from '../pages/Home/Home'
@@ -32,7 +32,7 @@ export const publicRoutes: Routes[] = [
     {path: PATH.PROFILE, component: Profile},
     {path: PATH.REGISTRATION, component: Registration},
     {path: PATH.LOGIN, component: Login},
-    {path: PATH.PASSWORD_RECOVERY, component: ForgotPassword},
+    {path: PATH.PASSWORD_RECOVERY, component: PasswordRecovery},
     {path: PATH.NEW_PASSWORD_WITH_TOKEN, component: NewPassword},
     {path: PATH.CHECK_EMAIL, component: CheckEmail},
     {path: PATH.ERROR, component: Error},
