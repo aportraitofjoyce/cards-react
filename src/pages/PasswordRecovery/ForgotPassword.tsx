@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {ChangeEvent, FC, useState} from 'react'
 import {Button} from '../../components/UI/Button/Button'
 import {Input} from '../../components/UI/Input/Input'
 import {useDispatch} from 'react-redux'
@@ -22,6 +22,7 @@ export const ForgotPassword: FC = () => {
             alert('email is not valid')
         }
     }
+    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)
 
     return (
         <div>
@@ -32,7 +33,7 @@ export const ForgotPassword: FC = () => {
                     type={'email'}
                     placeholder={'enter your email'}
                     value={email}
-                    onChange={(e) => setEmail(e.currentTarget.value)}
+                    onChange={onChangeInputHandler}
                 />
                 <span>Enter your address and we will send you further instructions</span>
                 <div>

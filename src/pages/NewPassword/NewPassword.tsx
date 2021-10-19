@@ -31,6 +31,7 @@ export const NewPassword: FC = () => {
         setSecondPass('')
     }
 
+    const onChangeInputHandler = (e: any) => setFirstPass(e.currentTarget.value)
 
     return (
         <div className={s.wrapper}>
@@ -43,8 +44,8 @@ export const NewPassword: FC = () => {
                     <label htmlFor='inputNewPassword'>NewPassword</label>
                     <Input
                         id={'inputNewPassword'}
-                        type={'text'}
-                        onChange={(e) => setFirstPass(e.currentTarget.value)}
+                        type={'password'}
+                        onChange={onChangeInputHandler}
                         value={firstPass}
                         placeholder={'New password'}
                     />
@@ -52,8 +53,8 @@ export const NewPassword: FC = () => {
                     <label htmlFor='RepeatNewPassword'>RepeatNewPassword</label>
                     <Input
                         id={'RepeatNewPassword'}
-                        type={'text'}
-                        onChange={(e) => setSecondPass(e.currentTarget.value)}
+                        type={'password'}
+                        onChange={onChangeInputHandler}
                         value={secondPass}
                         placeholder={'Repeat new password'}
                     />
