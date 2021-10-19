@@ -8,14 +8,14 @@ const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS'
 export type TouchedStatusType = 'isTouched' | 'notTouched'
 export type LoginStatusType = 'succeeded' | 'failed'
 
-type InitialStateType = {
+type LoginInitialState = {
     name: string,
     avatar: string,
     publicCardPacksCount: number,
     status: LoginStatusType
 }
 
-const initialState: InitialStateType = {
+const initialState: LoginInitialState = {
     name: '',
     avatar: '',
     publicCardPacksCount: 0,
@@ -23,7 +23,7 @@ const initialState: InitialStateType = {
 }
 
 
-export const loginReducer = (state = initialState, action: LoginActionType): InitialStateType => {
+export const loginReducer = (state = initialState, action: LoginActionType): LoginInitialState => {
     switch (action.type) {
         case SET_USER_DATA: {
             return {

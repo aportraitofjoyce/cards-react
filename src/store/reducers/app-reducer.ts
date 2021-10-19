@@ -12,7 +12,7 @@ export type AppActions =
     | ReturnType<typeof setAppError>
     | ReturnType<typeof setAppInitialized>
 
-type InitialState = {
+export type InitialState = {
     status: AppStatusType
     error: null | string
     isInitialized: boolean
