@@ -27,7 +27,7 @@ export type AuthActions =
     | ReturnType<typeof setSuccessPassword>
     | ReturnType<typeof setSendEmailSuccess>
 
-type InitialState = {
+export type AuthInitialState = {
     registrationSuccess: boolean,
     isLoggedIn: boolean,
     recoveryEmail: string | null,
@@ -37,7 +37,7 @@ type InitialState = {
 }
 
 // State
-const initialState: InitialState = {
+const initialState: AuthInitialState = {
     registrationSuccess: false,
     isLoggedIn: false,
     recoveryEmail: null,
@@ -47,7 +47,7 @@ const initialState: InitialState = {
 }
 
 // Reducer
-export const authReducer = (state = initialState, action: AuthActions): InitialState => {
+export const authReducer = (state = initialState, action: AuthActions): AuthInitialState => {
     switch (action.type) {
         case AUTH_ACTIONS_TYPES.SET_REGISTRATION_SUCCESS:
             return {...state, registrationSuccess: action.payload.status}
@@ -73,32 +73,32 @@ export const authReducer = (state = initialState, action: AuthActions): InitialS
 }
 
 // Actions
-const setRegistrationSuccess = (status: boolean) => ({
+export const setRegistrationSuccess = (status: boolean) => ({
     type: AUTH_ACTIONS_TYPES.SET_REGISTRATION_SUCCESS,
     payload: {status}
 } as const)
 
-const setUsersInfo = (info: UsersInfoResponse | null) => ({
+export const setUsersInfo = (info: UsersInfoResponse | null) => ({
     type: AUTH_ACTIONS_TYPES.SET_USERS_INFO,
     payload: info
 } as const)
 
-const setIsLoggedIn = (status: boolean) => ({
+export const setIsLoggedIn = (status: boolean) => ({
     type: AUTH_ACTIONS_TYPES.SET_IS_LOGGED_IN,
     payload: {status}
 } as const)
 
-const setEmailRecovery = (email: string) => ({
+export const setEmailRecovery = (email: string) => ({
     type: AUTH_ACTIONS_TYPES.SET_EMAIL_RECOVERY,
     payload: {email}
 } as const)
 
-const setSuccessPassword = (changePassSuccess: boolean) => ({
+export const setSuccessPassword = (changePassSuccess: boolean) => ({
     type: AUTH_ACTIONS_TYPES.SET_SUCCESS_PASSWORD,
     payload: {changePassSuccess}
 } as const)
 
-const setSendEmailSuccess = (successSend: boolean) => ({
+export const setSendEmailSuccess = (successSend: boolean) => ({
     type: AUTH_ACTIONS_TYPES.SEND_RECOVERY_EMAIL_SUCCESS,
     payload: {successSend}
 } as const)
