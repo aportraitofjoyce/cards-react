@@ -1,16 +1,16 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, FormEvent, useEffect, useState} from 'react'
 import {Input} from "../../components/UI/Input/Input";
 import {Button} from "../../components/UI/Button/Button";
 import {Checkbox} from "../../components/UI/Checkbox/Checkbox";
 import {NavLink, useHistory} from "react-router-dom";
 import {PATH} from '../../routes/routes';
 import {useDispatch} from "react-redux";
-import {TouchedStatusType, userPostLogin} from "../../store/reducers/login-reducer";
 import {useTypedSelector} from "../../hooks/hooks";
+import {login} from '../../store/reducers/auth-reducer'
 
 export const Login: FC = () => {
 
-    const status = useTypedSelector(state => state.login.status)
+    const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
 
     // Custom Hooks
     const useValidation = (value: string, validations: ValidationsType) => {
@@ -72,7 +72,7 @@ export const Login: FC = () => {
 
         const [value, setValue] = useState<string>(initialValue)
         // const [touched, setTouched] = useState<boolean>(false)
-        const [touched, setTouched] = useState<TouchedStatusType>('notTouched')
+        const [touched, setTouched] = useState<any>('notTouched')
         const [checked, setChecked] = useState<boolean>(false)
         const isValidation = useValidation(value, validation)
 
@@ -104,9 +104,10 @@ export const Login: FC = () => {
     const history = useHistory();
 
 
-    const onSubmit = () => {
-        dispatch(userPostLogin({email: email.value, password: password.value, rememberMe: remember.checked}))
-        return (status === 'succeeded') ? history.push(PATH.PROFILE) : history.push(PATH.REGISTRATION)
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault()
+        dispatch(login({email: email.value, password: password.value, rememberMe: remember.checked}))
+        //return isLoggedIn ? history.push(PATH.PROFILE) : history.push(PATH.REGISTRATION)
     }
 
     const disabledButton = () => {

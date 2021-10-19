@@ -6,6 +6,12 @@ type ResponseError = {
     error?: string
 }
 
+export type LoginRequestType = {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
+
 export type RegistrationsData = {
     email: string
     password: string
@@ -65,7 +71,8 @@ export const authAPI = {
     changeUsersInfo: (payload: ChangeUsersInfoPayload) => instance
         .put<ChangeUsersInfoPayload, AxiosResponse<UsersInfoResponse>>('/auth/me', payload),
 
-    login: () => instance,
+    login: (payload: LoginRequestType) => instance
+        .post<LoginRequestType, AxiosResponse<UsersInfoResponse>>(`/auth/login`, payload),
 
     passwordRecovery: (payload: ForgotRequestType) => instance
         .post<ForgotRequestType, AxiosResponse<PasswordResponse>>(`/auth/forgot`, payload),

@@ -8,9 +8,8 @@ import {PATH} from '../../routes/routes'
 export const Profile: FC = () => {
     const {isLoggedIn} = useTypedSelector(state => state.auth)
 
-    const name = useTypedSelector(state => state.login.name)
-    const avatar = useTypedSelector(state => state.login.avatar)
-    const publicCardPacksCount = useTypedSelector(state => state.login.publicCardPacksCount)
+    const {name, avatar, publicCardPacksCount} = useTypedSelector(state => state.auth.userInfo)
+
     const dispatch = useDispatch()
 
     useEffect(() => {

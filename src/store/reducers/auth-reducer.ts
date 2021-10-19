@@ -1,7 +1,7 @@
 import {
     authAPI,
     ChangeUsersInfoPayload,
-    ForgotRequestType,
+    ForgotRequestType, LoginRequestType,
     RegistrationsData,
     UsersInfoResponse
 } from '../../api/auth-api'
@@ -28,20 +28,22 @@ export type AuthActions =
     | ReturnType<typeof setSendEmailSuccess>
 
 export type AuthInitialState = {
-    registrationSuccess: boolean,
-    isLoggedIn: boolean,
-    recoveryEmail: string | null,
-    userInfo: UsersInfoResponse | null,
-    setSuccessNewPass: boolean,
-    sendSuccessEmail: boolean,
+    registrationSuccess: boolean
+    loginSuccess: boolean
+    isLoggedIn: boolean
+    recoveryEmail: string | null
+    userInfo: UsersInfoResponse
+    setSuccessNewPass: boolean
+    sendSuccessEmail: boolean
 }
 
 // State
 const initialState: AuthInitialState = {
     registrationSuccess: false,
+    loginSuccess: false,
     isLoggedIn: false,
     recoveryEmail: null,
-    userInfo: null,
+    userInfo: {} as UsersInfoResponse,
     setSuccessNewPass: false,
     sendSuccessEmail: false,
 }
@@ -78,7 +80,7 @@ export const setRegistrationSuccess = (status: boolean) => ({
     payload: {status}
 } as const)
 
-export const setUsersInfo = (info: UsersInfoResponse | null) => ({
+export const setUsersInfo = (info: UsersInfoResponse) => ({
     type: AUTH_ACTIONS_TYPES.SET_USERS_INFO,
     payload: info
 } as const)
@@ -124,7 +126,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatus('loading'))
         await authAPI.logout()
-        dispatch(setUsersInfo(null))
+        dispatch(setUsersInfo({} as UsersInfoResponse))
         dispatch(setIsLoggedIn(false))
         dispatch(setAppStatus('succeeded'))
     } catch (e: any) {
@@ -163,7 +165,19 @@ export const changeUsersInfo = (info: ChangeUsersInfoPayload) => async (dispatch
     }
 }
 
-export const login = () => async (dispatch: AppDispatch) => {
+export const login = (data: LoginRequestType) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await authAPI.login(data)
+        dispatch(setUsersInfo(response.data))
+        dispatch(setIsLoggedIn(true))
+        dispatch(setAppStatus('succeeded'))
+    } catch (e: any) {
+        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError(error))
+        dispatch(setIsLoggedIn(false))
+    }
 }
 
 export const passwordRecovery = (email: string) => async (dispatch: AppDispatch) => {
