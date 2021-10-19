@@ -3,7 +3,7 @@ import {
     authReducer,
     setEmailRecovery,
     setIsLoggedIn,
-    setRegistrationSuccess,
+    setRegistrationSuccess, setSendEmailSuccess,
     setSuccessPassword, setUsersInfo
 } from '../auth-reducer'
 
@@ -15,18 +15,11 @@ beforeEach(() => {
         registrationSuccess: false,
         isLoggedIn: false,
         recoveryEmail: '',
-        userInfo: {
-            _id: '',
+        userInfo:  {
             email: '',
             name: '',
             avatar: '',
             publicCardPacksCount: 0,
-            created: new Date(),
-            updated: new Date(),
-            isAdmin: false,
-            verified: false,
-            rememberMe: false,
-            error: ''
         },
         setSuccessNewPass: false,
         sendSuccessEmail: false
@@ -66,6 +59,7 @@ describe('Auth reducer', () => {
         expect(startState).not.toBe(endState)
         expect(endState.setSuccessNewPass).toBeTruthy()
     })
+
     it('User information should be set in state', () => {
         const testData = {
             _id: '1223434535435',
@@ -91,5 +85,12 @@ describe('Auth reducer', () => {
         expect(endState.userInfo?.publicCardPacksCount).toBe(3)
     })
 
+    it('Recovery email success send', () => {
+        const action = setSendEmailSuccess(true)
 
+        const endState = authReducer(startState, action)
+
+        expect(startState).not.toBe(endState)
+        expect(endState.sendSuccessEmail).toBeTruthy()
+    })
 })
