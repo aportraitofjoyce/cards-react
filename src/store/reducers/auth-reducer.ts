@@ -2,6 +2,8 @@ import {authAPI, ChangeUsersInfoData, LoginData, RegistrationsData, UsersInfoRes
 import {AppDispatch} from '../store'
 import {setAppError, setAppInfo, setAppInitialized, setAppIsLoading} from './app-reducer'
 import {passwordRecoveryMessage} from '../../utils/passwordRecoveryMessage'
+import {Axios} from 'axios'
+import {errorsHandler} from '../../utils/errors'
 
 enum AUTH_ACTIONS_TYPES {
     SET_REGISTRATION_SUCCESS = 'AUTH/SET_REGISTRATION_SUCCESS',
@@ -96,12 +98,11 @@ export const setSendEmailSuccess = (successSend: boolean) => ({
 export const registration = (registrationsData: RegistrationsData) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
-        const response = await authAPI.registration(registrationsData)
+        await authAPI.registration(registrationsData)
         dispatch(setRegistrationSuccess(true))
-        dispatch(setAppInfo('Successful registration! Now you can login'))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        dispatch(setAppInfo(`Successful! Now you can login!`))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setRegistrationSuccess(false))
         dispatch(setAppIsLoading(false))
@@ -111,13 +112,12 @@ export const registration = (registrationsData: RegistrationsData) => async (dis
 export const logout = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
-        await authAPI.logout()
+        const response = await authAPI.logout()
         dispatch(setUsersInfo({} as UsersInfoResponse))
         dispatch(setIsLoggedIn(false))
-        dispatch(setAppInfo('Stay safe! See you later!'))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        dispatch(setAppInfo(response.data.info))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
     }
@@ -129,10 +129,9 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
         const response = await authAPI.checkAuth()
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
-        dispatch(setAppInfo('Hello friend!'))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        dispatch(setAppInfo(`Hello ${response.data.name}`))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
         dispatch(setAppInitialized(true))
@@ -145,9 +144,8 @@ export const changeUsersInfo = (info: ChangeUsersInfoData) => async (dispatch: A
         const response = await authAPI.changeUsersInfo(info)
         dispatch(setUsersInfo(response.data.updatedUser))
         dispatch(setAppInfo('You have changed your info!'))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
     }
@@ -160,12 +158,10 @@ export const login = (loginData: LoginData) => async (dispatch: AppDispatch) => 
         dispatch(setUsersInfo(response.data))
         dispatch(setIsLoggedIn(true))
         dispatch(setAppInfo('Successful login! Good luck!'))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
-
     }
 }
 
@@ -176,9 +172,8 @@ export const passwordRecovery = (email: string) => async (dispatch: AppDispatch)
         dispatch(setSendEmailSuccess(true))
         dispatch(setAppInfo(response.data.info))
         dispatch(setEmailRecovery(email))
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
         dispatch(setSendEmailSuccess(false))
@@ -193,9 +188,8 @@ export const newPassword = (password: string, resetPasswordToken: string) => asy
             dispatch(setSuccessPassword(true))
             dispatch(setAppInfo(response.data.info))
         }
-    } catch (e: any) {
-        const error = e.response ? e.response.data.error : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+    } catch (e) {
+        errorsHandler(e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
     }
