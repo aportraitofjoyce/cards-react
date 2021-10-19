@@ -30,6 +30,7 @@ export const NewPassword: FC = () => {
         setFirstPass('') // обнуление инпутов
         setSecondPass('')
     }
+    console.log(token)
 
 
     return (

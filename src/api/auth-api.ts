@@ -1,12 +1,8 @@
 import {instance} from './axios-instance'
-import {AxiosResponse} from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
-// Types
-type ResponseError = {
-    error?: string
-}
-
-export type LoginRequestType = {
+// Requests
+export type LoginData = {
     email: string,
     password: string,
     rememberMe: boolean
@@ -17,6 +13,23 @@ export type RegistrationsData = {
     password: string
 }
 
+export type ChangeUsersInfoData = {
+    name: string
+    avatar: string
+}
+
+export type PasswordRecoveryData = {
+    email: string,
+    from: string,
+    message: string
+}
+
+export type NewPasswordData = {
+    password: string,
+    resetPasswordToken: string | undefined
+}
+
+// Responses
 type LogoutResponse = {
     info: string
     error?: string
@@ -36,22 +49,6 @@ export type UsersInfoResponse = {
     error?: string
 }
 
-export type ChangeUsersInfoPayload = {
-    name: string
-    avatar: string
-}
-
-export type  ForgotRequestType = {
-    email: string,
-    from: string,
-    message: string
-}
-
-export type SetNewPasswordRequestType = {
-    password: string,
-    resetPasswordToken: string | undefined
-}
-
 export type PasswordResponse = {
     info: string,
     error: string
@@ -60,7 +57,7 @@ export type PasswordResponse = {
 // API
 export const authAPI = {
     registration: (payload: RegistrationsData) => instance
-        .post<RegistrationsData, AxiosResponse<ResponseError>>('/auth/register', payload),
+        .post<RegistrationsData, AxiosResponse<{ error?: string }>>('/auth/register', payload),
 
     logout: () => instance
         .delete<LogoutResponse>('/auth/me'),
@@ -68,15 +65,15 @@ export const authAPI = {
     checkAuth: () => instance
         .post<{}, AxiosResponse<UsersInfoResponse>>('/auth/me', {}),
 
-    changeUsersInfo: (payload: ChangeUsersInfoPayload) => instance
-        .put<ChangeUsersInfoPayload, AxiosResponse<UsersInfoResponse>>('/auth/me', payload),
+    changeUsersInfo: (payload: ChangeUsersInfoData) => instance
+        .put<ChangeUsersInfoData, AxiosResponse<UsersInfoResponse>>('/auth/me', payload),
 
-    login: (payload: LoginRequestType) => instance
-        .post<LoginRequestType, AxiosResponse<UsersInfoResponse>>(`/auth/login`, payload),
+    login: (payload: LoginData) => instance
+        .post<LoginData, AxiosResponse<UsersInfoResponse>>(`/auth/login`, payload),
 
-    passwordRecovery: (payload: ForgotRequestType) => instance
-        .post<ForgotRequestType, AxiosResponse<PasswordResponse>>(`/auth/forgot`, payload),
+    passwordRecovery: (payload: PasswordRecoveryData) => axios
+        .post<PasswordRecoveryData, AxiosResponse<PasswordResponse>>('https://neko-back.herokuapp.com/2.0/auth/forgot', payload),
 
-    newPassword: (payload: SetNewPasswordRequestType) => instance
-        .post<SetNewPasswordRequestType, AxiosResponse<PasswordResponse>>(`/auth/set-new-password`, payload)
+    newPassword: (payload: NewPasswordData) => axios
+        .post<NewPasswordData, AxiosResponse<PasswordResponse>>(`https://neko-back.herokuapp.com/2.0/auth/set-new-password`, payload)
 }

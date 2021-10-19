@@ -8,9 +8,9 @@ import {passwordRecovery} from '../../store/reducers/auth-reducer'
 
 
 export const ForgotPassword: FC = () => {
-    const [email, setEmail] = useState<string>('');
-    const dispatch = useDispatch();
-    const history = useHistory();
+    const [email, setEmail] = useState<string>('')
+    const dispatch = useDispatch()
+    const history = useHistory()
 
 
     const onsubmit = () => {
@@ -21,19 +21,17 @@ export const ForgotPassword: FC = () => {
         } else {
             alert('email is not valid')
         }
-    }
+        }
 
     return (
         <div>
             <form onSubmit={onsubmit}>
                 <h1>IT-incubator</h1>
                 <h2>Forgot your password?</h2>
-                <Input
-                    type={'email'}
-                    placeholder={'enter your email'}
-                    value={email}
-                    onChange={(e) => setEmail(e.currentTarget.value)}
-                />
+                <Input type={'email'}
+                       placeholder={'enter your email'}
+                       value={email}
+                       onChange={(e) => setEmail(e.currentTarget.value)}/>
                 <span>Enter your address and we will send you further instructions</span>
                 <div>
                     <Button>Send instructions</Button>

@@ -7,7 +7,7 @@ import {useDispatch} from 'react-redux'
 import {checkAuth} from '../store/reducers/auth-reducer'
 
 export const AppRouter: FC = () => {
-    const {status, isInitialized} = useTypedSelector(state => state.app)
+    const {isLoading, isInitialized} = useTypedSelector(state => state.app)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const AppRouter: FC = () => {
 
     return (
         <>
-            {status === 'loading' && <Progress/>}
+            {isLoading && <Progress/>}
             <Switch>
                 {publicRoutes.map(r => <Route key={r.path} path={r.path} component={r.component} exact={r.exact}/>)}
                 <Redirect from={PATH.EMPTY} to={PATH.ERROR}/>

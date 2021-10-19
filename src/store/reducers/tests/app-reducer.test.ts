@@ -1,23 +1,24 @@
-import {appReducer, InitialState, setAppError, setAppInitialized, setAppStatus} from './app-reducer'
+import {appReducer, AppInitialState, setAppError, setAppInitialized, setAppIsLoading} from '../app-reducer'
 
-let startState: InitialState
+let startState: AppInitialState
 
 beforeEach(() => {
     startState = {
-        status: 'idle',
-        error: null,
+        isLoading: false,
+        error: '',
+        info: '',
         isInitialized: false
     }
 })
 
 describe('App reducer', () => {
     it('App Status should be change', () => {
-        const action = setAppStatus('succeeded')
+        const action = setAppIsLoading(true)
 
         const endState = appReducer(startState, action)
 
         expect(startState).not.toBe(endState)
-        expect(endState.status).toBe('succeeded')
+        expect(endState.isLoading).toBe(true)
     })
 
     it('Error must be fixed', () => {

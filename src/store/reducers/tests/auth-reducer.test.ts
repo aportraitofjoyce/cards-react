@@ -5,7 +5,7 @@ import {
     setIsLoggedIn,
     setRegistrationSuccess,
     setSuccessPassword, setUsersInfo
-} from './auth-reducer'
+} from '../auth-reducer'
 
 
 let startState: AuthInitialState
@@ -14,7 +14,7 @@ beforeEach(() => {
     startState = {
         registrationSuccess: false,
         isLoggedIn: false,
-        recoveryEmail: null,
+        recoveryEmail: '',
         userInfo: {
             _id: '',
             email: '',
@@ -29,6 +29,7 @@ beforeEach(() => {
             error: ''
         },
         setSuccessNewPass: false,
+        loginSuccess: false,
         sendSuccessEmail: false
     }
 })
