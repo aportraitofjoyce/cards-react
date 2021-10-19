@@ -106,7 +106,7 @@ export const Login: FC = () => {
 
     const onSubmit = () => {
         dispatch(userPostLogin({email: email.value, password: password.value, rememberMe: remember.checked}))
-        return (status === 'succeeded') ? history.push(PATH.PROFILE) : history.push(PATH.REGISTER)
+        return (status === 'succeeded') ? history.push(PATH.PROFILE) : history.push(PATH.REGISTRATION)
     }
 
     const disabledButton = () => {
