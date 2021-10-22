@@ -40,11 +40,12 @@ export const Login: FC = () => {
                 </label>
 
                 <label htmlFor='login-password'>
-                    Email
+                    Password
                     <Input id={'login-password'}
                            type={'password'}
                            placeholder={'Enter your password...'}
                            value={values.password}
+                           password
                            onChange={e => setValues({...values, password: e.currentTarget.value})}/>
                 </label>
 

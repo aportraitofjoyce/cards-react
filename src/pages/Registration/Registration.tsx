@@ -47,6 +47,7 @@ export const Registration: FC = () => {
                            type={'password'}
                            placeholder={'Enter your password...'}
                            value={values.password}
+                           password
                            onChange={e => setValues({...values, password: e.currentTarget.value})}/>
                 </label>
 
@@ -56,6 +57,7 @@ export const Registration: FC = () => {
                            type={'password'}
                            placeholder={'Confirm your password...'}
                            value={values.confirmPassword}
+                           password
                            onChange={e => setValues({...values, confirmPassword: e.currentTarget.value})}/>
                 </label>
 

@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -14,4 +15,12 @@
 
 .error {
     color: red;
+}
+
+.eye {
+    color: var(--primary);
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    cursor: pointer;
 }
