@@ -5,7 +5,7 @@ import {Header} from '../components/Header/Header'
 import {Provider} from 'react-redux'
 import {store} from '../store/store'
 import {Alerts} from '../components/UI/Alerts/Alerts'
-
+// Oo
 export const App: FC = () => {
     return (
         <HashRouter>
