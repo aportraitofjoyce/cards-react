@@ -1,0 +1,83 @@
+.paginationWrapper {
+    height: 50px;
+    text-align: center;
+    width: 700px;
+}
+
+.pagination {
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination::before {
+    content: "";
+    display: table;
+}
+
+.pagination li {
+    display: block;
+    float: left;
+    padding: 5px;
+}
+
+.pagination li:first-child {
+    border: none;
+}
+
+.pagination .prev, .pagination .next {
+    font-size: 14px;
+}
+
+.pagination button {
+    outline: none;
+    position: relative;
+    transition: all 170ms linear;
+    cursor: pointer;
+}
+
+.pagination button, .pagination span {
+    background: none;
+    border: none;
+    box-sizing: border-box;
+    color: rgba(229, 236, 219, 0.6);
+    display: block;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    min-width: 40px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.pagination button:before {
+    background: rgba(168, 114, 114, 0.2);
+    border-radius: 50%;
+    content: "";
+    cursor: pointer;
+    height: 0;
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: all 170ms linear;
+    top: 50%;
+    width: 0;
+}
+
+
+.pagination button.active {
+    background: rgba(231, 222, 222, 0.1);
+    color: #d25050;
+    cursor: default;
+}
+
+.pagination button:hover:not(.active) {
+    color: #020202;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.visible {
+    visibility: hidden;
+}
