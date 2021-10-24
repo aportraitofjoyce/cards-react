@@ -13,7 +13,7 @@ enum AUTH_ACTIONS_TYPES {
     SEND_RECOVERY_EMAIL_SUCCESS = 'AUTH/SEND_RECOVERY_EMAIL_SUCCESS',
 }
 
-export type AuthActions =
+type AuthActions =
     | ReturnType<typeof setRegistrationSuccess>
     | ReturnType<typeof setUsersInfo>
     | ReturnType<typeof setIsLoggedIn>
