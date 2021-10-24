@@ -122,7 +122,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
     }
 }
 
-export const checkAuth = () => async (dispatch: AppDispatch) => {
+export const checkAuth = (hideError?: true) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
         const response = await authAPI.checkAuth()
@@ -130,7 +130,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
         dispatch(setIsLoggedIn(true))
         dispatch(setAppInfo(`Hello, dear ${response.data.name}!`))
     } catch (e) {
-        errorsHandler(e, dispatch)
+        errorsHandler(hideError ? '' : e, dispatch)
     } finally {
         dispatch(setAppIsLoading(false))
         dispatch(setAppInitialized(true))
