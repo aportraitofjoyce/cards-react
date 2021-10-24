@@ -11,7 +11,7 @@ export const AppRouter: FC = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(checkAuth(true))
+        dispatch(checkAuth())
     }, [dispatch])
 
     if (!isInitialized) return <Progress/>
