@@ -3,24 +3,100 @@ import {AxiosResponse} from 'axios'
 
 
 // Requests
-
-export type CardPacksType = {
-    _id: string
-    user_id: string
-    name: string
-    path: string // папка
-    cardsCount: number
-    grade: number // средняя оценка карточек
-    shots: number // количество попыток
-    rating: number // лайки
-    type: string // ещё будет "folder" (папка)
-    created: string
-    updated: string
-    __v: number
+// Packs
+export type GetPackType = {
+    packName?: string
+    min?: number
+    max?: number
+    sortPacks?: number
+    page?: number
+    pageCount?: number
+    user_id?: string
 }
 
+export type CreatePackType = {
+    cardsPack: {
+        name: string // если не отправить будет таким
+        path: string // если не отправить будет такой
+        grade?: number // не обязателен
+        shots?: number // не обязателен
+        rating?: number // не обязателен
+        deckCover?: string // не обязателен
+        private: boolean // если не отправить будет такой
+        type: string // если не отправить будет таким
+    }
+}
+
+export type DeletePackType = {
+    id: string
+}
+
+export type UpdatePackType = {
+    cardPack: {
+        _id: string
+        name: string
+    }
+}
+
+// Cards
+export type CardsRequestType = {
+    cardsPack_id: string
+    cardAnswer?: string
+    cardQuestion?: string
+    min?: number
+    max?: number
+    sortCards?: string
+    page?: number
+    pageCount?: number
+}
+
+
+export type CreateCardType = {
+    card: {
+        cardsPack_id: string
+        question: string // если не отправить будет таким
+        answer: string // если не отправить будет таким
+        grade?: number // 0..5, не обязателен
+        shots?: number // не обязателен
+        rating?: number // не обязателен
+        answerImg?: string // не обязателен
+        questionImg?: string // не обязателен
+        questionVideo?: string // не обязателен
+        answerVideo?: string // не обязателен
+        type: string // если не отправить будет таким
+    }
+}
+
+export type UpdateCardType = {
+    card: {
+        _id: string
+        question?: string // не обязательно
+        comments?: string // не обязателен
+    }
+}
+
+// Response
+// Packs
+export type CardPacksType =
+    [
+        {
+            _id: string
+            user_id: string
+            name: string
+            path: string // папка
+            cardsCount: number
+            grade: number // средняя оценка карточек
+            shots: number // количество попыток
+            rating: number // лайки
+            type: string // ещё будет "folder" (папка)
+            created: string
+            updated: string
+            __v: number
+        }
+    ]
+
 export type PackResponseType = {
-    cardPacks: Array<CardPacksType>
+    cardPacks: CardPacksType
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
@@ -28,25 +104,57 @@ export type PackResponseType = {
     pageCount: number // количество элементов на странице
 }
 
+// Cards
+export type  CardsResponseType = {
+    cards: [
+        {
+            answer: string
+            question: string
+            cardsPack_id: string
+            grade: number
+            rating: number
+            shots: number
+            type: string
+            user_id: string
+            created: string
+            updated: string
+            __v: number
+            _id: string
+        },
+    ]
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    page: number
+    pageCount: number
+    packUserId: string // id юзера, создавшего данную колоду
+}
+
+// API
 export const packsAPI = {
     getPacks: () => instance
-        .get<Array<CardPacksType>>('/cards/pack'),
+        .get<AxiosResponse<PackResponseType>>('/cards/pack'),
 
-    // logout: () => instance
-    //     .delete<LogoutResponse>('/auth/me'),
-    //
-    // checkAuth: () => instance
-    //     .post<{}, AxiosResponse<UsersInfoResponse>>('/auth/me', {}),
-    //
-    // changeUsersInfo: (payload: ChangeUsersInfoData) => instance
-    //     .put<ChangeUsersInfoData, AxiosResponse<UpdateUserResponse>>('/auth/me', payload),
-    //
-    // login: (payload: LoginData) => instance
-    //     .post<LoginData, AxiosResponse<UsersInfoResponse>>(`/auth/login`, payload),
-    //
-    // passwordRecovery: (payload: PasswordRecoveryData) => axios
-    //     .post<PasswordRecoveryData, AxiosResponse<PasswordResponse>>('https://neko-back.herokuapp.com/2.0/auth/forgot', payload),
-    //
-    // newPassword: (payload: NewPasswordData) => axios
-    //     .post<NewPasswordData, AxiosResponse<PasswordResponse>>(`https://neko-back.herokuapp.com/2.0/auth/set-new-password`, payload)
+    createPack: (payload: CreatePackType) => instance
+        .post<CreatePackType, AxiosResponse<any>>('/cards/pack', payload),
+
+    deletePack: () => instance
+        .delete<DeletePackType>('/cards/pack'),
+
+    updatePack: (payload: UpdatePackType) => instance
+        .put<UpdatePackType, AxiosResponse<any>>('/cards/pack', payload),
+}
+
+export const cardsAPI = {
+    getCards: () => instance
+        .get<AxiosResponse<CardsResponseType>>('/cards/card'),
+
+    createCard: (payload: CreateCardType) => instance
+        .post<CreateCardType, AxiosResponse<any>>('/cards/card', payload),
+
+    deleteCard: () => instance
+        .delete<DeletePackType>('/cards/pack'),
+
+    updateCard: (payload: UpdateCardType) => instance
+        .put<UpdateCardType, AxiosResponse<any>>('/cards/pack', payload),
 }
