@@ -1,7 +1,31 @@
-import { Dispatch } from "redux";
-import {CardPacksType, packsAPI} from "../../api/packs-api";
+import {Dispatch} from "redux";
+import {CardPacksType, PackResponseType, packsAPI} from "../../api/packs-api";
 import {RootState} from "../store";
 
+
+export type InitialStateType = {
+    cardPacks: CardPacksType[]
+    cardPacksTotalCount: null | number
+    maxCardsCount: null | number
+    minCardsCount: null | number
+    page: number
+    pageCount: number
+    sortPacks: string
+    message: string
+    user_id: string
+}
+
+export const initialState: InitialStateType = {
+    cardPacks: [],
+    cardPacksTotalCount: null,
+    maxCardsCount: null,
+    minCardsCount: null,
+    page: 1,
+    pageCount: 10,
+    sortPacks: '0updated',
+    message: '',
+    user_id: ''
+}
 
 enum PACKS_ACTIONS_TYPES {
     SET_PACKS = 'PACKS/SET_PACKS',
@@ -16,43 +40,12 @@ export type PacksActionsTypes =
     | ReturnType<typeof setDeletePacks>
     | ReturnType<typeof setUpdatePacks>
 
-export type PacksInitialState = {
-    cardPacks: CardPacksType
-    cardPacksTotalCount: number // количество колод
-    maxCardsCount: number
-    minCardsCount: number
-    page: number // выбранная страница
-    pageCount: number // количество элементов на странице
-}
-
-const initialState: PacksInitialState = {
-    cardPacks: [{
-        _id: '',
-        user_id: '',
-        name: '',
-        path: '', // папка
-        cardsCount: 0,
-        grade: 0, // средняя оценка карточек
-        shots: 0, // количество попыток
-        rating: 0, // лайки
-        type: '', // ещё будет "folder" (папка)
-        created: '',
-        updated: '',
-        __v: 0,
-    }],
-    cardPacksTotalCount: 1, // количество колод
-    maxCardsCount: 10,
-    minCardsCount: 1,
-    page: 1, // выбранная страница
-    pageCount: 10 // количество элементов на странице
-}
 
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes) => {
     switch (action.type) {
-        // case PACKS_ACTIONS_TYPES.SET_PACKS:{
-        //     return action.cardPack.map(p => ({...p}))
-        // }
+        case PACKS_ACTIONS_TYPES.SET_PACKS:
+            return {...state, ...action.data}
         default:
             return state
     }
@@ -60,8 +53,8 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes) =>
 
 // Actions
 
-export const setPacks = (cardPack: Array<CardPacksType>) => {
-    return {type: PACKS_ACTIONS_TYPES.SET_PACKS, cardPack} as const
+export const setPacks = (data: PackResponseType) => {
+    return {type: PACKS_ACTIONS_TYPES.SET_PACKS, data} as const
 }
 
 export const setCreatePacks = () => {
@@ -76,16 +69,16 @@ export const setUpdatePacks = () => {
     return {type: PACKS_ACTIONS_TYPES.SET_UPDATE_PACK} as const
 }
 
+
 // Thunks
 
-// export const fetchPacks = () => {
-//     return (dispatch: Dispatch,  getState: () => RootState) => {
-//         packsAPI.getPacks()
-//         .then((res) => {
-//
-//         })
-//     }
-// }
+export const fetchPacks = () => (dispatch: Dispatch, getState: () => RootState) => {
+    let {sortPacks, page, pageCount, user_id} = getState().packs
+    packsAPI.getPacks(sortPacks, page, pageCount, user_id).then((res) => {
+        dispatch(setPacks(res.data.data))
+    })
+}
+
 //
 // export const createPack = () => {
 //     return (dispatch: Dispatch,  getState: () => RootState) => {

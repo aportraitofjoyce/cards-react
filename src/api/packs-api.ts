@@ -4,15 +4,6 @@ import {AxiosResponse} from 'axios'
 
 // Requests
 // Packs
-export type GetPackType = {
-    packName?: string
-    min?: number
-    max?: number
-    sortPacks?: number
-    page?: number
-    pageCount?: number
-    user_id?: string
-}
 
 export type CreatePackType = {
     cardsPack: {

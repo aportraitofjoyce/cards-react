@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer,
     profile: profileReducer,
-    pack: packsReducer,
+    packs: packsReducer,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk))
