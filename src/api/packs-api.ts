@@ -27,9 +27,6 @@ export type CreatePackType = {
     }
 }
 
-export type DeletePackType = {
-    id: string
-}
 
 export type UpdatePackType = {
     cardPack: {
@@ -77,26 +74,23 @@ export type UpdateCardType = {
 
 // Response
 // Packs
-export type CardPacksType =
-    [
-        {
-            _id: string
-            user_id: string
-            name: string
-            path: string // папка
-            cardsCount: number
-            grade: number // средняя оценка карточек
-            shots: number // количество попыток
-            rating: number // лайки
-            type: string // ещё будет "folder" (папка)
-            created: string
-            updated: string
-            __v: number
-        }
-    ]
+export type CardPacksType = {
+    _id: string
+    user_id: string
+    name: string
+    path: string // папка
+    cardsCount: number
+    grade: number // средняя оценка карточек
+    shots: number // количество попыток
+    rating: number // лайки
+    type: string // ещё будет "folder" (папка)
+    created: string
+    updated: string
+    __v: number
+}
 
 export type PackResponseType = {
-    cardPacks: CardPacksType
+    cardPacks: CardPacksType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
@@ -132,29 +126,29 @@ export type  CardsResponseType = {
 
 // API
 export const packsAPI = {
-    getPacks: () => instance
-        .get<AxiosResponse<PackResponseType>>('/cards/pack'),
+    getPacks: (sortPacks: string, page: number, pageCount: number, user_id: string ) => instance
+        .get<AxiosResponse<PackResponseType>>(`cards/pack?sortPacks=${sortPacks}&page=${page}&pageCount=${pageCount}&user_id=${user_id}`),
 
     createPack: (payload: CreatePackType) => instance
         .post<CreatePackType, AxiosResponse<any>>('/cards/pack', payload),
 
-    deletePack: () => instance
-        .delete<DeletePackType>('/cards/pack'),
+    deletePack: (id: string) => instance
+        .delete(`/cards/pack?id=${id}`),
 
     updatePack: (payload: UpdatePackType) => instance
         .put<UpdatePackType, AxiosResponse<any>>('/cards/pack', payload),
 }
 
 export const cardsAPI = {
-    getCards: () => instance
-        .get<AxiosResponse<CardsResponseType>>('/cards/card'),
+    getCards: (cardsPack_id: string, page: number, pageCount: number) => instance
+        .get<AxiosResponse<CardsResponseType>>(`/cards/card?cardsPack_id=${cardsPack_id}&page=${page}&pageCount${pageCount}`),
 
     createCard: (payload: CreateCardType) => instance
         .post<CreateCardType, AxiosResponse<any>>('/cards/card', payload),
 
-    deleteCard: () => instance
-        .delete<DeletePackType>('/cards/pack'),
+    deleteCard: (id: string) => instance
+        .delete(`/cards/pack?id=${id}`),
 
     updateCard: (payload: UpdateCardType) => instance
-        .put<UpdateCardType, AxiosResponse<any>>('/cards/pack', payload),
+        .put<UpdateCardType, AxiosResponse<any>>('/cards/card', payload),
 }
