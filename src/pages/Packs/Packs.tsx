@@ -5,7 +5,14 @@ import {packsModel} from './packsModel'
 
 export const Packs: FC = () => {
     const packs = useTypedSelector(state => state.packs.packs)
-    const model = packsModel(() => {}, (id) => {}, (id) => {})
+    const model = packsModel(
+        () => {
+        },
+        (id) => {
+        },
+        (id) => {
+        }
+    )
 
     return (
         <div>
