@@ -1,0 +1,31 @@
+.container {
+    border: 1px solid var(--darkLight);
+}
+
+.header,
+.footer {
+    display: flex;
+    align-items: center;
+    background-color: indianred;
+}
+
+.header div,
+.footer div {
+    flex: 1 1 20%;
+    padding: 8px;
+}
+
+.body {
+
+}
+
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.row div {
+    flex: 1 1 20%;
+    padding: 8px;
+}
