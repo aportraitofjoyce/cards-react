@@ -4,23 +4,23 @@ import {AxiosResponse} from 'axios'
 
 // Requests
 
+export type CardPacksType = {
+    _id: string
+    user_id: string
+    name: string
+    path: string // папка
+    cardsCount: number
+    grade: number // средняя оценка карточек
+    shots: number // количество попыток
+    rating: number // лайки
+    type: string // ещё будет "folder" (папка)
+    created: string
+    updated: string
+    __v: number
+}
+
 export type PackResponseType = {
-    cardPacks: [
-        {
-            _id: string
-            user_id: string
-            name: string
-            path: string // папка
-            cardsCount: number
-            grade: number // средняя оценка карточек
-            shots: number // количество попыток
-            rating: number // лайки
-            type: string // ещё будет "folder" (папка)
-            created: string
-            updated: string
-            __v: number
-        },
-    ]
+    cardPacks: Array<CardPacksType>
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
@@ -30,7 +30,7 @@ export type PackResponseType = {
 
 export const packsAPI = {
     getPacks: () => instance
-        .get<AxiosResponse<PackResponseType>>('/cards/pack'),
+        .get<Array<CardPacksType>>('/cards/pack'),
 
     // logout: () => instance
     //     .delete<LogoutResponse>('/auth/me'),
