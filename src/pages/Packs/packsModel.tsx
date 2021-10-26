@@ -18,10 +18,6 @@ export const packsModel = (add: () => void, remove: (id: number) => void, update
         render: (dataItem: CardsPack) => <div key={'updated-cell-' + dataItem._id}>{dataItem.updated.slice(5, 16)}</div>
     },
     {
-        title: index => <div key={'url-title-' + index}>URL</div>,
-        render: (dataItem: CardsPack) => <div key={'url-cell-' + dataItem._id}>{'deckCover'}</div>
-    },
-    {
         title: index => <div key={'buttons-title-' + index}><Button onClick={add}>Add</Button></div>,
         render: (dataItem: CardsPack) => <div key={'buttons-cell-' + dataItem._id}>
             <Button onClick={() => remove(dataItem._id)}>Delete</Button>

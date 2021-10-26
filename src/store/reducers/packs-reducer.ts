@@ -1,4 +1,4 @@
-import {CardsPack, CardsPackResponse, GetCardPacksQueryParams, packsAPI} from '../../api/packs-api'
+import {CardsPackResponse, GetCardPacksQueryParams, packsAPI} from '../../api/packs-api'
 import {AppDispatch, RootState} from '../store'
 import {setAppInfo, setAppIsLoading} from './app-reducer'
 import {errorsHandler} from '../../utils/errors'
@@ -17,7 +17,7 @@ const initialState: PacksInitialState = {
     cardPacksTotalCount: 0,
     maxCardsCount: 0,
     minCardsCount: 0,
-    page: 0,
+    page: 1,
     pageCount: 10,
 }
 

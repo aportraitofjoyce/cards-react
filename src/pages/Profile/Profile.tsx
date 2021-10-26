@@ -19,7 +19,7 @@ export const Profile: FC = () => {
     }
 
     useEffect(() => {
-        !isLoggedIn && dispatch(checkAuth())
+        dispatch(checkAuth())
     }, [dispatch])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>

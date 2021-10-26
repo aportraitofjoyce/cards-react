@@ -35,6 +35,7 @@ export type GetCardPacksQueryParams = {
     page?: number
     pageCount?: number
     user_id?: string
+    packName?: string
 }
 
 export type NewCardsPackData = {
