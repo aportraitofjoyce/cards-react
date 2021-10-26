@@ -38,7 +38,7 @@ export const Input: FC<InputTextProps> = props => {
         onEnter && e.key === 'Enter' && onEnter()
     }
 
-    const inputClassNames = `${error ? s.errorInput : ''}${className ? className : ''}`
+    const inputClassNames = `${s.input}${error ? s.errorInput : ''}${className ? className : ''}`
     const spanClassNames = `${s.error}${spanClassName ? spanClassName : ''}`
 
     return (

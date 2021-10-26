@@ -14,15 +14,15 @@ export const Profile: FC = () => {
     const [newName, setNewName] = useState('')
     const [newAvatar, setNewAvatar] = useState('')
 
-    useEffect(() => {
-        dispatch(checkAuth())
-    }, [dispatch])
-
-    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
-
     const onSubmitHandler = () => {
         dispatch(changeUsersInfo({name: newName, avatar: newAvatar}))
     }
+
+    useEffect(() => {
+        !isLoggedIn && dispatch(checkAuth())
+    }, [dispatch])
+
+    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div>

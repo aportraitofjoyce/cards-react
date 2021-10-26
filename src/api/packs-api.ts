@@ -20,12 +20,12 @@ export type CardsPack = {
 }
 
 export type CardsPackResponse = {
-    cardPacks?: CardsPack[]
-    cardPacksTotalCount?: number
-    maxCardsCount?: number
-    minCardsCount?: number
-    page?: number
-    pageCount?: number
+    cardPacks: CardsPack[]
+    cardPacksTotalCount: number
+    maxCardsCount: number
+    minCardsCount: number
+    page: number
+    pageCount: number
 }
 
 export type GetCardPacksQueryParams = {

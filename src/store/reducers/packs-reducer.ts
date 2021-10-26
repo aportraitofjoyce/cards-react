@@ -10,9 +10,15 @@ enum PACKS_ACTIONS_TYPES {
 export type PacksActionsTypes =
     | ReturnType<typeof setCardPacks>
 
-export type PacksInitialState = CardsPackResponse | null
+export type PacksInitialState = CardsPackResponse
 
 const initialState: PacksInitialState = {
+    cardPacks: [],
+    cardPacksTotalCount: 0,
+    maxCardsCount: 0,
+    minCardsCount: 0,
+    page: 0,
+    pageCount: 10,
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
@@ -32,7 +38,7 @@ const setCardPacks = (payload: CardsPackResponse) => ({
 export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
         dispatch(setAppIsLoading(true))
-        //const {} = getState().packs
+        const isLoggedIn = getState().auth.isLoggedIn
         const response = await packsAPI.getCardPacks(payload)
         dispatch(setCardPacks(response.data))
         dispatch(setAppInfo('All packs are loaded!'))

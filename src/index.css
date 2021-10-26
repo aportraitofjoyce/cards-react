@@ -80,11 +80,7 @@ button:disabled {
 input {
     font-family: 'Fira Sans', sans-serif;
     font-size: 16px;
-    border: 2px solid var(--light);
-    border-radius: 4px;
     outline: none;
-    height: 40px;
-    padding: 8px;
 }
 
 input:focus {
