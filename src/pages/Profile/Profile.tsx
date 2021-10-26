@@ -29,22 +29,21 @@ export const Profile: FC = () => {
             <h1>Profile</h1>
 
             {userInfo && <div>
-                <img src={userInfo.avatar}
-                     alt={userInfo.name}
-                     style={{maxHeight: 400}}/>
-                <div>{userInfo.name}</div>
-                <div>{userInfo.publicCardPacksCount}</div>
+				<img src={userInfo.avatar}
+				     alt={userInfo.name}
+				     style={{maxHeight: 400}}/>
+				<div>{userInfo.name}</div>
+				<div>{userInfo.publicCardPacksCount}</div>
 
-                <div>
-                    <input type="text" placeholder={'New Name'} value={newName}
-                           onChange={e => setNewName(e.currentTarget.value)}/>
+				<div>
+					<input type='text' placeholder={'New Name'} value={newName}
+					       onChange={e => setNewName(e.currentTarget.value)}/>
 
-                    <input type="text" placeholder={'New Avatar URL'} value={newAvatar}
-                           onChange={e => setNewAvatar(e.currentTarget.value)}/>
-                    <button onClick={onSubmitHandler}>Change info</button>
-                </div>
-            </div>}
-            <Pagination totalCount={140} countPerPage={10} currentPage={1} onChangePage={ ()=> {} }/>
+					<input type='text' placeholder={'New Avatar URL'} value={newAvatar}
+					       onChange={e => setNewAvatar(e.currentTarget.value)}/>
+					<button onClick={onSubmitHandler}>Change info</button>
+				</div>
+			</div>}
         </div>
     )
 }

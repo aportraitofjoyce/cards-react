@@ -1,9 +1,10 @@
-import React, {FC} from 'react'
-import {useTypedSelector} from '../../hooks/hooks'
-import {Table} from '../../components/UI/Table/Table'
+import React, {FC, useEffect} from 'react'
+import {useDispatch} from 'react-redux'
 import {packsModel} from './packsModel'
+import {fetchCardPacks} from '../../store/reducers/packs-reducer'
 
 export const Packs: FC = () => {
+    const dispatch = useDispatch()
     //const packs = useTypedSelector(state => state.packs.packs)
     const model = packsModel(
         () => {
@@ -13,6 +14,9 @@ export const Packs: FC = () => {
         (id) => {
         }
     )
+    useEffect(() => {
+        dispatch(fetchCardPacks())
+    }, [])
 
     return (
         <div>

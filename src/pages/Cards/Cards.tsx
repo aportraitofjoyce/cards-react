@@ -1,7 +1,6 @@
 import React, {FC} from 'react'
-import {useTypedSelector} from '../../hooks/hooks'
-import {cardsModel} from './CardsModel'
-import {Table} from '../../components/UI/Table/Table'
+import {cardsModel} from './cardsModel'
+
 
 export const Cards: FC = () => {
     //const cards = useTypedSelector(state => state.packs.packs)
