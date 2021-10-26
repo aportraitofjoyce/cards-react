@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import s from './Pagination.module.css'
 
-type PaginationTypes = {
+type PaginationProps = {
     totalCount: number,
     countPerPage: number,
     currentPage: number,
@@ -9,9 +9,9 @@ type PaginationTypes = {
     acc?: number
 }
 
-export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage, acc = 10}: PaginationTypes) => {
-    const [visPre, setVisPre] = useState<boolean>(false)
-    const [visNext, setVisNext] = useState<boolean>(false)
+export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage, acc = 10}: PaginationProps) => {
+    const [visPre, setVisPre] = useState(false)
+    const [visNext, setVisNext] = useState(false)
 
     let pageNumbers: number = Math.ceil(totalCount / countPerPage)
 
@@ -20,15 +20,15 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
         pages.push(i)
     }
 
-    const previosPage = currentPage !== 1 ? currentPage - 1 : 1
+    const previousPage = currentPage !== 1 ? currentPage - 1 : 1
     const nextPage = currentPage !== pageNumbers ? currentPage + 1 : pageNumbers
     let pageNextAcc = (currentPage + acc) > pageNumbers ? pageNumbers : currentPage + acc
-    let pagePreviosAcc = (currentPage - acc) < 1 ? 1 : currentPage - acc
+    let pagePreviousAcc = (currentPage - acc) < 1 ? 1 : currentPage - acc
 
     useEffect(() => {
-        previosPage === currentPage ? setVisPre(true) : setVisPre(false)
+        previousPage === currentPage ? setVisPre(true) : setVisPre(false)
         nextPage === currentPage ? setVisNext(true) : setVisNext(false)
-    }, [currentPage, nextPage, previosPage])
+    }, [currentPage, nextPage, previousPage])
 
     if (isNaN(pageNumbers) || totalCount === 0) {
         return <div></div>
@@ -49,12 +49,12 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
                     </button>
                 </li>
                 <li><span title={`Page ${currentPage - acc}`} onClick={() => {
-                    onChangePage(pagePreviosAcc)
+                    onChangePage(pagePreviousAcc)
                 }} className={`${visPre && s.visible}`}>...</span></li>
                 <li>
                     <button className={`${visPre && s.visible}`} onClick={() => {
-                        onChangePage(previosPage)
-                    }} title={`Page ${pageNumbers}`}>{previosPage}</button>
+                        onChangePage(previousPage)
+                    }} title={`Page ${pageNumbers}`}>{previousPage}</button>
                 </li>
                 <li>
                     <button title={`Page ${currentPage}`} className={s.active}>{currentPage}</button>

@@ -81,6 +81,10 @@ input {
     font-family: 'Fira Sans', sans-serif;
     font-size: 16px;
     outline: none;
+    border: 2px solid var(--light);
+    border-radius: 4px;
+    height: 40px;
+    padding: 8px;
 }
 
 input:focus {

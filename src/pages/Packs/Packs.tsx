@@ -12,6 +12,7 @@ import {PATH} from '../../routes/routes'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
 import {Input} from '../../components/UI/Input/Input'
 import _ from 'lodash'
+import {Pagination2} from '../../components/UI/Pagination/Pagination2'
 
 export const Packs: FC = () => {
     const dispatch = useDispatch()
@@ -41,15 +42,22 @@ export const Packs: FC = () => {
     }
 
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
+    const debouncedRange = useCallback(_.throttle(values => dispatch(fetchCardPacks({min: values[0], max: values[1]})), 1500), [])
 
     const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)
+
+    const onRangeChangeHandler = (values: number[]) => {
+        setRangeValues(values)
+        debouncedRange(values)
+    }
 
     const onPageChangeHandler = () => {
     }
 
-    useEffect(() => {
+
+    /*useEffect(() => {
         !isLoggedIn && dispatch(checkAuth())
-    }, [dispatch])
+    }, [dispatch])*/
 
     useEffect(() => {
         dispatch(fetchCardPacks())
@@ -76,9 +84,10 @@ export const Packs: FC = () => {
                 Show private
             </Checkbox>
 
-            <Range value={rangeValues} onChange={values => setRangeValues(values)} marks={rangeMarks}/>
+            <Range value={rangeValues} onChange={values => onRangeChangeHandler(values)} marks={rangeMarks}/>
 
             <Pagination totalCount={20} countPerPage={5} currentPage={5} onChangePage={onPageChangeHandler}/>
+            <Pagination2 totalPages={20} setCurrentPage={onPageChangeHandler} currentPage={1}/>
 
             <Table model={model} data={packs}/>
         </div>
