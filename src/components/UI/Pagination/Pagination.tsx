@@ -34,34 +34,32 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
     }
 
     return (
-        <div className={s.wrapper}>
-            <div className={s.container}>
+        <div className={s.container}>
                 <span className={`${prevIsHidden && s.hidden}`}
                       onClick={() => onChangePage(currentPage - 1)}>Prev</span>
 
-                <span className={`${prevIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(1)}>Start</span>
+            <span className={`${prevIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(1)}>Start</span>
 
-                <span className={`${prevIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(pagePreviousStep)}>...</span>
+            <span className={`${prevIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(pagePreviousStep)}>...</span>
 
-                <span className={`${prevIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(previousPage)}>{previousPage !== currentPage && previousPage}</span>
+            <span className={`${prevIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(previousPage)}>{previousPage !== currentPage && previousPage}</span>
 
-                <span className={s.active}>{currentPage}</span>
+            <span className={s.active}>{currentPage}</span>
 
-                <span className={`${nextIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(nextPage)}>{nextPage !== currentPage && nextPage}</span>
+            <span className={`${nextIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(nextPage)}>{nextPage !== currentPage && nextPage}</span>
 
-                <span className={`${nextIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(pageNextStep)}>...</span>
+            <span className={`${nextIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(pageNextStep)}>...</span>
 
-                <span className={`${nextIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(pageNumbers)}>End</span>
+            <span className={`${nextIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(pageNumbers)}>End</span>
 
-                <span className={`${nextIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(currentPage + 1)}>Next</span>
-            </div>
+            <span className={`${nextIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(currentPage + 1)}>Next</span>
         </div>
     )
 }

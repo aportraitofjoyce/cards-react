@@ -4,27 +4,26 @@ import {Card} from '../../api/cards-api'
 
 export const cardsModel = (add: () => void, remove: (id: string) => void, update: (id: string) => void): TableModel[] => [
     {
-        title: index => <div key={'question-title-' + index}>Question</div>,
-        render: (item: Card) => <div key={'question-cell-' + item._id}>{item.question}</div>
+        header: index => <th key={'question-title-' + index}>Question</th>,
+        body: (item: Card) => <td key={'question-cell-' + item._id}>{item.question}</td>
     },
     {
-        title: index => <div key={'answer-title-' + index}>Answer</div>,
-        render: (item: Card) => <div key={'answer-cell-' + item._id}>{item.answer}</div>
+        header: index => <th key={'answer-title-' + index}>Answer</th>,
+        body: (item: Card) => <td key={'answer-cell-' + item._id}>{item.answer}</td>
     },
     {
-        title: index => <div key={'grade-title-' + index}>Grade</div>,
-        render: (item: Card) => <div key={'grade-cell-' + item._id}>{item.grade}</div>
+        header: index => <th key={'grade-title-' + index}>Grade</th>,
+        body: (item: Card) => <td key={'grade-cell-' + item._id}>{item.grade}</td>
     },
     {
-        title: index => <div key={'update-title-' + index}>Updated</div>,
-        render: (item: Card) => <div key={'update-cell-' + item._id}>{item.updated.slice(5, 16)}</div>
+        header: index => <th key={'update-title-' + index}>Updated</th>,
+        body: (item: Card) => <td key={'update-cell-' + item._id}>{item.updated.slice(5, 16)}</td>
     },
     {
-        title: index => <div key={'buttons-title-' + index}><Button onClick={add}>Add</Button></div>,
-        render: (item: Card) => <div key={'buttons-cell-' + item._id}>
+        header: index => <th key={'buttons-title-' + index}><Button onClick={add}>Add</Button></th>,
+        body: (item: Card) => <td key={'buttons-cell-' + item._id}>
             <Button onClick={() => remove(item._id)}>Delete</Button>
             <Button onClick={() => update(item._id)}>Update</Button>
-        </div>
-    },
-
+        </td>
+    }
 ]

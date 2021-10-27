@@ -21,6 +21,7 @@ import {Range} from 'rc-slider'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {Select} from '../../components/UI/Select/Select'
+import s from './Packs.module.css'
 
 export const Packs: FC = () => {
     const dispatch = useDispatch()
@@ -92,31 +93,36 @@ export const Packs: FC = () => {
             <h1>Packs</h1>
 
             <label htmlFor='packs-search'>
-                Search
+                Search for packs name:
                 <Input id={'packs-search'}
                        placeholder={'Enter pack name...'}
                        value={searchValue}
                        onChange={onSearchChangeHandler}/>
             </label>
 
-            <Checkbox checked={isPrivatePacks}
-                      onChange={onPrivateChangeHandler}>
-                Show private
-            </Checkbox>
-
             <Range value={rangeValues}
                    marks={rangeMarks}
-                   onChange={onRangeChangeHandler}/>
+                   onChange={onRangeChangeHandler}
+                   style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
+
+            <Checkbox checked={isPrivatePacks}
+                      onChange={onPrivateChangeHandler}>
+                Show only private packs?
+            </Checkbox>
 
             <Table model={model}
                    data={cardPacks}/>
 
-            <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
-
-            <Pagination totalCount={cardPacksTotalCount}
-                        countPerPage={pageCount}
-                        currentPage={page}
-                        onChangePage={onPageChangeHandler}/>
+            <div className={s.paginationContainer}>
+                <Pagination totalCount={cardPacksTotalCount}
+                            countPerPage={pageCount}
+                            currentPage={page}
+                            onChangePage={onPageChangeHandler}/>
+                <div>
+                    <span style={{paddingRight: 16}}> Show on page:</span>
+                    <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+                </div>
+            </div>
         </div>
     )
 }

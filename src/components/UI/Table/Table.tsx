@@ -1,9 +1,8 @@
 import React, {FC, ReactNode} from 'react'
-import s from './Table.module.css'
 
 export type TableModel = {
-    title: (index: number) => ReactNode
-    render: (dataItem: any) => ReactNode
+    header: (index: number) => ReactNode
+    body: (data: any) => ReactNode
 }
 
 type TableProps = {
@@ -15,18 +14,18 @@ export const Table: FC<TableProps> = props => {
     const {model, data} = props
 
     return (
-        <div className={s.container}>
-            <div className={s.header}>
-                {model.map((m, index) => m.title(index))}
-            </div>
+        <table>
+            <thead>
+            <tr>{model.map((m, index) => m.header(index))}</tr>
+            </thead>
 
-            <div className={s.body}>
-                {data.map((dataItem: any, dataIndex: number) => (
-                    <div key={'-row-' + (dataItem._id || dataIndex)} className={s.row}>
-                        {model.map(m => m.render(dataItem))}
-                    </div>
-                ))}
-            </div>
-        </div>
+            <tbody>
+            {data.map((item: any, index: number) => (
+                <tr key={'row' + (item._id || index)}>
+                    {model.map(m => m.body(item))}
+                </tr>
+            ))}
+            </tbody>
+        </table>
     )
 }
