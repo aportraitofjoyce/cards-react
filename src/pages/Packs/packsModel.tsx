@@ -7,7 +7,7 @@ import {CardsPack} from '../../api/packs-api'
 export const packsModel = (add: () => void, remove: (id: string) => void, update: (id: string) => void): TableModel[] => [
     {
         header: index => <th key={'name-title-' + index}>Pack Name</th>,
-        body: (item: CardsPack) => <td key={'name-cell-' + item._id}>{item.name}</td>
+        body: (item: CardsPack) => <td key={'name-cell-' + item._id}><Link to={PATH.CARDS + '/' + item._id}>{item.name}</Link></td>
     },
     {
         header: index => <th key={'userName-title-' + index}>User Name</th>,
@@ -23,10 +23,9 @@ export const packsModel = (add: () => void, remove: (id: string) => void, update
     },
     {
         header: index => <th key={'buttons-title-' + index}><Button onClick={add}>Add</Button></th>,
-        body: (item: CardsPack) => <td key={'buttons-cell-' + item._id}>
+        body: (item: CardsPack) => <td key={'buttons-cell-' + item._id} className={'tablesButtonsCell'}>
             <Button onClick={() => remove(item._id)}>Delete</Button>
             <Button onClick={() => update(item._id)}>Update</Button>
-            <Link to={PATH.CARDS + '/' + item._id}>Cards</Link>
         </td>
     },
 

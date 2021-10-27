@@ -21,7 +21,7 @@ export const cardsModel = (add: () => void, remove: (id: string) => void, update
     },
     {
         header: index => <th key={'buttons-title-' + index}><Button onClick={add}>Add</Button></th>,
-        body: (item: Card) => <td key={'buttons-cell-' + item._id}>
+        body: (item: Card) => <td key={'buttons-cell-' + item._id} className={'tablesButtonsCell'}>
             <Button onClick={() => remove(item._id)}>Delete</Button>
             <Button onClick={() => update(item._id)}>Update</Button>
         </td>
