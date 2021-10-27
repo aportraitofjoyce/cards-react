@@ -31,55 +31,38 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
     }, [currentPage, nextPage, previousPage])
 
     if (isNaN(pageNumbers) || totalCount === 0) {
-        return <div></div>
+        return <div/>
     }
-    return (
-        <div className={s.paginationWrapper}>
-            <ul className={s.pagination}>
-                <li>
-                    <button title={`Page Previos`} className={`${visPre && s.visible}`} onClick={() => {
-                        onChangePage(currentPage - 1)
-                    }}>❮
-                    </button>
-                </li>
-                <li>
-                    <button title={`Page 1`} className={`${visPre && s.visible}`} onClick={() => {
-                        onChangePage(1)
-                    }}>1
-                    </button>
-                </li>
-                <li><span title={`Page ${currentPage - acc}`} onClick={() => {
-                    onChangePage(pagePreviousAcc)
-                }} className={`${visPre && s.visible}`}>...</span></li>
-                <li>
-                    <button className={`${visPre && s.visible}`} onClick={() => {
-                        onChangePage(previousPage)
-                    }} title={`Page ${pageNumbers}`}>{previousPage}</button>
-                </li>
-                <li>
-                    <button title={`Page ${currentPage}`} className={s.active}>{currentPage}</button>
-                </li>
-                <li>
-                    <button className={`${visNext && s.visible}`} onClick={() => {
-                        onChangePage(nextPage)
-                    }} title={`Page ${nextPage}`}>{nextPage}</button>
-                </li>
 
-                <li><span title={`Page ${currentPage + acc}`} onClick={() => {
-                    onChangePage(pageNextAcc)
-                }} className={`${visNext && s.visible}`}>...</span></li>
-                <li>
-                    <button className={`${visNext && s.visible}`} onClick={() => {
-                        onChangePage(pageNumbers)
-                    }} title={`Page ${pageNumbers}`}>{pageNumbers}</button>
-                </li>
-                <li>
-                    <button className={`${visNext && s.visible}`} onClick={() => {
-                        onChangePage(currentPage + 1)
-                    }} title={'page Next'}>❯
-                    </button>
-                </li>
-            </ul>
+    return (
+        <div className={s.wrapper}>
+            <div className={s.container}>
+                <span className={`${visPre && s.visible}`}
+                      onClick={() => onChangePage(currentPage - 1)}>Prev</span>
+
+                <span className={`${visPre && s.visible}`}
+                      onClick={() => onChangePage(1)}>1</span>
+
+                <span className={`${visPre && s.visible}`}
+                      onClick={() => onChangePage(pagePreviousAcc)}>...</span>
+
+                <span className={`${visPre && s.visible}`}
+                      onClick={() => onChangePage(previousPage)}>{previousPage}</span>
+
+                <span className={s.active}>{currentPage}</span>
+
+                <span className={`${visNext && s.visible}`}
+                      onClick={() => onChangePage(nextPage)}>{nextPage}</span>
+
+                <span className={`${visNext && s.visible}`}
+                      onClick={() => onChangePage(pageNextAcc)}>...</span>
+
+                <span className={`${visNext && s.visible}`}
+                      onClick={() => onChangePage(pageNumbers)}>{pageNumbers}</span>
+
+                <span className={`${visNext && s.visible}`}
+                      onClick={() => onChangePage(currentPage + 1)}>Next</span>
+            </div>
         </div>
     )
 }
