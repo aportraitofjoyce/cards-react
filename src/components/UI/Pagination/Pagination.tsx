@@ -6,15 +6,14 @@ type PaginationProps = {
     countPerPage: number,
     currentPage: number,
     onChangePage: (page: number) => void
-    acc?: number
+    step?: number
 }
 
-export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage, acc = 10}: PaginationProps) => {
-    const [visPre, setVisPre] = useState(false)
-    const [visNext, setVisNext] = useState(false)
+export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage, step = 10}: PaginationProps) => {
+    const [prevIsHidden, setPrevIsHidden] = useState(false)
+    const [nextIsHidden, setNextIsHidden] = useState(false)
 
     let pageNumbers: number = Math.ceil(totalCount / countPerPage)
-
     let pages = []
     for (let i = 1; i <= pageNumbers; i++) {
         pages.push(i)
@@ -22,45 +21,45 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
 
     const previousPage = currentPage !== 1 ? currentPage - 1 : 1
     const nextPage = currentPage !== pageNumbers ? currentPage + 1 : pageNumbers
-    let pageNextAcc = (currentPage + acc) > pageNumbers ? pageNumbers : currentPage + acc
-    let pagePreviousAcc = (currentPage - acc) < 1 ? 1 : currentPage - acc
+    let pageNextStep = (currentPage + step) > pageNumbers ? pageNumbers : currentPage + step
+    let pagePreviousStep = (currentPage - step) < 1 ? 1 : currentPage - step
 
     useEffect(() => {
-        previousPage === currentPage ? setVisPre(true) : setVisPre(false)
-        nextPage === currentPage ? setVisNext(true) : setVisNext(false)
+        previousPage === currentPage ? setPrevIsHidden(true) : setPrevIsHidden(false)
+        nextPage === currentPage ? setNextIsHidden(true) : setNextIsHidden(false)
     }, [currentPage, nextPage, previousPage])
 
     if (isNaN(pageNumbers) || totalCount === 0) {
-        return <div/>
+        return <></>
     }
 
     return (
         <div className={s.wrapper}>
             <div className={s.container}>
-                <span className={`${visPre && s.visible}`}
+                <span className={`${prevIsHidden && s.hidden}`}
                       onClick={() => onChangePage(currentPage - 1)}>Prev</span>
 
-                <span className={`${visPre && s.visible}`}
-                      onClick={() => onChangePage(1)}>1</span>
+                <span className={`${prevIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(1)}>Start</span>
 
-                <span className={`${visPre && s.visible}`}
-                      onClick={() => onChangePage(pagePreviousAcc)}>...</span>
+                <span className={`${prevIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(pagePreviousStep)}>...</span>
 
-                <span className={`${visPre && s.visible}`}
-                      onClick={() => onChangePage(previousPage)}>{previousPage}</span>
+                <span className={`${prevIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(previousPage)}>{previousPage !== currentPage && previousPage}</span>
 
                 <span className={s.active}>{currentPage}</span>
 
-                <span className={`${visNext && s.visible}`}
-                      onClick={() => onChangePage(nextPage)}>{nextPage}</span>
+                <span className={`${nextIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(nextPage)}>{nextPage !== currentPage && nextPage}</span>
 
-                <span className={`${visNext && s.visible}`}
-                      onClick={() => onChangePage(pageNextAcc)}>...</span>
+                <span className={`${nextIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(pageNextStep)}>...</span>
 
-                <span className={`${visNext && s.visible}`}
-                      onClick={() => onChangePage(pageNumbers)}>{pageNumbers}</span>
+                <span className={`${nextIsHidden && s.hidden}`}
+                      onClick={() => onChangePage(pageNumbers)}>End</span>
 
-                <span className={`${visNext && s.visible}`}
+                <span className={`${nextIsHidden && s.hidden}`}
                       onClick={() => onChangePage(currentPage + 1)}>Next</span>
             </div>
         </div>

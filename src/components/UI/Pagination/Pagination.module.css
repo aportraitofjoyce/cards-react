@@ -20,6 +20,7 @@
 
 .container span.active {
     background: var(--primary);
+    cursor: default;
 }
 
 .container span:hover {
@@ -30,6 +31,6 @@
     opacity: 1;
 }
 
-.visible {
-    visibility: hidden;
+.container span.hidden {
+    display: none;
 }
