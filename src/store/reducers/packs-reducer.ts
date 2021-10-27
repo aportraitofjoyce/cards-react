@@ -3,34 +3,32 @@ import {
     DeleteCardsPackData,
     GetCardPacksQueryParams,
     NewCardsPackData,
-    packsAPI, UpdateCardsPackData
+    packsAPI,
+    UpdateCardsPackData
 } from '../../api/packs-api'
 import {AppDispatch, ThunkType} from '../store'
-import {setAppInfo, setAppIsLoading} from './app-reducer'
+import {setAppIsLoading} from './app-reducer'
 import {errorsHandler} from '../../utils/errors'
 
 enum PACKS_ACTIONS_TYPES {
     SET_CARD_PACKS = 'PACKS/SET_CARD_PACKS',
 }
 
-export type PacksActionsTypes =
-    | ReturnType<typeof setCardPacks>
+export type PacksActionsTypes = ReturnType<typeof setCardPacks>
 
-export type PacksInitialState = CardsPackResponse
+export type PacksInitialState = {
+    cardsInfo: CardsPackResponse | null
+}
 
 const initialState: PacksInitialState = {
-    cardPacks: [],
-    cardPacksTotalCount: 0,
-    maxCardsCount: 0,
-    minCardsCount: 0,
-    page: 1,
-    pageCount: 10,
+    cardsInfo: null
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
     switch (action.type) {
         case PACKS_ACTIONS_TYPES.SET_CARD_PACKS:
-            return {...state, ...action.payload}
+            return {...state, cardsInfo: action.payload}
+
         default:
             return state
     }
@@ -46,7 +44,6 @@ export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (disp
         dispatch(setAppIsLoading(true))
         const response = await packsAPI.getCardPacks(payload)
         dispatch(setCardPacks(response.data))
-        dispatch(setAppInfo('All packs are loaded!'))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
