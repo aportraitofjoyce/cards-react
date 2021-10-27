@@ -1,10 +1,16 @@
-import {CardsPackResponse, GetCardPacksQueryParams, packsAPI} from '../../api/packs-api'
-import {AppDispatch, RootState} from '../store'
+import {
+    CardsPackResponse,
+    DeleteCardsPackData,
+    GetCardPacksQueryParams,
+    NewCardsPackData,
+    packsAPI, UpdateCardsPackData
+} from '../../api/packs-api'
+import {AppDispatch, ThunkType} from '../store'
 import {setAppInfo, setAppIsLoading} from './app-reducer'
 import {errorsHandler} from '../../utils/errors'
 
 enum PACKS_ACTIONS_TYPES {
-    SET_CARD_PACKS = 'PACKS/SET_CARD_PACKS'
+    SET_CARD_PACKS = 'PACKS/SET_CARD_PACKS',
 }
 
 export type PacksActionsTypes =
@@ -35,13 +41,48 @@ const setCardPacks = (payload: CardsPackResponse) => ({
     payload
 } as const)
 
-export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppIsLoading(true))
-        const isLoggedIn = getState().auth.isLoggedIn
         const response = await packsAPI.getCardPacks(payload)
         dispatch(setCardPacks(response.data))
         dispatch(setAppInfo('All packs are loaded!'))
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const createCardsPack = (payload: NewCardsPackData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await packsAPI.createCardsPack(payload)
+        await dispatch(fetchCardPacks())
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const deleteCardsPack = (payload: DeleteCardsPackData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await packsAPI.deleteCardsPack(payload)
+        await dispatch(fetchCardPacks())
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const updateCardsPack = (payload: UpdateCardsPackData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await packsAPI.updateCardsPack(payload)
+        await dispatch(fetchCardPacks())
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {

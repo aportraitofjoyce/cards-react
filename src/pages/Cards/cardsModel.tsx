@@ -4,7 +4,7 @@ import {PATH} from '../../routes/routes'
 import {TableModel} from '../../components/UI/Table/Table'
 import {CardsPack} from '../../api/packs-api'
 
-export const cardsModel = (add: () => void, remove: (id: number) => void, update: (id: number) => void): TableModel[] => [
+export const cardsModel = (add: () => void, remove: (id: string) => void, update: (id: string) => void): TableModel[] => [
     {
         title: index => <div key={'question-title-' + index}>Question</div>,
         render: (dataItem: CardsPack) => <div key={'question-cell-' + dataItem._id}>{dataItem.name}</div>

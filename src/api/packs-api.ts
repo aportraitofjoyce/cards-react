@@ -16,7 +16,7 @@ export type CardsPack = {
     user_id: string
     user_name: string
     __v: number
-    _id: number
+    _id: string
 }
 
 export type CardsPackResponse = {
@@ -41,15 +41,19 @@ export type GetCardPacksQueryParams = {
 export type NewCardsPackData = {
     cardsPack: {
         name: string
-        private: boolean
+        private?: boolean
     }
 }
 
 export type UpdateCardsPackData = {
-    cardPack: {
+    cardsPack: {
         _id: string
         name: string
     }
+}
+
+export type DeleteCardsPackData = {
+    id: string
 }
 
 export const packsAPI = {
@@ -59,7 +63,7 @@ export const packsAPI = {
     createCardsPack: (payload: NewCardsPackData) => instance
         .post<NewCardsPackData, AxiosResponse<CardsPack>>('/cards/pack', payload),
 
-    deleteCardsPack: (payload: { id: string }) => instance
+    deleteCardsPack: (payload: DeleteCardsPackData) => instance
         .delete<CardsPack>('/cards/pack', {params: payload}),
 
     updateCardsPack: (payload: UpdateCardsPackData) => instance

@@ -4,10 +4,14 @@ import {Link} from 'react-router-dom'
 import {TableModel} from '../../components/UI/Table/Table'
 import {CardsPack} from '../../api/packs-api'
 
-export const packsModel = (add: () => void, remove: (id: number) => void, update: (id: number) => void): TableModel[] => [
+export const packsModel = (add: () => void, remove: (id: string) => void, update: (id: string) => void): TableModel[] => [
     {
-        title: index => <div key={'name-title-' + index}>Name</div>,
+        title: index => <div key={'name-title-' + index}>Pack Name</div>,
         render: (dataItem: CardsPack) => <div key={'name-cell-' + dataItem._id}>{dataItem.name}</div>
+    },
+    {
+        title: index => <div key={'userName-title-' + index}>User Name</div>,
+        render: (dataItem: CardsPack) => <div key={'name-cell-' + dataItem.user_name}>{dataItem.user_name}</div>
     },
     {
         title: index => <div key={'cardsCount-title-' + index}>Cards count</div>,
