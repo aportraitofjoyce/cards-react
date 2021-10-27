@@ -19,6 +19,7 @@ import {Input} from '../../components/UI/Input/Input'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
 import {Range} from 'rc-slider'
 import {Select} from '../../components/UI/Select/Select'
+import s from './Cards.module.css'
 
 export const Cards: FC = () => {
     const dispatch = useDispatch()
@@ -91,10 +92,10 @@ export const Cards: FC = () => {
     return (
         <div>
             <h1>Cards</h1>
-            {currentCardsPack && <>
+            {currentCardsPack && <div style={{margin: '40px 0'}}>
 				<p>Pack owner: {currentCardsPack.user_name}</p>
 				<p>Pack name: {currentCardsPack.name}</p>
-			</>}
+			</div>}
 
             <label htmlFor='cards-question-search'>
                 Question Search
@@ -115,16 +116,22 @@ export const Cards: FC = () => {
             <Range value={rangeValues}
                    marks={rangeMarks}
                    max={6}
-                   onChange={onRangeChangeHandler}/>
+                   onChange={onRangeChangeHandler}
+                   style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
 
             <Table model={model} data={cards}/>
 
-            <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+            <div className={s.paginationContainer}>
+                <Pagination totalCount={cardsTotalCount}
+                            countPerPage={pageCount}
+                            currentPage={page}
+                            onChangePage={onPageChangeHandler}/>
 
-            <Pagination totalCount={cardsTotalCount}
-                        countPerPage={pageCount}
-                        currentPage={page}
-                        onChangePage={onPageChangeHandler}/>
+                <div>
+                    <span style={{paddingRight: 16}}> Show on page:</span>
+                    <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+                </div>
+            </div>
         </div>
     )
 }

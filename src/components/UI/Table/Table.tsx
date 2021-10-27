@@ -14,18 +14,21 @@ export const Table: FC<TableProps> = props => {
     const {model, data} = props
 
     return (
-        <table>
-            <thead>
-            <tr>{model.map((m, index) => m.header(index))}</tr>
-            </thead>
+        <div style={{overflowX: 'auto'}}>
+            <table>
+                <thead>
+                <tr>{model.map((m, index) => m.header(index))}</tr>
+                </thead>
 
-            <tbody>
-            {data.map((item: any, index: number) => (
-                <tr key={'row' + (item._id || index)}>
-                    {model.map(m => m.body(item))}
-                </tr>
-            ))}
-            </tbody>
-        </table>
+                <tbody>
+                {data.map((item: any, index: number) => (
+                    <tr key={'row' + (item._id || index)}>
+                        {model.map(m => m.body(item))}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </div>
+
     )
 }
