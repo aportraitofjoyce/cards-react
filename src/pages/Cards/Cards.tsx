@@ -1,13 +1,12 @@
 import React, {FC, useEffect} from 'react'
 import {cardsModel} from './cardsModel'
-import {fetchCardPacks} from '../../store/reducers/packs-reducer'
 import {useDispatch} from 'react-redux'
 import {fetchCards} from '../../store/reducers/cards-reducer'
-
+import {useParams} from 'react-router-dom'
 
 export const Cards: FC = () => {
     const dispatch = useDispatch()
-    //const cards = useTypedSelector(state => state.packs.packs)
+
     const model = cardsModel(
         () => {
         },
@@ -17,9 +16,12 @@ export const Cards: FC = () => {
         }
     )
 
+    const {id} = useParams<{id: string}>()
+
     useEffect(() => {
-        dispatch(fetchCards())
-    }, [])
+        dispatch(fetchCards({cardsPack_id: id}))
+    }, [id])
+
 
     return (
         <div>

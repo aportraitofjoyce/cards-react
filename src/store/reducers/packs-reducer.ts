@@ -39,7 +39,7 @@ const initialState: PacksInitialState = {
     maxCardsCount: 100,
     page: 1,
     pageCount: 10,
-    privatePacks: false
+    privatePacks: false,
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
@@ -107,7 +107,7 @@ export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (disp
             pageCount: packs.pageCount,
             min: packs.minCardsCount,
             max: packs.maxCardsCount,
-            //packName: payload?.packName || undefined,
+            packName: payload?.packName || undefined,
             user_id: userID || undefined
         })
         dispatch(setCardPacks(response.data.cardPacks))

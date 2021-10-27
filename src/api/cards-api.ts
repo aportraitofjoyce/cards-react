@@ -17,13 +17,13 @@ export type Card = {
 }
 
 export type CardsResponse = {
-    cards?: Card[]
-    cardsTotalCount?: number
-    maxGrade?: number
-    minGrade?: number
-    page?: number
-    pageCount?: number
-    packUserId?: string
+    cards: Card[]
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    page: number
+    pageCount: number
+    packUserId: string
 }
 
 export type GetCardsQueryParams = {

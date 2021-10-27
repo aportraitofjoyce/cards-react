@@ -61,30 +61,28 @@ export const Packs: FC = () => {
 
     const onSelectChangeHandler = (option: string) => dispatch(setPacksCountOnPage({count: Number(option)}))
 
-    const onRangeChangeHandler = (values: number[]) => {
-        setRangeValues(values)
-        debouncedRange(values)
-    }
-
     const onPrivateChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setPrivatePacks({value: e.currentTarget.checked}))
         setIsPrivatePacks(e.currentTarget.checked)
     }
 
+    const onRangeChangeHandler = (values: number[]) => {
+        setRangeValues(values)
+        debouncedRange(values)
+    }
+
     const debouncedRange = useCallback(_.debounce(values => dispatch(setMinMaxCardsCount({values: values})), 500), [])
 
-    const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)
+    const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.currentTarget.value)
+        debouncedSearch(e.currentTarget.value)
+    }
 
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
 
     useEffect(() => {
         dispatch(fetchCardPacks())
     }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks])
-
-    useEffect(() => {
-        debugger
-        debouncedSearch(searchValue)
-    }, [searchValue])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
@@ -121,34 +119,4 @@ export const Packs: FC = () => {
                    data={cardPacks}/>
         </div>
     )
-}
-
-
-{/*<Range values={rangeValues}
-                   onChange={values => onRangeChangeHandler(values)}
-                   min={0}
-                   max={120}
-                   renderTrack={({props, children}) => (
-                <div
-                    {...props}
-                    style={{
-                        ...props.style,
-                        height: '6px',
-                        width: '100%',
-                        backgroundColor: '#ccc'
-                    }}
-                >
-                    {children}
-                </div>
-            )} renderThumb={({props}) => (
-                <div
-                    {...props}
-                    style={{
-                        ...props.style,
-                        height: '42px',
-                        width: '42px',
-                        backgroundColor: '#999'
-                    }}
-                />
-            )}/>*/
 }
