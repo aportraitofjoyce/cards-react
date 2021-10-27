@@ -1,24 +1,35 @@
 import React, {ChangeEvent, FC, useCallback, useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {createCardsPack, deleteCardsPack, fetchCardPacks, updateCardsPack} from '../../store/reducers/packs-reducer'
+import {
+    createCardsPack,
+    deleteCardsPack,
+    fetchCardPacks,
+    setPacksCountOnPage,
+    updateCardsPack
+} from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
 import {Table} from '../../components/UI/Table/Table'
 import {useTypedSelector} from '../../hooks/hooks'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
 import {Input} from '../../components/UI/Input/Input'
 import _ from 'lodash'
-import {CardsPackResponse} from '../../api/packs-api'
-
 import {packsModel} from './packsModel'
 import {Range} from 'rc-slider'
+import {Redirect} from 'react-router-dom'
+import {PATH} from '../../routes/routes'
+import {Select} from '../../components/UI/Select/Select'
 
-type PacksProps = {
-    cardsInfo: CardsPackResponse
-}
-
-export const Packs: FC<PacksProps> = props => {
+export const Packs: FC = () => {
     const dispatch = useDispatch()
-    const {page, pageCount, cardPacksTotalCount, minCardsCount, maxCardsCount, cardPacks} = props.cardsInfo
+    const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
+    const {
+        page,
+        pageCount,
+        cardPacksTotalCount,
+        minCardsCount,
+        maxCardsCount,
+        cardPacks
+    } = useTypedSelector(state => state.packs)
     const userID = useTypedSelector(state => state.auth.userInfo?._id)
 
     const [isPrivatePacks, setIsPrivatePacks] = useState(false)
@@ -46,7 +57,6 @@ export const Packs: FC<PacksProps> = props => {
 
     const onPrivateChangeHandler = async () => {
         !isPrivatePacks ? await dispatch(fetchCardPacks({user_id: userID})) : await dispatch(fetchCardPacks())
-        //await dispatch(fetchCardPacks({user_id: userID}))
         setIsPrivatePacks(!isPrivatePacks)
     }
 
@@ -67,11 +77,15 @@ export const Packs: FC<PacksProps> = props => {
         dispatch(fetchCardPacks({page: page}))
     }, [])
 
+    useEffect(() => {
+        dispatch(fetchCardPacks())
+    }, [])
 
     useEffect(() => {
         searchValue && debouncedSearch(searchValue)
     }, [searchValue])
 
+    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div>
@@ -120,6 +134,10 @@ export const Packs: FC<PacksProps> = props => {
                     }}
                 />
             )}/>*/}
+
+            <Select options={[5, 10, 25]} onChangeOption={option => {
+                dispatch(setPacksCountOnPage({count: Number(option)}))
+            }}/>
 
             <Pagination totalCount={cardPacksTotalCount}
                         countPerPage={pageCount}

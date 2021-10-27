@@ -8,7 +8,8 @@ import {NewPassword} from '../pages/PasswordPages/NewPassword/NewPassword'
 import {CheckEmail} from '../pages/PasswordPages/CheckEmail/CheckEmail'
 import {Home} from '../pages/Home/Home'
 import {Cards} from '../pages/Cards/Cards'
-import {PacksContainer} from '../pages/Packs/PacksContainer'
+import {Card} from '../pages/Cards/Card'
+import {Packs} from '../pages/Packs/Packs'
 
 export enum PATH {
     HOME = '/',
@@ -23,6 +24,7 @@ export enum PATH {
     CHECK_EMAIL = '/check-email',
     PACKS = '/packs',
     CARDS = '/cards',
+    CARD = '/cards/:id',
 }
 
 type Routes = {
@@ -39,7 +41,8 @@ export const publicRoutes: Routes[] = [
     {path: PATH.PASSWORD_RECOVERY, component: PasswordRecovery},
     {path: PATH.NEW_PASSWORD_WITH_TOKEN, component: NewPassword},
     {path: PATH.CHECK_EMAIL, component: CheckEmail},
-    {path: PATH.PACKS, component: PacksContainer},
+    {path: PATH.PACKS, component: Packs},
     {path: PATH.CARDS, component: Cards},
+    {path: PATH.CARD, component: Card},
     {path: PATH.ERROR, component: Error},
 ]
