@@ -4,7 +4,9 @@ import {
     createCardsPack,
     deleteCardsPack,
     fetchCardPacks,
-    setPacksCountOnPage,
+    setCurrentPage,
+    setMinMaxCardsCount,
+    setPacksCountOnPage, setPrivatePacks,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -28,11 +30,11 @@ export const Packs: FC = () => {
         cardPacksTotalCount,
         minCardsCount,
         maxCardsCount,
-        cardPacks
+        cardPacks,
+        privatePacks
     } = useTypedSelector(state => state.packs)
-    const userID = useTypedSelector(state => state.auth.userInfo?._id)
 
-    const [isPrivatePacks, setIsPrivatePacks] = useState(false)
+    const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
 
@@ -55,34 +57,33 @@ export const Packs: FC = () => {
         },
     )
 
-    const onPrivateChangeHandler = async () => {
-        !isPrivatePacks ? await dispatch(fetchCardPacks({user_id: userID})) : await dispatch(fetchCardPacks())
-        setIsPrivatePacks(!isPrivatePacks)
-    }
+    const onPageChangeHandler = (page: number) => dispatch(setCurrentPage({page}))
 
-    const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
-    const debouncedRange = useCallback(_.throttle(values => dispatch(fetchCardPacks({
-        min: values[0],
-        max: values[1]
-    })), 2000), [])
-
-    const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)
+    const onSelectChangeHandler = (option: string) => dispatch(setPacksCountOnPage({count: Number(option)}))
 
     const onRangeChangeHandler = (values: number[]) => {
         setRangeValues(values)
         debouncedRange(values)
     }
 
-    const onPageChangeHandler = useCallback((page: number) => {
-        dispatch(fetchCardPacks({page: page}))
-    }, [])
+    const onPrivateChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setPrivatePacks({value: e.currentTarget.checked}))
+        setIsPrivatePacks(e.currentTarget.checked)
+    }
+
+    const debouncedRange = useCallback(_.debounce(values => dispatch(setMinMaxCardsCount({values: values})), 500), [])
+
+    const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)
+
+    const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
 
     useEffect(() => {
         dispatch(fetchCardPacks())
-    }, [])
+    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks])
 
     useEffect(() => {
-        searchValue && debouncedSearch(searchValue)
+        debugger
+        debouncedSearch(searchValue)
     }, [searchValue])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
@@ -90,6 +91,7 @@ export const Packs: FC = () => {
     return (
         <div>
             <h1>Packs</h1>
+
             <label htmlFor='packs-search'>
                 Search
                 <Input id={'packs-search'}
@@ -103,11 +105,26 @@ export const Packs: FC = () => {
                 Show private
             </Checkbox>
 
-            <Range value={rangeValues}
-                   onChange={values => onRangeChangeHandler(values)}
-                   marks={rangeMarks}/>
 
-            {/*<Range values={rangeValues}
+            <Range value={rangeValues}
+                   marks={rangeMarks}
+                   onChange={onRangeChangeHandler}/>
+
+            <Select options={[10, 25, 50]} onChangeOption={onSelectChangeHandler}/>
+
+            <Pagination totalCount={cardPacksTotalCount}
+                        countPerPage={pageCount}
+                        currentPage={page}
+                        onChangePage={onPageChangeHandler}/>
+
+            <Table model={model}
+                   data={cardPacks}/>
+        </div>
+    )
+}
+
+
+{/*<Range values={rangeValues}
                    onChange={values => onRangeChangeHandler(values)}
                    min={0}
                    max={120}
@@ -133,19 +150,5 @@ export const Packs: FC = () => {
                         backgroundColor: '#999'
                     }}
                 />
-            )}/>*/}
-
-            <Select options={[5, 10, 25]} onChangeOption={option => {
-                dispatch(setPacksCountOnPage({count: Number(option)}))
-            }}/>
-
-            <Pagination totalCount={cardPacksTotalCount}
-                        countPerPage={pageCount}
-                        currentPage={page}
-                        onChangePage={onPageChangeHandler}/>
-
-            <Table model={model}
-                   data={cardPacks}/>
-        </div>
-    )
+            )}/>*/
 }

@@ -5,7 +5,7 @@ type DefaultSelectPropsType = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectE
 
 type SuperSelectPropsType = DefaultSelectPropsType & {
     options: number[] | string[]
-    onChangeOption: (option: any) => void
+    onChangeOption: (option: string) => void
 }
 
 export const Select: FC<SuperSelectPropsType> = props => {
