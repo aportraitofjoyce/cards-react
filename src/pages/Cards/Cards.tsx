@@ -11,7 +11,7 @@ import {
     setMinMaxGrade,
     updateCard
 } from '../../store/reducers/cards-reducer'
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {Table} from '../../components/UI/Table/Table'
 import {useTypedSelector} from '../../hooks/hooks'
 import _ from 'lodash'
@@ -20,8 +20,20 @@ import {Pagination} from '../../components/UI/Pagination/Pagination'
 import {Range} from 'rc-slider'
 import {Select} from '../../components/UI/Select/Select'
 import s from './Cards.module.css'
+import {PATH} from '../../routes/routes'
+import queryString from 'querystring'
+
+type CardsQueryParams = {
+    page?: number
+    pageCount?: number
+    minGrade?: number
+    maxGrade?: number
+    searchQuestionValue?: string
+    searchAnswerValue?: string
+}
 
 export const Cards: FC = () => {
+    const history = useHistory()
     const dispatch = useDispatch()
     const {id} = useParams<{ id: string }>()
     const {
@@ -88,6 +100,22 @@ export const Cards: FC = () => {
     useEffect(() => {
         id && dispatch(fetchCards())
     }, [page, pageCount, minGrade, maxGrade])
+
+    useEffect(() => {
+        const queryURL: CardsQueryParams = {
+            page,
+            pageCount,
+            minGrade,
+            maxGrade,
+            searchQuestionValue,
+            searchAnswerValue
+        }
+
+        history.push({
+            pathname: PATH.CARDS,
+            search: queryString.stringify(queryURL)
+        })
+    }, [page, pageCount, minGrade, maxGrade, searchQuestionValue, searchAnswerValue])
 
     return (
         <div>

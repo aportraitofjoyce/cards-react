@@ -18,12 +18,25 @@ import {Input} from '../../components/UI/Input/Input'
 import _ from 'lodash'
 import {packsModel} from './packsModel'
 import {Range} from 'rc-slider'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useHistory, useLocation} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {Select} from '../../components/UI/Select/Select'
 import s from './Packs.module.css'
+import * as queryString from 'querystring'
+
+type PacksQueryParams = {
+    page?: number
+    pageCount?: number
+    minCardsCount?: number
+    maxCardsCount?: number
+    privatePacks?: boolean
+    searchValue?: string
+}
 
 export const Packs: FC = () => {
+    const location = useLocation()
+    const history = useHistory()
+
     const dispatch = useDispatch()
     const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
     const {
@@ -83,8 +96,26 @@ export const Packs: FC = () => {
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
 
     useEffect(() => {
+        const parsedURLParams = queryString.parse(location.search)
+        console.log(parsedURLParams)
         dispatch(fetchCardPacks())
     }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks])
+
+    useEffect(() => {
+        const queryURL: PacksQueryParams = {
+            page,
+            pageCount,
+            privatePacks,
+            minCardsCount,
+            maxCardsCount,
+            searchValue
+        }
+
+        history.push({
+            pathname: PATH.PACKS,
+            search: queryString.stringify(queryURL)
+        })
+    }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
