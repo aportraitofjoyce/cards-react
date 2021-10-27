@@ -1,7 +1,6 @@
 import {instance} from './axios-instance'
 import axios, {AxiosResponse} from 'axios'
 
-// Requests
 export type LoginData = {
     email: string,
     password: string,
@@ -14,8 +13,8 @@ export type RegistrationsData = {
 }
 
 export type ChangeUsersInfoData = {
-    name: string
-    avatar: string
+    name?: string
+    avatar?: string
 }
 
 export type PasswordRecoveryData = {
@@ -29,7 +28,6 @@ export type NewPasswordData = {
     resetPasswordToken: string | undefined
 }
 
-// Responses
 type LogoutResponse = {
     info: string
     error?: string
@@ -53,7 +51,6 @@ export type PasswordResponse = {
     error: string
 }
 
-// API
 export const authAPI = {
     registration: (payload: RegistrationsData) => instance
         .post<RegistrationsData, AxiosResponse<{ error?: string }>>('/auth/register', payload),

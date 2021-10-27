@@ -1,22 +1,19 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect} from 'react'
 import {useTypedSelector} from '../../hooks/hooks'
 import {useDispatch} from 'react-redux'
 import {changeUsersInfo, checkAuth} from '../../store/reducers/auth-reducer'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
-import {Pagination} from '../../components/UI/Pagination/Pagination'
+import {EditableElement} from '../../components/UI/EditableElement/EditableElement'
+import s from './Profile.module.css'
 
 export const Profile: FC = () => {
     const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
     const {userInfo} = useTypedSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const [newName, setNewName] = useState('')
-    const [newAvatar, setNewAvatar] = useState('')
-
-    const onSubmitHandler = () => {
-        dispatch(changeUsersInfo({name: newName, avatar: newAvatar}))
-    }
+    const onNameChangeHandler = (name: string) => dispatch(changeUsersInfo({name}))
+    const onAvatarChangeHandler = (avatar: string) => dispatch(changeUsersInfo({avatar}))
 
     useEffect(() => {
         dispatch(checkAuth())
@@ -28,21 +25,21 @@ export const Profile: FC = () => {
         <div>
             <h1>Profile</h1>
 
-            {userInfo && <div>
-				<img src={userInfo.avatar}
-				     alt={userInfo.name}
-				     style={{maxHeight: 400}}/>
-				<div>{userInfo.name}</div>
-				<div>{userInfo.publicCardPacksCount}</div>
+            {userInfo &&
+			<div className={s.container}>
+				<EditableElement defaultValue={userInfo.avatar || ''}
+				                 onEditHandler={onAvatarChangeHandler}>
+					<img src={userInfo.avatar} alt={userInfo.name} className={s.avatar}/>
+				</EditableElement>
 
-				<div>
-					<input type='text' placeholder={'New Name'} value={newName}
-					       onChange={e => setNewName(e.currentTarget.value)}/>
+                <div className={s.infoContainer}>
+	                <EditableElement defaultValue={userInfo.name}
+	                                 onEditHandler={onNameChangeHandler}>
+		                <h2>{userInfo.name}</h2>
+	                </EditableElement>
 
-					<input type='text' placeholder={'New Avatar URL'} value={newAvatar}
-					       onChange={e => setNewAvatar(e.currentTarget.value)}/>
-					<button onClick={onSubmitHandler}>Change info</button>
-				</div>
+	                <div>Number of Card Packs: {userInfo.publicCardPacksCount}</div>
+                </div>
 			</div>}
         </div>
     )
