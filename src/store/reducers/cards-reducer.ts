@@ -8,18 +8,21 @@ import {
     UpdateCardData
 } from '../../api/cards-api'
 import {AppDispatch, RootState, ThunkType} from '../store'
-import {setAppInfo, setAppIsLoading} from './app-reducer'
+import {setAppIsLoading} from './app-reducer'
 import {errorsHandler} from '../../utils/errors'
-import {DeleteCardsPackData, NewCardsPackData, packsAPI, UpdateCardsPackData} from '../../api/packs-api'
-import {fetchCardPacks} from './packs-reducer'
 
 enum CARDS_ACTIONS_TYPES {
-    SET_CARDS = 'CARDS/SET_CARDS'
+    SET_CARDS = 'CARDS/SET_CARDS',
+    SET_CURRENT_CARDS_PACK_ID = 'CARDS/SET_CURRENT_CARDS_PACK_ID',
 }
 
-type CardsActions = ReturnType<typeof setCards>
+type CardsActions =
+    | ReturnType<typeof setCards>
+    | ReturnType<typeof setCurrentCardsPackID>
 
-export type CardsInitialState = CardsResponse
+export type CardsInitialState = CardsResponse & {
+    currentCardsPackID: string
+}
 
 const initialState: CardsInitialState = {
     cards: [],
@@ -28,13 +31,16 @@ const initialState: CardsInitialState = {
     cardsTotalCount: 0,
     packUserId: '',
     minGrade: 0,
-    maxGrade: 0
+    maxGrade: 0,
+    currentCardsPackID: ''
 }
 
 export const cardsReducer = (state = initialState, action: CardsActions): CardsInitialState => {
     switch (action.type) {
         case CARDS_ACTIONS_TYPES.SET_CARDS:
             return {...state, cards: action.payload}
+        case CARDS_ACTIONS_TYPES.SET_CURRENT_CARDS_PACK_ID:
+            return {...state, currentCardsPackID: action.payload.id}
         default:
             return state
     }
@@ -45,12 +51,17 @@ const setCards = (payload: Card[]) => ({
     payload
 } as const)
 
+export const setCurrentCardsPackID = (payload: { id: string }) => ({
+    type: CARDS_ACTIONS_TYPES.SET_CURRENT_CARDS_PACK_ID,
+    payload
+} as const)
+
 export const fetchCards = (payload?: GetCardsQueryParams) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const {cards, cardsTotalCount, pageCount, page, minGrade, maxGrade, packUserId, currentCardsPackID} = getState().cards
     try {
         dispatch(setAppIsLoading(true))
-        const response = await cardsAPI.getCards(payload)
+        const response = await cardsAPI.getCards({cardsPack_id: currentCardsPackID, page, pageCount})
         dispatch(setCards(response.data.cards))
-        dispatch(setAppInfo('All cards are loaded!'))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
@@ -62,7 +73,7 @@ export const createCard = (payload?: NewCardData): ThunkType => async dispatch =
     try {
         dispatch(setAppIsLoading(true))
         await cardsAPI.createCard(payload)
-        //await dispatch(fetchCards())
+        await dispatch(fetchCards())
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
@@ -74,7 +85,7 @@ export const deleteCard = (payload: DeleteCardData): ThunkType => async dispatch
     try {
         dispatch(setAppIsLoading(true))
         await cardsAPI.deleteCard(payload)
-        //await dispatch(fetchCards())
+        await dispatch(fetchCards())
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
@@ -86,7 +97,7 @@ export const updateCard = (payload: UpdateCardData): ThunkType => async dispatch
     try {
         dispatch(setAppIsLoading(true))
         await cardsAPI.updateCard(payload)
-        //await dispatch(fetchCards())
+        await dispatch(fetchCards())
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
