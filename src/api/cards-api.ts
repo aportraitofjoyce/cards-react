@@ -38,8 +38,8 @@ export type GetCardsQueryParams = {
 export type NewCardData = {
     card: {
         cardsPack_id: string
-        question: string
-        answer: string
+        question?: string
+        answer?: string
         grade?: number
         shots?: number
         rating?: number
@@ -47,7 +47,7 @@ export type NewCardData = {
         questionImg?: string
         questionVideo?: string
         answerVideo?: string
-        type: string
+        type?: string
     }
 }
 
@@ -59,15 +59,19 @@ export type UpdateCardData = {
     }
 }
 
+export type DeleteCardData = {
+    id: string
+}
+
 export const cardsAPI = {
     getCards: (payload?: GetCardsQueryParams) => instance
         .get<CardsResponse>('/cards/card', {params: payload}),
 
-    createCard: (payload: NewCardData) => instance
+    createCard: (payload?: NewCardData) => instance
         .post<NewCardData, AxiosResponse<Card>>('/cards/card', payload),
 
-    deleteCard: (payload: { id: string }) => instance
-        .delete<Card>(`/cards/pack`, {params: payload}),
+    deleteCard: (payload: DeleteCardData) => instance
+        .delete<Card>(`/cards/card`, {params: payload}),
 
     updateCard: (payload: UpdateCardData) => instance
         .put<UpdateCardData, AxiosResponse<Card>>('/cards/card', payload),

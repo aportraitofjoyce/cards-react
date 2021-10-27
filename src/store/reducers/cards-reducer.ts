@@ -1,7 +1,17 @@
-import {Card, cardsAPI, CardsResponse, GetCardsQueryParams} from '../../api/cards-api'
-import {AppDispatch, RootState} from '../store'
+import {
+    Card,
+    cardsAPI,
+    CardsResponse,
+    DeleteCardData,
+    GetCardsQueryParams,
+    NewCardData,
+    UpdateCardData
+} from '../../api/cards-api'
+import {AppDispatch, RootState, ThunkType} from '../store'
 import {setAppInfo, setAppIsLoading} from './app-reducer'
 import {errorsHandler} from '../../utils/errors'
+import {DeleteCardsPackData, NewCardsPackData, packsAPI, UpdateCardsPackData} from '../../api/packs-api'
+import {fetchCardPacks} from './packs-reducer'
 
 enum CARDS_ACTIONS_TYPES {
     SET_CARDS = 'CARDS/SET_CARDS'
@@ -41,6 +51,42 @@ export const fetchCards = (payload?: GetCardsQueryParams) => async (dispatch: Ap
         const response = await cardsAPI.getCards(payload)
         dispatch(setCards(response.data.cards))
         dispatch(setAppInfo('All cards are loaded!'))
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const createCard = (payload?: NewCardData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await cardsAPI.createCard(payload)
+        //await dispatch(fetchCards())
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const deleteCard = (payload: DeleteCardData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await cardsAPI.deleteCard(payload)
+        //await dispatch(fetchCards())
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const updateCard = (payload: UpdateCardData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await cardsAPI.updateCard(payload)
+        //await dispatch(fetchCards())
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
