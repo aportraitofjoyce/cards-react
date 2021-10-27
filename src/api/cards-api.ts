@@ -28,6 +28,8 @@ export type CardsResponse = {
 
 export type GetCardsQueryParams = {
     cardsPack_id?: string
+    cardAnswer?: string
+    cardQuestion?: string
     min?: number
     max?: number
     sortCards?: string

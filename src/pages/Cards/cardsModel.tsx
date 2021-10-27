@@ -12,6 +12,10 @@ export const cardsModel = (add: () => void, remove: (id: string) => void, update
         render: (item: Card) => <div key={'answer-cell-' + item._id}>{item.answer}</div>
     },
     {
+        title: index => <div key={'grade-title-' + index}>Grade</div>,
+        render: (item: Card) => <div key={'grade-cell-' + item._id}>{item.grade}</div>
+    },
+    {
         title: index => <div key={'update-title-' + index}>Updated</div>,
         render: (item: Card) => <div key={'update-cell-' + item._id}>{item.updated.slice(5, 16)}</div>
     },

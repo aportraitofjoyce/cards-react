@@ -4,9 +4,10 @@ import {
     createCardsPack,
     deleteCardsPack,
     fetchCardPacks,
-    setCurrentPage,
     setMinMaxCardsCount,
-    setPacksCountOnPage, setPrivatePacks,
+    setPacksCountOnPage,
+    setPacksCurrentPage,
+    setPrivatePacks,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -57,7 +58,7 @@ export const Packs: FC = () => {
         },
     )
 
-    const onPageChangeHandler = (page: number) => dispatch(setCurrentPage({page}))
+    const onPageChangeHandler = (page: number) => dispatch(setPacksCurrentPage({page}))
 
     const onSelectChangeHandler = (option: string) => dispatch(setPacksCountOnPage({count: Number(option)}))
 
@@ -103,20 +104,19 @@ export const Packs: FC = () => {
                 Show private
             </Checkbox>
 
-
             <Range value={rangeValues}
                    marks={rangeMarks}
                    onChange={onRangeChangeHandler}/>
 
-            <Select options={[10, 25, 50]} onChangeOption={onSelectChangeHandler}/>
+            <Table model={model}
+                   data={cardPacks}/>
+
+            <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
 
             <Pagination totalCount={cardPacksTotalCount}
                         countPerPage={pageCount}
                         currentPage={page}
                         onChangePage={onPageChangeHandler}/>
-
-            <Table model={model}
-                   data={cardPacks}/>
         </div>
     )
 }

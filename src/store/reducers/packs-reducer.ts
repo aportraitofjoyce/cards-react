@@ -13,18 +13,18 @@ import {errorsHandler} from '../../utils/errors'
 
 enum PACKS_ACTIONS_TYPES {
     SET_CARD_PACKS = 'PACKS/SET_CARD_PACKS',
-    SET_CURRENT_PAGE = 'PACKS/SET_CURRENT_PAGE',
+    SET_PACKS_CURRENT_PAGE = 'PACKS/SET_PACKS_CURRENT_PAGE',
     SET_PACKS_COUNT_ON_PAGE = 'PACKS/SET_PACKS_COUNT_ON_PAGE',
-    SET_CARD_PACKS_TOTAL_COUNT = 'PACKS/SET_CARD_PACKS_TOTAL_COUNT',
+    SET_PACKS_TOTAL_COUNT = 'PACKS/SET_PACKS_TOTAL_COUNT',
     SET_MIN_MAX_CARDS_COUNT = 'PACKS/SET_MIN_MAX_CARDS_COUNT',
     SET_PRIVATE_PACKS = 'PACKS/SET_PRIVATE_PACKS',
 }
 
 export type PacksActionsTypes =
     | ReturnType<typeof setCardPacks>
-    | ReturnType<typeof setCurrentPage>
+    | ReturnType<typeof setPacksCurrentPage>
     | ReturnType<typeof setPacksCountOnPage>
-    | ReturnType<typeof setCardPacksTotalCount>
+    | ReturnType<typeof setPacksTotalCount>
     | ReturnType<typeof setMinMaxCardsCount>
     | ReturnType<typeof setPrivatePacks>
 
@@ -38,7 +38,7 @@ const initialState: PacksInitialState = {
     minCardsCount: 0,
     maxCardsCount: 100,
     page: 1,
-    pageCount: 10,
+    pageCount: 5,
     privatePacks: false,
 }
 
@@ -47,7 +47,7 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
         case PACKS_ACTIONS_TYPES.SET_CARD_PACKS:
             return {...state, cardPacks: action.payload}
 
-        case PACKS_ACTIONS_TYPES.SET_CURRENT_PAGE:
+        case PACKS_ACTIONS_TYPES.SET_PACKS_CURRENT_PAGE:
             return {...state, page: action.payload.page}
 
         case PACKS_ACTIONS_TYPES.SET_PACKS_COUNT_ON_PAGE:
@@ -56,7 +56,7 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
         case PACKS_ACTIONS_TYPES.SET_MIN_MAX_CARDS_COUNT:
             return {...state, minCardsCount: action.payload.values[0], maxCardsCount: action.payload.values[1]}
 
-        case PACKS_ACTIONS_TYPES.SET_CARD_PACKS_TOTAL_COUNT:
+        case PACKS_ACTIONS_TYPES.SET_PACKS_TOTAL_COUNT:
             return {...state, cardPacksTotalCount: action.payload.count}
 
         case PACKS_ACTIONS_TYPES.SET_PRIVATE_PACKS:
@@ -72,8 +72,8 @@ const setCardPacks = (payload: CardsPack[]) => ({
     payload
 } as const)
 
-export const setCurrentPage = (payload: { page: number }) => ({
-    type: PACKS_ACTIONS_TYPES.SET_CURRENT_PAGE,
+export const setPacksCurrentPage = (payload: { page: number }) => ({
+    type: PACKS_ACTIONS_TYPES.SET_PACKS_CURRENT_PAGE,
     payload
 } as const)
 
@@ -82,8 +82,8 @@ export const setPacksCountOnPage = (payload: { count: number }) => ({
     payload
 } as const)
 
-export const setCardPacksTotalCount = (payload: { count: number }) => ({
-    type: PACKS_ACTIONS_TYPES.SET_CARD_PACKS_TOTAL_COUNT,
+export const setPacksTotalCount = (payload: { count: number }) => ({
+    type: PACKS_ACTIONS_TYPES.SET_PACKS_TOTAL_COUNT,
     payload
 } as const)
 
@@ -110,10 +110,11 @@ export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (disp
             packName: payload?.packName || undefined,
             user_id: userID || undefined
         })
+
         dispatch(setCardPacks(response.data.cardPacks))
-        dispatch(setCurrentPage({page: response.data.page}))
+        dispatch(setPacksCurrentPage({page: response.data.page}))
         dispatch(setPacksCountOnPage({count: response.data.pageCount}))
-        dispatch(setCardPacksTotalCount({count: response.data.cardPacksTotalCount}))
+        dispatch(setPacksTotalCount({count: response.data.cardPacksTotalCount}))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
