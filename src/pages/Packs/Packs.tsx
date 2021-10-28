@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useCallback, useEffect, useState} from 'react'
+import React, {ChangeEvent, FC, useCallback, useEffect, useRef, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {
     createCardsPack,
@@ -53,6 +53,8 @@ export const Packs: FC = () => {
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
 
+    const ref = useRef<HTMLDivElement>(null)
+
     const rangeMarks = {
         0: {style: {fontSize: 16}, label: rangeValues[0]},
         100: {style: {fontSize: 16}, label: rangeValues[1]}
@@ -86,18 +88,17 @@ export const Packs: FC = () => {
         debouncedRange(values)
     }
 
-    const debouncedRange = useCallback(_.debounce(values => dispatch(setMinMaxCardsCount({values: values})), 500), [])
+    const debouncedRange = useCallback(_.debounce(values => dispatch(setMinMaxCardsCount({values: values})), 300), [])
 
     const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.currentTarget.value)
         debouncedSearch(e.currentTarget.value)
     }
 
-    const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 500), [])
+    const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
 
     useEffect(() => {
         const parsedURLParams = queryString.parse(location.search)
-        console.log(parsedURLParams)
         dispatch(fetchCardPacks())
     }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks])
 
@@ -117,10 +118,14 @@ export const Packs: FC = () => {
         })
     }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue])
 
+    useEffect(() => {
+        ref.current?.scrollIntoView({behavior: 'smooth'})
+    }, [page])
+
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
-        <div>
+        <div ref={ref}>
             <h1>Packs</h1>
 
             <label htmlFor='packs-search'>

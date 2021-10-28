@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useCallback, useEffect, useState} from 'react'
+import React, {ChangeEvent, FC, useCallback, useEffect, useRef, useState} from 'react'
 import {cardsModel} from './cardsModel'
 import {useDispatch} from 'react-redux'
 import {
@@ -48,6 +48,8 @@ export const Cards: FC = () => {
     const [searchQuestionValue, setSearchQuestionValue] = useState('')
     const [searchAnswerValue, setSearchAnswerValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minGrade, maxGrade])
+
+    const ref = useRef<HTMLDivElement>(null)
 
     const currentCardsPack = cardPacks.find(p => p._id === id)
 
@@ -102,6 +104,10 @@ export const Cards: FC = () => {
     }, [page, pageCount, minGrade, maxGrade])
 
     useEffect(() => {
+        ref.current?.scrollIntoView({behavior: 'smooth'})
+    }, [page])
+
+    /*useEffect(() => {
         const queryURL: CardsQueryParams = {
             page,
             pageCount,
@@ -115,10 +121,10 @@ export const Cards: FC = () => {
             pathname: PATH.CARDS,
             search: queryString.stringify(queryURL)
         })
-    }, [page, pageCount, minGrade, maxGrade, searchQuestionValue, searchAnswerValue])
+    }, [page, pageCount, minGrade, maxGrade, searchQuestionValue, searchAnswerValue])*/
 
     return (
-        <div>
+        <div ref={ref}>
             <h1>Cards</h1>
             {currentCardsPack && <div style={{margin: '40px 0'}}>
 				<p>Pack owner: {currentCardsPack.user_name}</p>

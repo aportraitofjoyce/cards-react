@@ -35,8 +35,8 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
 
     return (
         <div className={s.container}>
-                <span className={`${prevIsHidden && s.hidden}`}
-                      onClick={() => onChangePage(currentPage - 1)}>Prev</span>
+            <span className={`${prevIsHidden && s.hidden}`}
+                  onClick={() => onChangePage(currentPage - 1)}>Prev</span>
 
             <span className={`${prevIsHidden && s.hidden}`}
                   onClick={() => onChangePage(1)}>Start</span>
