@@ -11,7 +11,7 @@ import {
     setMinMaxGrade,
     updateCard
 } from '../../store/reducers/cards-reducer'
-import {useHistory, useParams} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import {Table} from '../../components/UI/Table/Table'
 import {useTypedSelector} from '../../hooks/hooks'
 import _ from 'lodash'
@@ -21,19 +21,8 @@ import {Range} from 'rc-slider'
 import {Select} from '../../components/UI/Select/Select'
 import s from './Cards.module.css'
 import {PATH} from '../../routes/routes'
-import queryString from 'querystring'
-
-type CardsQueryParams = {
-    page?: number
-    pageCount?: number
-    minGrade?: number
-    maxGrade?: number
-    searchQuestionValue?: string
-    searchAnswerValue?: string
-}
 
 export const Cards: FC = () => {
-    const history = useHistory()
     const dispatch = useDispatch()
     const {id} = useParams<{ id: string }>()
     const {
@@ -48,8 +37,7 @@ export const Cards: FC = () => {
     const [searchQuestionValue, setSearchQuestionValue] = useState('')
     const [searchAnswerValue, setSearchAnswerValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minGrade, maxGrade])
-
-    const ref = useRef<HTMLDivElement>(null)
+    const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
 
     const currentCardsPack = cardPacks.find(p => p._id === id)
 
@@ -104,68 +92,54 @@ export const Cards: FC = () => {
     }, [page, pageCount, minGrade, maxGrade])
 
     useEffect(() => {
-        ref.current?.scrollIntoView({behavior: 'smooth'})
+        paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [page])
 
-    /*useEffect(() => {
-        const queryURL: CardsQueryParams = {
-            page,
-            pageCount,
-            minGrade,
-            maxGrade,
-            searchQuestionValue,
-            searchAnswerValue
-        }
-
-        history.push({
-            pathname: PATH.CARDS,
-            search: queryString.stringify(queryURL)
-        })
-    }, [page, pageCount, minGrade, maxGrade, searchQuestionValue, searchAnswerValue])*/
-
     return (
-        <div ref={ref}>
-            <h1>Cards</h1>
-            {currentCardsPack && <div style={{margin: '40px 0'}}>
-				<p>Pack owner: {currentCardsPack.user_name}</p>
-				<p>Pack name: {currentCardsPack.name}</p>
-			</div>}
+        <div>
+            <h1 ref={paginationScrollTopRef}>Cards</h1>
 
-            <label htmlFor='cards-question-search'>
-                Question Search
-                <Input id={'cards-question-search'}
-                       placeholder={'Enter question...'}
-                       value={searchQuestionValue}
-                       onChange={onQuestionSearchChangeHandler}/>
-            </label>
-
-            <label htmlFor='cards-answer-search'>
-                Answer Search
-                <Input id={'cards-answer-search'}
-                       placeholder={'Enter answer...'}
-                       value={searchAnswerValue}
-                       onChange={onAnswerSearchChangeHandler}/>
-            </label>
-
-            <Range value={rangeValues}
-                   marks={rangeMarks}
-                   max={6}
-                   onChange={onRangeChangeHandler}
-                   style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
-
-            <Table model={model} data={cards}/>
-
-            <div className={s.paginationContainer}>
-                <Pagination totalCount={cardsTotalCount}
-                            countPerPage={pageCount}
-                            currentPage={page}
-                            onChangePage={onPageChangeHandler}/>
-
-                <div>
-                    <span style={{paddingRight: 16}}> Show on page:</span>
-                    <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+            {currentCardsPack ? <>
+                <div style={{margin: '40px 0'}}>
+                    <p>Pack owner: {currentCardsPack.user_name}</p>
+                    <p>Pack name: {currentCardsPack.name}</p>
                 </div>
-            </div>
+
+                <label htmlFor='cards-question-search'>
+                    Question Search
+                    <Input id={'cards-question-search'}
+                           placeholder={'Enter question...'}
+                           value={searchQuestionValue}
+                           onChange={onQuestionSearchChangeHandler}/>
+                </label>
+
+                <label htmlFor='cards-answer-search'>
+                    Answer Search
+                    <Input id={'cards-answer-search'}
+                           placeholder={'Enter answer...'}
+                           value={searchAnswerValue}
+                           onChange={onAnswerSearchChangeHandler}/>
+                </label>
+
+                <Range value={rangeValues}
+                       marks={rangeMarks}
+                       max={6}
+                       onChange={onRangeChangeHandler}
+                       style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
+
+                <Table model={model} data={cards}/>
+
+                <div className={s.paginationContainer}>
+                    <Pagination totalCount={cardsTotalCount}
+                                countPerPage={pageCount}
+                                currentPage={page}
+                                onChangePage={onPageChangeHandler}/>
+                    <div>
+                        <span style={{paddingRight: 16}}> Show on page:</span>
+                        <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+                    </div>
+                </div>
+            </> : <h2>Please choose one of Packs <Link to={PATH.PACKS}>here</Link></h2>}
         </div>
     )
 }

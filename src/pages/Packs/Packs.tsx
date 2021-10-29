@@ -36,7 +36,6 @@ type PacksQueryParams = {
 export const Packs: FC = () => {
     const location = useLocation()
     const history = useHistory()
-
     const dispatch = useDispatch()
     const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
     const {
@@ -48,12 +47,10 @@ export const Packs: FC = () => {
         cardPacks,
         privatePacks
     } = useTypedSelector(state => state.packs)
-
     const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
-
-    const ref = useRef<HTMLDivElement>(null)
+    const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
 
     const rangeMarks = {
         0: {style: {fontSize: 16}, label: rangeValues[0]},
@@ -119,14 +116,14 @@ export const Packs: FC = () => {
     }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue])
 
     useEffect(() => {
-        ref.current?.scrollIntoView({behavior: 'smooth'})
+        paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [page])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
-        <div ref={ref}>
-            <h1>Packs</h1>
+        <div>
+            <h1 ref={paginationScrollTopRef}>Packs</h1>
 
             <label htmlFor='packs-search'>
                 Search for packs name:

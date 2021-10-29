@@ -7,7 +7,7 @@ export type TableModel = {
 
 type TableProps = {
     model: TableModel[]
-    data: any
+    data: any[]
 }
 
 export const Table: FC<TableProps> = props => {
@@ -15,19 +15,20 @@ export const Table: FC<TableProps> = props => {
 
     return (
         <div style={{overflowX: 'auto'}}>
-            <table>
-                <thead>
-                <tr>{model.map((m, index) => m.header(index))}</tr>
-                </thead>
+            {data.length > 0 ?
+                <table>
+                    <thead>
+                    <tr>{model.map((m, index) => m.header(index))}</tr>
+                    </thead>
 
-                <tbody>
-                {data.map((item: any, index: number) => (
-                    <tr key={'row' + (item._id || index)}>
-                        {model.map(m => m.body(item))}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+                    <tbody>
+                    {data.map((item: any, index: number) => (
+                        <tr key={'row' + (item._id || index)}>
+                            {model.map(m => m.body(item))}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table> : <h2 style={{margin: '40px 0'}}>No data to show!</h2>}
         </div>
 
     )

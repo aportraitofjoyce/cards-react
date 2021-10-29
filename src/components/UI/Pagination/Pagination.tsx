@@ -29,7 +29,7 @@ export const Pagination = ({totalCount, countPerPage, currentPage, onChangePage,
         nextPage === currentPage ? setNextIsHidden(true) : setNextIsHidden(false)
     }, [currentPage, nextPage, previousPage])
 
-    if (isNaN(pageNumbers) || totalCount === 0) {
+    if (isNaN(pageNumbers) || totalCount === 0 || pageNumbers === 1) {
         return <></>
     }
 
