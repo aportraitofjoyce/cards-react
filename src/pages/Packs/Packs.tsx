@@ -7,7 +7,7 @@ import {
     setMinMaxCardsCount,
     setPacksCountOnPage,
     setPacksCurrentPage,
-    setPrivatePacks,
+    setPrivatePacks, setSortCardsPackMethod,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -35,7 +35,7 @@ type PacksQueryParams = {
     maxCardsCount?: number
     privatePacks?: boolean
     searchValue?: string
-    sortPacks?: string
+    sortPacksMethod?: string
 }
 
 export const Packs: FC = () => {
@@ -92,7 +92,7 @@ export const Packs: FC = () => {
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
 
     const sortPacksHandler = (sortTitle: string) => {
-        dispatch(setSortCardsPackMethod({sortCards: sortTitle}))
+        dispatch(setSortCardsPackMethod({sortCardPacksMethod: sortTitle}))
     }
 
     useEffect(() => {
@@ -108,7 +108,7 @@ export const Packs: FC = () => {
             minCardsCount,
             maxCardsCount,
             searchValue,
-            sortPacksMethod: sortPacks
+            sortPacksMethod
         }
 
         history.push({
