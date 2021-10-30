@@ -3,7 +3,7 @@ import {Table} from '../../../components/UI/Table/Table'
 import {packsModel} from '../packsModel'
 import {
     createCardsPack,
-    deleteCardsPack,
+    deleteCardsPack, setPacksCurrentPage,
     setSortCardsPackMethod,
     updateCardsPack
 } from '../../../store/reducers/packs-reducer'
@@ -32,7 +32,10 @@ export const PacksTable: FC<PacksTableProps> = ({cardPacks}) => {
         },
     )
 
-    const sortPacksHandler = (sortCardPacksMethod: string) => dispatch(setSortCardsPackMethod({sortCardPacksMethod}))
+    const sortPacksHandler = (sortCardPacksMethod: string) => {
+        dispatch(setSortCardsPackMethod({sortCardPacksMethod}))
+        dispatch(setPacksCurrentPage({page: 1}))
+    }
 
     return (
         <>
