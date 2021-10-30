@@ -32,17 +32,12 @@ export const PacksTable: FC<PacksTableProps> = ({cardPacks}) => {
         },
     )
 
-    const sortPacksHandler = (sortCardPacksMethod: string) => {
-        dispatch(setSortCardsPackMethod({sortCardPacksMethod}))
-    }
+    const sortPacksHandler = (sortCardPacksMethod: string) => dispatch(setSortCardsPackMethod({sortCardPacksMethod}))
 
     return (
         <>
-            <Sort sortTitle={'name'}
-                  sortHandlerUp={sortPacksHandler}
-                  sortHandlerDown={sortPacksHandler}/>
-            <Table model={model}
-                  data={cardPacks}/>
+            <Sort sortBy={'name'} sortCallback={sortPacksHandler}/>
+            <Table model={model} data={cardPacks}/>
         </>
     )
 }
