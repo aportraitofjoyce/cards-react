@@ -8,7 +8,7 @@ import {
     setPacksCountOnPage,
     setPacksCurrentPage,
     setPrivatePacks,
-    setSortCards,
+    setSortCardsPackMethod,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -49,7 +49,7 @@ export const Packs: FC = () => {
         maxCardsCount,
         cardPacks,
         privatePacks,
-        sortPacks
+        sortPacksMethod
     } = useTypedSelector(state => state.packs)
     const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
@@ -99,13 +99,13 @@ export const Packs: FC = () => {
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
 
     const sortPacksHandler = (sortTitle: string) => {
-        dispatch(setSortCards({sortCards: sortTitle}))
+        dispatch(setSortCardsPackMethod({sortCards: sortTitle}))
     }
 
     useEffect(() => {
         const parsedURLParams = queryString.parse(location.search)
         dispatch(fetchCardPacks())
-    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks, sortPacks])
+    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks, sortPacksMethod])
 
     useEffect(() => {
         const queryURL: PacksQueryParams = {
@@ -115,14 +115,14 @@ export const Packs: FC = () => {
             minCardsCount,
             maxCardsCount,
             searchValue,
-            sortPacks
+            sortPacksMethod: sortPacks
         }
 
         history.push({
             pathname: PATH.PACKS,
             search: queryString.stringify(queryURL)
         })
-    }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue, sortPacks])
+    }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue, sortPacksMethod])
 
     useEffect(() => {
         paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})

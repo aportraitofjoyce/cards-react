@@ -18,7 +18,7 @@ enum PACKS_ACTIONS_TYPES {
     SET_PACKS_TOTAL_COUNT = 'PACKS/SET_PACKS_TOTAL_COUNT',
     SET_MIN_MAX_CARDS_COUNT = 'PACKS/SET_MIN_MAX_CARDS_COUNT',
     SET_PRIVATE_PACKS = 'PACKS/SET_PRIVATE_PACKS',
-    SET_SORT_CARDS = 'SET_SORT_CARDS'
+    SET_SORT_CARD_PACKS_METHOD = 'PACKS/SET_SORT_CARD_PACKS_METHOD'
 }
 
 export type PacksActionsTypes =
@@ -28,11 +28,12 @@ export type PacksActionsTypes =
     | ReturnType<typeof setPacksTotalCount>
     | ReturnType<typeof setMinMaxCardsCount>
     | ReturnType<typeof setPrivatePacks>
-    | ReturnType<typeof setSortCards>
+    | ReturnType<typeof setSortCardsPackMethod>
 
 
 export type PacksInitialState = CardsPackResponse & {
     privatePacks: boolean
+    sortPacksMethod: string | undefined
 }
 
 const initialState: PacksInitialState = {
@@ -43,7 +44,7 @@ const initialState: PacksInitialState = {
     page: 1,
     pageCount: 5,
     privatePacks: false,
-    sortPacks: '0cardsCount' // sort by default
+    sortPacksMethod: '0cardsCount'
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
@@ -66,8 +67,8 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
         case PACKS_ACTIONS_TYPES.SET_PRIVATE_PACKS:
             return {...state, privatePacks: action.payload.value}
 
-        case PACKS_ACTIONS_TYPES.SET_SORT_CARDS:
-            return {...state, sortPacks: action.payload.sortCards}
+        case PACKS_ACTIONS_TYPES.SET_SORT_CARD_PACKS_METHOD:
+            return {...state, sortPacksMethod: action.payload.sortCardPacksMethod}
 
         default:
             return state
@@ -104,8 +105,8 @@ export const setPrivatePacks = (payload: { value: boolean }) => ({
     payload
 } as const)
 
-export const setSortCards = (payload: { sortCards: string }) => ({
-    type: PACKS_ACTIONS_TYPES.SET_SORT_CARDS, payload
+export const setSortCardsPackMethod = (payload: { sortCardPacksMethod: string }) => ({
+    type: PACKS_ACTIONS_TYPES.SET_SORT_CARD_PACKS_METHOD, payload
 } as const)
 
 export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -120,7 +121,7 @@ export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (disp
             max: packs.maxCardsCount,
             packName: payload?.packName || undefined,
             user_id: userID || undefined,
-            sortPacks: packs.sortPacks
+            sortPacks: packs.sortPacksMethod
         })
 
         dispatch(setCardPacks(response.data.cardPacks))
