@@ -36,8 +36,8 @@ export type PacksInitialState = CardsPackResponse & {
     sortPacksMethod: string | undefined
 }
 
-const initialState: PacksInitialState = {
-    cardPacks: [],
+export const initialState: PacksInitialState = {
+    cardPacks: [] ,
     cardPacksTotalCount: 0,
     minCardsCount: 0,
     maxCardsCount: 100,
@@ -75,7 +75,7 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
     }
 }
 
-const setCardPacks = (payload: CardsPack[]) => ({
+export const setCardPacks = (payload: CardsPack[]) => ({
     type: PACKS_ACTIONS_TYPES.SET_CARD_PACKS,
     payload
 } as const)
