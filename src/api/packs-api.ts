@@ -26,6 +26,7 @@ export type CardsPackResponse = {
     minCardsCount: number
     page: number
     pageCount: number
+    sortPacks: string | undefined
 }
 
 export type GetCardPacksQueryParams = {

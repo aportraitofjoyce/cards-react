@@ -8,6 +8,7 @@ import {
     setPacksCountOnPage,
     setPacksCurrentPage,
     setPrivatePacks,
+    setSortCards,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -23,6 +24,7 @@ import {PATH} from '../../routes/routes'
 import {Select} from '../../components/UI/Select/Select'
 import s from './Packs.module.css'
 import * as queryString from 'querystring'
+import {Sort} from '../../components/UI/Sort/Sort'
 
 type PacksQueryParams = {
     page?: number
@@ -31,6 +33,7 @@ type PacksQueryParams = {
     maxCardsCount?: number
     privatePacks?: boolean
     searchValue?: string
+    sortPacks?: string
 }
 
 export const Packs: FC = () => {
@@ -45,7 +48,8 @@ export const Packs: FC = () => {
         minCardsCount,
         maxCardsCount,
         cardPacks,
-        privatePacks
+        privatePacks,
+        sortPacks
     } = useTypedSelector(state => state.packs)
     const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
@@ -94,10 +98,14 @@ export const Packs: FC = () => {
 
     const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
 
+    const sortPacksHandler = (sortTitle: string) => {
+        dispatch(setSortCards({sortCards: sortTitle}))
+    }
+
     useEffect(() => {
         const parsedURLParams = queryString.parse(location.search)
         dispatch(fetchCardPacks())
-    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks])
+    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks, sortPacks])
 
     useEffect(() => {
         const queryURL: PacksQueryParams = {
@@ -106,14 +114,15 @@ export const Packs: FC = () => {
             privatePacks,
             minCardsCount,
             maxCardsCount,
-            searchValue
+            searchValue,
+            sortPacks
         }
 
         history.push({
             pathname: PATH.PACKS,
             search: queryString.stringify(queryURL)
         })
-    }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue])
+    }, [page, pageCount, privatePacks, minCardsCount, maxCardsCount, searchValue, sortPacks])
 
     useEffect(() => {
         paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})
@@ -125,7 +134,7 @@ export const Packs: FC = () => {
         <div>
             <h1 ref={paginationScrollTopRef}>Packs</h1>
 
-            <label htmlFor='packs-search'>
+            <label htmlFor="packs-search">
                 Search for packs name:
                 <Input id={'packs-search'}
                        placeholder={'Enter pack name...'}
@@ -142,6 +151,10 @@ export const Packs: FC = () => {
                       onChange={onPrivateChangeHandler}>
                 Show only private packs?
             </Checkbox>
+
+            <br/>
+            <Sort sortTitle={'name'} sortHandlerUp={sortPacksHandler} sortHandlerDown={sortPacksHandler}/>
+            <br/>
 
             <Table model={model}
                    data={cardPacks}/>
