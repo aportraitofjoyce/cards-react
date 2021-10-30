@@ -133,7 +133,7 @@ export const Cards: FC = () => {
                     <Pagination totalCount={cardsTotalCount}
                                 countPerPage={pageCount}
                                 currentPage={page}
-                                onChangePage={onPageChangeHandler}/>
+                                onChange={onPageChangeHandler}/>
                     <div>
                         <span style={{paddingRight: 16}}> Show on page:</span>
                         <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>

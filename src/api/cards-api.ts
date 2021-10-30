@@ -65,6 +65,20 @@ export type DeleteCardData = {
     id: string
 }
 
+export type GradeData = {
+    card_id: string
+    grade: 1 | 2 | 3 | 4 | 5
+}
+
+export type GradeResponse = {
+    _id: string
+    cardsPack_id: string
+    card_id: string
+    user_id: string
+    grade: number
+    shots: number
+}
+
 export const cardsAPI = {
     getCards: (payload?: GetCardsQueryParams) => instance
         .get<CardsResponse>('/cards/card', {params: payload}),
@@ -77,4 +91,7 @@ export const cardsAPI = {
 
     updateCard: (payload: UpdateCardData) => instance
         .put<UpdateCardData, AxiosResponse<Card>>('/cards/card', payload),
+
+    grade: (payload: GradeData) => instance
+        .put<GradeData, AxiosResponse<GradeResponse>>('/cards/grade', payload)
 }

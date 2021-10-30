@@ -23,6 +23,8 @@ import {PATH} from '../../routes/routes'
 import {Select} from '../../components/UI/Select/Select'
 import s from './Packs.module.css'
 import * as queryString from 'querystring'
+import {useModal} from '../../hooks/useModal'
+import {PacksPagination} from './PacksPagination/PacksPagination'
 
 type PacksQueryParams = {
     page?: number
@@ -51,6 +53,7 @@ export const Packs: FC = () => {
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
+    const {isOpen, onOpen, onClose, onToggle} = useModal()
 
     const rangeMarks = {
         0: {style: {fontSize: 16}, label: rangeValues[0]},
@@ -71,9 +74,6 @@ export const Packs: FC = () => {
         },
     )
 
-    const onPageChangeHandler = (page: number) => dispatch(setPacksCurrentPage({page}))
-
-    const onSelectChangeHandler = (option: string) => dispatch(setPacksCountOnPage({count: Number(option)}))
 
     const onPrivateChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setPrivatePacks({value: e.currentTarget.checked}))
@@ -146,16 +146,7 @@ export const Packs: FC = () => {
             <Table model={model}
                    data={cardPacks}/>
 
-            <div className={s.paginationContainer}>
-                <Pagination totalCount={cardPacksTotalCount}
-                            countPerPage={pageCount}
-                            currentPage={page}
-                            onChangePage={onPageChangeHandler}/>
-                <div>
-                    <span style={{paddingRight: 16}}> Show on page:</span>
-                    <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
-                </div>
-            </div>
+            <PacksPagination totalCount={cardPacksTotalCount} countPerPage={pageCount} currentPage={page}/>
         </div>
     )
 }
