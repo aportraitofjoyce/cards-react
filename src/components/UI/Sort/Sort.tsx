@@ -16,8 +16,8 @@ export const Sort = (props: SortPacksPropsType) => {
     }
     const onSortHandler0 = () => {
         sortHandlerDown(`0${sortTitle}`)
-
     }
+
     return (
         <div className={s.sort}>
             <div>
