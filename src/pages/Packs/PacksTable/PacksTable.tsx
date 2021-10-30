@@ -3,12 +3,13 @@ import {Table} from '../../../components/UI/Table/Table'
 import {packsModel} from '../packsModel'
 import {createCardsPack, deleteCardsPack, updateCardsPack} from '../../../store/reducers/packs-reducer'
 import {useDispatch} from 'react-redux'
+import {CardsPack} from '../../../api/packs-api'
 
 type PacksTableProps = {
-    tableData: any
+    cardPacks: CardsPack[]
 }
 
-export const PacksTable: FC<PacksTableProps> = ({tableData}) => {
+export const PacksTable: FC<PacksTableProps> = ({cardPacks}) => {
     const dispatch = useDispatch()
 
     const model = packsModel(
@@ -27,6 +28,6 @@ export const PacksTable: FC<PacksTableProps> = ({tableData}) => {
 
     return (
         <Table model={model}
-               data={tableData}/>
+               data={cardPacks}/>
     )
 }
