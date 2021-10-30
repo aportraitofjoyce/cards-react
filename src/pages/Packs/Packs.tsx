@@ -93,6 +93,7 @@ export const Packs: FC = () => {
 
     const sortPacksHandler = (sortTitle: string) => {
         dispatch(setSortCardsPackMethod({sortCardPacksMethod: sortTitle}))
+        dispatch(setPacksCurrentPage({page: 1}))
     }
 
     useEffect(() => {
@@ -127,7 +128,7 @@ export const Packs: FC = () => {
         <div>
             <h1 ref={paginationScrollTopRef}>Packs</h1>
 
-            <label htmlFor='packs-search'>
+            <label htmlFor="packs-search">
                 Search for packs name:
                 <Input id={'packs-search'}
                        placeholder={'Enter pack name...'}
