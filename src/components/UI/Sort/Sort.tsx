@@ -6,13 +6,12 @@ type SortPacksProps = {
 }
 
 export const Sort: FC<SortPacksProps> = ({sortBy, sortCallback}) => {
-    const onSortHandler1 = () => sortCallback(`1${sortBy}`)
-    const onSortHandler0 = () => sortCallback(`0${sortBy}`)
+    const onSortHandler = (method: 0 | 1) => sortCallback(`${method}${sortBy}`)
 
     return (
         <div>
-            <span onClick={onSortHandler0}>ᐃ</span>
-            <span onClick={onSortHandler1}>ᐁ</span>
+            <span onClick={() => onSortHandler(0)}>Up</span>
+            <span onClick={() => onSortHandler(1)}>Down</span>
         </div>
     )
 }

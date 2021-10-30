@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FC, useCallback, useState} from 'react'
 import {Input} from '../../../components/UI/Input/Input'
 import {useDispatch} from 'react-redux'
-import _ from 'lodash'
 import {fetchCardPacks} from '../../../store/reducers/packs-reducer'
+import {debounce} from 'lodash'
 
 export const PacksSearch: FC = () => {
     const dispatch = useDispatch()
@@ -13,7 +13,7 @@ export const PacksSearch: FC = () => {
         debouncedSearch(e.currentTarget.value)
     }
 
-    const debouncedSearch = useCallback(_.debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
+    const debouncedSearch = useCallback(debounce(value => dispatch(fetchCardPacks({packName: value})), 300), [])
 
     return (
         <label htmlFor='packs-search'>
