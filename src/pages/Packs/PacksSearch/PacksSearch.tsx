@@ -2,7 +2,7 @@ import React, {ChangeEvent, FC, useCallback, useState} from 'react'
 import {Input} from '../../../components/UI/Input/Input'
 import {useDispatch} from 'react-redux'
 import {fetchCardPacks} from '../../../store/reducers/packs-reducer'
-import {debounce} from 'lodash'
+import debounce from 'lodash.debounce'
 
 export const PacksSearch: FC = () => {
     const dispatch = useDispatch()

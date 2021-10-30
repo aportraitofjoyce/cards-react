@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC, useCallback, useState} from 'react'
 import {Input} from '../../../components/UI/Input/Input'
-import {debounce} from 'lodash'
+import debounce from 'lodash.debounce'
 import {fetchCards} from '../../../store/reducers/cards-reducer'
 import {useDispatch} from 'react-redux'
 
