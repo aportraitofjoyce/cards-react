@@ -25,6 +25,7 @@ import s from './Packs.module.css'
 import * as queryString from 'querystring'
 import {useModal} from '../../hooks/useModal'
 import {PacksPagination} from './PacksPagination/PacksPagination'
+import {PrivatePacksToggle} from './PrivatePacksToggle/PrivatePacksToggle'
 
 type PacksQueryParams = {
     page?: number
@@ -49,7 +50,6 @@ export const Packs: FC = () => {
         cardPacks,
         privatePacks
     } = useTypedSelector(state => state.packs)
-    const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
@@ -73,12 +73,6 @@ export const Packs: FC = () => {
             dispatch(updateCardsPack({cardsPack: {_id: id, name: name!}}))
         },
     )
-
-
-    const onPrivateChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setPrivatePacks({value: e.currentTarget.checked}))
-        setIsPrivatePacks(e.currentTarget.checked)
-    }
 
     const onRangeChangeHandler = (values: number[]) => {
         setRangeValues(values)
@@ -138,10 +132,7 @@ export const Packs: FC = () => {
                    onChange={onRangeChangeHandler}
                    style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
 
-            <Checkbox checked={isPrivatePacks}
-                      onChange={onPrivateChangeHandler}>
-                Show only private packs?
-            </Checkbox>
+            <PrivatePacksToggle privatePacks={privatePacks}/>
 
             <Table model={model}
                    data={cardPacks}/>

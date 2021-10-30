@@ -5,13 +5,13 @@ import {Select} from '../../../components/UI/Select/Select'
 import {setPacksCountOnPage, setPacksCurrentPage} from '../../../store/reducers/packs-reducer'
 import {useDispatch} from 'react-redux'
 
-type PacksPagination = {
+type PacksPaginationProps = {
     totalCount: number
     countPerPage: number
     currentPage: number
 }
 
-export const PacksPagination: FC<PacksPagination> = props => {
+export const PacksPagination: FC<PacksPaginationProps> = props => {
     const {totalCount, countPerPage, currentPage} = props
     const dispatch = useDispatch()
 
