@@ -8,7 +8,6 @@ import {
     setPacksCountOnPage,
     setPacksCurrentPage,
     setPrivatePacks,
-    setSortCardsPackMethod,
     updateCardsPack
 } from '../../store/reducers/packs-reducer'
 import {Pagination} from '../../components/UI/Pagination/Pagination'
@@ -25,6 +24,9 @@ import {Select} from '../../components/UI/Select/Select'
 import s from './Packs.module.css'
 import * as queryString from 'querystring'
 import {Sort} from '../../components/UI/Sort/Sort'
+import {useModal} from '../../hooks/useModal'
+import {PacksPagination} from './PacksPagination/PacksPagination'
+import {PrivatePacksToggle} from './PrivatePacksToggle/PrivatePacksToggle'
 
 type PacksQueryParams = {
     page?: number
@@ -51,10 +53,10 @@ export const Packs: FC = () => {
         privatePacks,
         sortPacksMethod
     } = useTypedSelector(state => state.packs)
-    const [isPrivatePacks, setIsPrivatePacks] = useState(privatePacks)
     const [searchValue, setSearchValue] = useState('')
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
+    const {isOpen, onOpen, onClose, onToggle} = useModal()
 
     const rangeMarks = {
         0: {style: {fontSize: 16}, label: rangeValues[0]},
@@ -74,15 +76,6 @@ export const Packs: FC = () => {
             dispatch(updateCardsPack({cardsPack: {_id: id, name: name!}}))
         },
     )
-
-    const onPageChangeHandler = (page: number) => dispatch(setPacksCurrentPage({page}))
-
-    const onSelectChangeHandler = (option: string) => dispatch(setPacksCountOnPage({count: Number(option)}))
-
-    const onPrivateChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setPrivatePacks({value: e.currentTarget.checked}))
-        setIsPrivatePacks(e.currentTarget.checked)
-    }
 
     const onRangeChangeHandler = (values: number[]) => {
         setRangeValues(values)
@@ -134,7 +127,7 @@ export const Packs: FC = () => {
         <div>
             <h1 ref={paginationScrollTopRef}>Packs</h1>
 
-            <label htmlFor="packs-search">
+            <label htmlFor='packs-search'>
                 Search for packs name:
                 <Input id={'packs-search'}
                        placeholder={'Enter pack name...'}
@@ -147,10 +140,7 @@ export const Packs: FC = () => {
                    onChange={onRangeChangeHandler}
                    style={{margin: '32px 8px 48px 8px', width: 'inherit'}}/>
 
-            <Checkbox checked={isPrivatePacks}
-                      onChange={onPrivateChangeHandler}>
-                Show only private packs?
-            </Checkbox>
+            <PrivatePacksToggle privatePacks={privatePacks}/>
 
             <br/>
             <Sort sortTitle={'name'} sortHandlerUp={sortPacksHandler} sortHandlerDown={sortPacksHandler}/>
@@ -159,16 +149,7 @@ export const Packs: FC = () => {
             <Table model={model}
                    data={cardPacks}/>
 
-            <div className={s.paginationContainer}>
-                <Pagination totalCount={cardPacksTotalCount}
-                            countPerPage={pageCount}
-                            currentPage={page}
-                            onChangePage={onPageChangeHandler}/>
-                <div>
-                    <span style={{paddingRight: 16}}> Show on page:</span>
-                    <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
-                </div>
-            </div>
+            <PacksPagination totalCount={cardPacksTotalCount} countPerPage={pageCount} currentPage={page}/>
         </div>
     )
 }
