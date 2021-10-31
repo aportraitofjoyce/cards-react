@@ -22,9 +22,7 @@ export const Table: FC<TableProps> = props => {
 
                 <tbody>
                 {data.map((item: any, index: number) => (
-                    <tr key={'row' + (item._id || index)}>
-                        {model.map(m => m.body(item))}
-                    </tr>
+                    <tr key={'row' + (item._id || index)}>{model.map(m => m.body(item))}</tr>
                 ))}
                 </tbody>
             </table>

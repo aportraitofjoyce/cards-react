@@ -1,21 +1,21 @@
 import React, {FC} from 'react'
 import {Table} from '../../../components/UI/Table/Table'
-import {packsModel} from '../packsModel'
+import {packsModel} from './packsModel'
 import {
     createCardsPack,
-    deleteCardsPack, setPacksCurrentPage,
+    deleteCardsPack,
     setSortCardsPackMethod,
     updateCardsPack
 } from '../../../store/reducers/packs-reducer'
 import {useDispatch} from 'react-redux'
 import {CardsPack} from '../../../api/packs-api'
-import {Sort} from '../../../components/UI/Sort/Sort'
 
 type PacksTableProps = {
     cardPacks: CardsPack[]
+    userID: string | undefined
 }
 
-export const PacksTable: FC<PacksTableProps> = ({cardPacks}) => {
+export const PacksTable: FC<PacksTableProps> = ({cardPacks, userID}) => {
     const dispatch = useDispatch()
 
     const model = packsModel(
@@ -23,24 +23,16 @@ export const PacksTable: FC<PacksTableProps> = ({cardPacks}) => {
             const name = prompt()
             dispatch(createCardsPack({cardsPack: {name: name!, private: false}}))
         },
-        (id) => {
+        id => {
             dispatch(deleteCardsPack({id}))
         },
-        (id) => {
+        id => {
             const name = prompt()
             dispatch(updateCardsPack({cardsPack: {_id: id, name: name!}}))
         },
+        sortMethod => dispatch(setSortCardsPackMethod({sortCardPacksMethod: sortMethod})),
+        () => userID
     )
 
-    const sortPacksHandler = (sortCardPacksMethod: string) => {
-        dispatch(setSortCardsPackMethod({sortCardPacksMethod}))
-        dispatch(setPacksCurrentPage({page: 1}))
-    }
-
-    return (
-        <>
-            <Sort sortBy={'name'} sortCallback={sortPacksHandler}/>
-            <Table model={model} data={cardPacks}/>
-        </>
-    )
+    return <Table model={model} data={cardPacks}/>
 }

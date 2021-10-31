@@ -14,6 +14,7 @@ import {PacksTable} from './PacksTable/PacksTable'
 export const Packs: FC = () => {
     const dispatch = useDispatch()
     const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
+    const userID = useTypedSelector(state => state.auth.userInfo?._id)
     const {
         page,
         pageCount,
@@ -43,7 +44,7 @@ export const Packs: FC = () => {
             <PacksSearch/>
             <CardsCountRange minCardsCount={minCardsCount} maxCardsCount={maxCardsCount}/>
             <PrivatePacksToggle privatePacks={privatePacks}/>
-            <PacksTable cardPacks={cardPacks}/>
+            <PacksTable cardPacks={cardPacks} userID={userID}/>
             <PacksPagination totalCount={cardPacksTotalCount}
                              countPerPage={pageCount}
                              currentPage={page}/>

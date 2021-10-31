@@ -1,17 +1,24 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
+import s from './Sort.module.css'
 
 type SortPacksProps = {
     sortBy: string
     sortCallback: (sortMethod: string) => void
 }
 
-export const Sort: FC<SortPacksProps> = ({sortBy, sortCallback}) => {
-    const onSortHandler = (method: 0 | 1) => sortCallback(`${method}${sortBy}`)
+export const Sort: FC<SortPacksProps> = ({sortBy, sortCallback, children}) => {
+    const [sortToggle, setSortToggle] = useState(false)
+
+    const onSortHandler = () => {
+        setSortToggle(!sortToggle)
+        sortCallback(`${Number(sortToggle)}${sortBy}`)
+    }
+
+    const classNames = `${sortToggle && s.up} ${!sortToggle && s.down}`
 
     return (
-        <div>
-            <span onClick={() => onSortHandler(0)}>Up</span>
-            <span onClick={() => onSortHandler(1)}>Down</span>
+        <div onClick={onSortHandler} className={classNames}>
+            {children}
         </div>
     )
 }

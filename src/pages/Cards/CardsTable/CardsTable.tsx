@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {cardsModel} from '../cardsModel'
+import {cardsModel} from './cardsModel'
 import {createCard, deleteCard, updateCard} from '../../../store/reducers/cards-reducer'
 import {useDispatch} from 'react-redux'
 import {Card} from '../../../api/cards-api'

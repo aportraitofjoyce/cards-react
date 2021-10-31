@@ -37,14 +37,14 @@ export type PacksInitialState = CardsPackResponse & {
 }
 
 export const initialState: PacksInitialState = {
-    cardPacks: [] ,
+    cardPacks: [],
     cardPacksTotalCount: 0,
     minCardsCount: 0,
     maxCardsCount: 100,
     page: 1,
     pageCount: 5,
     privatePacks: false,
-    sortPacksMethod: '0cardsCount'
+    sortPacksMethod: undefined
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
@@ -68,7 +68,7 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
             return {...state, privatePacks: action.payload.value}
 
         case PACKS_ACTIONS_TYPES.SET_SORT_CARD_PACKS_METHOD:
-            return {...state, sortPacksMethod: action.payload.sortCardPacksMethod}
+            return {...state, sortPacksMethod: action.payload.sortCardPacksMethod, page: 1}
 
         default:
             return state

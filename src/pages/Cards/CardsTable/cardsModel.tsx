@@ -1,6 +1,6 @@
-import {Button} from '../../components/UI/Button/Button'
-import {TableModel} from '../../components/UI/Table/Table'
-import {Card} from '../../api/cards-api'
+import {Button} from '../../../components/UI/Button/Button'
+import {TableModel} from '../../../components/UI/Table/Table'
+import {Card} from '../../../api/cards-api'
 
 export const cardsModel = (add: () => void, remove: (id: string) => void, update: (id: string) => void): TableModel[] => [
     {
