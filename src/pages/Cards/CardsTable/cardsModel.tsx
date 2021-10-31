@@ -42,7 +42,7 @@ export const cardsModel = (sort: (sort: string) => void, isOwner: boolean): Tabl
     {
         header: index =>
             <th key={'buttons-title-' + index}>
-                <AddCardModal/>
+                <AddCardModal buttonDisable={isOwner}/>
             </th>,
         body: (item: Card) =>
             <td key={'buttons-cell-' + item._id} className={'tablesButtonsCell'}>

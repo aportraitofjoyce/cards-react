@@ -7,7 +7,11 @@ import {useDispatch} from 'react-redux'
 import {createCard} from '../../../../store/reducers/cards-reducer'
 import {useTypedSelector} from '../../../../hooks/hooks'
 
-export const AddCardModal: FC = () => {
+type AddCardModalProps = {
+    buttonDisable: boolean
+}
+
+export const AddCardModal: FC<AddCardModalProps> = ({buttonDisable}) => {
     const dispatch = useDispatch()
     const {isOpen, onToggle} = useModal()
     const currentCardsPackID = useTypedSelector(state => state.cards.currentCardsPackID)
@@ -21,7 +25,7 @@ export const AddCardModal: FC = () => {
 
     return (
         <>
-            <Button onClick={() => onToggle()}>Add</Button>
+            <Button onClick={() => onToggle()} disabled={buttonDisable}>Add</Button>
 
             <Modal open={isOpen} onClick={() => onToggle()}>
                 <label htmlFor={'cards-addCard'}>
