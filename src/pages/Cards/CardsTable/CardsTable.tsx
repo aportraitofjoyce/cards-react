@@ -8,11 +8,10 @@ import {Table} from '../../../components/UI/Table/Table'
 type CardsTableProps = {
     cards: Card[]
     cardsPackID: string
-    userID: string | undefined
-    cardsOwnerID: string
+    isOwner: boolean
 }
 
-export const CardsTable: FC<CardsTableProps> = ({cards, cardsPackID, userID, cardsOwnerID}) => {
+export const CardsTable: FC<CardsTableProps> = ({cards, cardsPackID, isOwner}) => {
     const dispatch = useDispatch()
 
     const model = cardsModel(
@@ -28,7 +27,7 @@ export const CardsTable: FC<CardsTableProps> = ({cards, cardsPackID, userID, car
             dispatch(updateCard({card: {_id: id, question: question!}}))
         },
         sortMethod => dispatch(setSortCardsMethod({sortCarsMethod: sortMethod})),
-        () => cardsOwnerID !== userID
+        () => isOwner
     )
 
     return (
