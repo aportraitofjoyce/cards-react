@@ -50,7 +50,7 @@ export const initialState: PacksInitialState = {
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {
     switch (action.type) {
         case PACKS_ACTIONS_TYPES.SET_CARD_PACKS:
-            return {...state, cardPacks: action.payload}
+            return {...state, ...action.payload}
 
         case PACKS_ACTIONS_TYPES.SET_PACKS_CURRENT_PAGE:
             return {...state, page: action.payload.page}
@@ -75,7 +75,7 @@ export const packsReducer = (state = initialState, action: PacksActionsTypes): P
     }
 }
 
-export const setCardPacks = (payload: CardsPack[]) => ({
+export const setCardPacks = (payload: CardsPackResponse) => ({
     type: PACKS_ACTIONS_TYPES.SET_CARD_PACKS,
     payload
 } as const)
@@ -123,11 +123,7 @@ export const fetchCardPacks = (payload?: GetCardPacksQueryParams) => async (disp
             user_id: userID || undefined,
             sortPacks: packs.sortPacksMethod
         })
-
-        dispatch(setCardPacks(response.data.cardPacks))
-        dispatch(setPacksCurrentPage({page: response.data.page}))
-        dispatch(setPacksCountOnPage({count: response.data.pageCount}))
-        dispatch(setPacksTotalCount({count: response.data.cardPacksTotalCount}))
+        dispatch(setCardPacks(response.data))
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {
