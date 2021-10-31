@@ -9,6 +9,7 @@ import {PrivatePacksToggle} from './PrivatePacksToggle/PrivatePacksToggle'
 import {PacksSearch} from './PacksSearch/PacksSearch'
 import {CardsCountRange} from './CardsCountRange/CardsCountRange'
 import {PacksTable} from './PacksTable/PacksTable'
+import {ScrollButton} from '../../components/UI/ScrollButton/ScrollButton'
 
 export const Packs: FC = () => {
     const dispatch = useDispatch()
@@ -45,6 +46,7 @@ export const Packs: FC = () => {
             <PacksPagination totalCount={cardPacksTotalCount}
                              countPerPage={pageCount}
                              currentPage={page}/>
+            <ScrollButton/>
         </div>
     )
 }

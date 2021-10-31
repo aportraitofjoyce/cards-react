@@ -26,7 +26,7 @@ export const PacksPagination: FC<PacksPaginationProps> = props => {
                         onChange={onPageChangeHandler}/>
             <div>
                 <span style={{paddingRight: 16}}> Show on page:</span>
-                <Select options={[5, 20, 50]} onChangeOption={onSelectChangeHandler}/>
+                <Select options={[5, 10, 20, 50]} onChangeOption={onSelectChangeHandler}/>
             </div>
         </div>
     )
