@@ -1,3 +1,7 @@
+.container {
+    cursor: pointer;
+}
+
 .down:after,
 .up:after {
     content: '';

@@ -4,7 +4,6 @@ import {fetchCardPacks} from '../../store/reducers/packs-reducer'
 import {useTypedSelector} from '../../hooks/hooks'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
-import {useModal} from '../../hooks/useModal'
 import {PacksPagination} from './PacksPagination/PacksPagination'
 import {PrivatePacksToggle} from './PrivatePacksToggle/PrivatePacksToggle'
 import {PacksSearch} from './PacksSearch/PacksSearch'
@@ -26,7 +25,6 @@ export const Packs: FC = () => {
         sortPacksMethod
     } = useTypedSelector(state => state.packs)
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
-    const {isOpen, onOpen, onClose, onToggle} = useModal()
 
     useEffect(() => {
         dispatch(fetchCardPacks())

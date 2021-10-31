@@ -14,7 +14,7 @@ export const Sort: FC<SortPacksProps> = ({sortBy, sortCallback, children}) => {
         sortCallback(`${Number(sortToggle)}${sortBy}`)
     }
 
-    const classNames = `${sortToggle && s.up} ${!sortToggle && s.down}`
+    const classNames = `${s.container} ${sortToggle && s.up} ${!sortToggle && s.down}`
 
     return (
         <div onClick={onSortHandler} className={classNames}>

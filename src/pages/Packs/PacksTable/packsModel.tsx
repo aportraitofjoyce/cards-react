@@ -9,7 +9,7 @@ export const packsModel = (add: () => void,
                            remove: (id: string) => void,
                            update: (id: string) => void,
                            sort: (sort: string) => void,
-                           userID: () => string | undefined): TableModel[] => [
+                           userID: string | undefined): TableModel[] => [
     {
         header: index =>
             <th key={'name-title-' + index}><Sort sortBy={'name'} sortCallback={sort}>Pack Name</Sort></th>,
@@ -40,8 +40,9 @@ export const packsModel = (add: () => void,
             <th key={'buttons-title-' + index}><Button onClick={add}>Add</Button></th>,
         body: (item: CardsPack) =>
             <td key={'buttons-cell-' + item._id} className={'tablesButtonsCell'}>
-                <Button onClick={() => remove(item._id)} disabled={item.user_id !== userID()}>Delete</Button>
-                <Button onClick={() => update(item._id)} disabled={item.user_id !== userID()}>Update</Button>
+                <Link to={PATH.LEARN + '/' + item._id}>Learn</Link>
+                <Button onClick={() => remove(item._id)} disabled={item.user_id !== userID}>Delete</Button>
+                <Button onClick={() => update(item._id)} disabled={item.user_id !== userID}>Update</Button>
             </td>
     },
 
