@@ -3,7 +3,7 @@ import {
     cardsAPI,
     CardsResponse,
     DeleteCardData,
-    GetCardsQueryParams,
+    GetCardsQueryParams, GradeData,
     NewCardData,
     UpdateCardData
 } from '../../api/cards-api'
@@ -129,7 +129,7 @@ export const fetchCards = (payload?: GetCardsQueryParams) => async (dispatch: Ap
     try {
         dispatch(setAppIsLoading(true))
         const response = await cardsAPI.getCards({
-            cardsPack_id: cards.currentCardsPackID,
+            cardsPack_id: cards.currentCardsPackID || payload?.cardsPack_id,
             page: cards.page,
             pageCount: cards.pageCount,
             min: cards.currentGrade[0],
@@ -175,6 +175,17 @@ export const updateCard = (payload: UpdateCardData): ThunkType => async dispatch
         dispatch(setAppIsLoading(true))
         await cardsAPI.updateCard(payload)
         await dispatch(fetchCards())
+    } catch (e) {
+        errorsHandler(e, dispatch)
+    } finally {
+        dispatch(setAppIsLoading(false))
+    }
+}
+
+export const gradeAnswer = (payload: GradeData): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppIsLoading(true))
+        await cardsAPI.grade(payload)
     } catch (e) {
         errorsHandler(e, dispatch)
     } finally {

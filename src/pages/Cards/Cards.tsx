@@ -54,7 +54,10 @@ export const Cards: FC = () => {
             {id ? <>
 				<CardsSearch/>
 				<CardsGradeRange minGrade={minGrade} maxGrade={maxGrade}/>
+
+                <Link to={PATH.LEARN + '/' + id}>Learn this cards</Link>
 				<CardsTable cards={cards} cardsPackID={id} isOwner={userID !== packUserId}/>
+
 				<CardsPagination cardsTotalCount={cardsTotalCount}
 				                 pageCount={pageCount}
 				                 page={page}

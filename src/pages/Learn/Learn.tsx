@@ -1,25 +1,12 @@
 import React, {FC, useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {Button} from '../../components/UI/Button/Button'
 import {Card} from '../../api/cards-api'
 import {useTypedSelector} from '../../hooks/hooks'
 import {useDispatch} from 'react-redux'
-import {fetchCards} from '../../store/reducers/cards-reducer'
-
-const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал']
-
-const getCard = (cards: Card[]) => {
-    const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0)
-    const rand = Math.random() * sum
-    const res = cards.reduce((acc: { sum: number, id: number }, card, i) => {
-            const newSum = acc.sum + (6 - card.grade) * (6 - card.grade)
-            return {sum: newSum, id: newSum < rand ? i : acc.id}
-        }
-        , {sum: 0, id: -1})
-    console.log('test: ', sum, rand, res)
-
-    return cards[res.id + 1]
-}
+import {fetchCards, gradeAnswer} from '../../store/reducers/cards-reducer'
+import {getCard, grades} from '../../utils/cardsLearning'
+import {PATH} from '../../routes/routes'
 
 export const Learn: FC = () => {
     const dispatch = useDispatch()
@@ -29,7 +16,6 @@ export const Learn: FC = () => {
     const [first, setFirst] = useState<boolean>(true)
 
     const cards = useTypedSelector(state => state.cards.cards)
-
     const [card, setCard] = useState<Card>({
         _id: 'fake',
         cardsPack_id: '',
@@ -47,18 +33,14 @@ export const Learn: FC = () => {
 
 
     useEffect(() => {
-        console.log('LearnContainer useEffect')
-
         if (first) {
             dispatch(fetchCards({cardsPack_id: id}))
             setFirst(false)
         }
 
-        console.log('cards', cards)
         if (cards.length > 0) setCard(getCard(cards))
 
         return () => {
-            console.log('LearnContainer useEffect off')
         }
     }, [dispatch, id, cards, first])
 
@@ -69,26 +51,34 @@ export const Learn: FC = () => {
             // dispatch
             setCard(getCard(cards))
         } else {
-
         }
     }
 
     return (
         <div>
             <h1>Learn</h1>
-            <div>{card.question}</div>
-            <div>
-                <Button onClick={() => setIsChecked(true)}>check</Button>
-            </div>
+            <h3>{card.question}</h3>
+            <Button onClick={() => setIsChecked(!isChecked)}>Check yourself</Button>
 
-            {isChecked && (
-                <>
-                    <div>{card.answer}</div>
-                    {grades.map(g => <Button key={g} onClick={() => {
-                    }}>{g}</Button>)}
-                    <Button onClick={onNext}>next</Button>
-                </>
-            )}
+            {isChecked &&
+			<>
+				<div>{card.answer}</div>
+				<h3>Оцените свой ответ</h3>
+
+				<div>
+                    {grades.map((grade, index) =>
+                        <Button key={grade}
+                                onClick={() => dispatch(gradeAnswer({card_id: card._id, grade: index + 1}))}>
+                            {grade}
+                        </Button>)}
+				</div>
+
+
+				<Button onClick={onNext}>Next</Button>
+
+			</>}
+
+            <Link to={PATH.CARDS + '/' + id}>Show stats</Link>
         </div>
     )
 }
