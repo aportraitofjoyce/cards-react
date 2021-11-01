@@ -24,7 +24,7 @@ export const CardsCountRange: FC<CardsCountRangeProps> = ({minCardsCount, maxCar
         debouncedRange(values)
     }
 
-    const debouncedRange = useCallback(_.debounce(values => dispatch(setCurrentCardsCount({values: values})), 300), [])
+    const debouncedRange = useCallback(_.debounce(values => dispatch(setCurrentCardsCount({values: values})), 500), [])
 
     useEffect(() => {
         setRangeValues([minCardsCount, maxCardsCount])
