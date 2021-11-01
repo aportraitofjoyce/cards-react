@@ -21,6 +21,7 @@ export const Cards: FC = () => {
         maxGrade,
         sortCardsMethod,
         packUserId,
+        currentGrade
     } = useTypedSelector(state => state.cards)
     const cardPacks = useTypedSelector(state => state.packs.cardPacks)
     const userID = useTypedSelector(state => state.auth.userInfo?._id)
@@ -34,7 +35,7 @@ export const Cards: FC = () => {
 
     useEffect(() => {
         id && dispatch(fetchCards())
-    }, [page, pageCount, minGrade, maxGrade, sortCardsMethod])
+    }, [page, pageCount, currentGrade, sortCardsMethod])
 
     useEffect(() => {
         paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})
