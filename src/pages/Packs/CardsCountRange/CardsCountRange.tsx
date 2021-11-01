@@ -8,9 +8,10 @@ import {useTypedSelector} from '../../../hooks/hooks'
 type CardsCountRangeProps = {
     minCardsCount: number
     maxCardsCount: number
+    currentCardsCount: number[]
 }
 
-export const CardsCountRange: FC<CardsCountRangeProps> = ({minCardsCount, maxCardsCount}) => {
+export const CardsCountRange: FC<CardsCountRangeProps> = ({minCardsCount, maxCardsCount, currentCardsCount}) => {
     const dispatch = useDispatch()
     const [rangeValues, setRangeValues] = useState([minCardsCount, maxCardsCount])
 
@@ -27,6 +28,7 @@ export const CardsCountRange: FC<CardsCountRangeProps> = ({minCardsCount, maxCar
     const debouncedRange = useCallback(_.debounce(values => dispatch(setCurrentCardsCount({values: values})), 500), [])
 
     useEffect(() => {
+        console.log('dfjdfh')
         setRangeValues([minCardsCount, maxCardsCount])
     }, [minCardsCount, maxCardsCount])
 
