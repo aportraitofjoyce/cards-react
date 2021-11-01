@@ -36,19 +36,21 @@ export type CardsInitialState = CardsResponse & {
     currentCardsPackID: string
     sortCardsMethod: string | undefined
     currentGrade: number[]
+    countPerPage: number[]
 }
 
 const initialState: CardsInitialState = {
     cards: [],
     page: 1,
-    pageCount: 5,
+    pageCount: 10,
     cardsTotalCount: 0,
     packUserId: '',
     minGrade: 0,
     maxGrade: 0,
     currentCardsPackID: '',
     sortCardsMethod: undefined,
-    currentGrade: [0, 0]
+    currentGrade: [0, 0],
+    countPerPage: [10, 25, 50]
 }
 
 export const cardsReducer = (state = initialState, action: CardsActions): CardsInitialState => {

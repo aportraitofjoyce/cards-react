@@ -37,6 +37,7 @@ export type PacksInitialState = CardsPackResponse & {
     privatePacks: boolean
     sortPacksMethod: string | undefined
     currentCardsCount: number[]
+    countPerPage: number[]
 }
 
 export const initialState: PacksInitialState = {
@@ -45,10 +46,11 @@ export const initialState: PacksInitialState = {
     minCardsCount: 0,
     maxCardsCount: 0,
     page: 1,
-    pageCount: 5,
+    pageCount: 10,
     privatePacks: false,
     sortPacksMethod: undefined,
-    currentCardsCount: [0, 0]
+    currentCardsCount: [0, 0],
+    countPerPage: [10, 25, 50]
 }
 
 export const packsReducer = (state = initialState, action: PacksActionsTypes): PacksInitialState => {

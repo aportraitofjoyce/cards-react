@@ -21,7 +21,8 @@ export const Cards: FC = () => {
         maxGrade,
         sortCardsMethod,
         packUserId,
-        currentGrade
+        currentGrade,
+        countPerPage
     } = useTypedSelector(state => state.cards)
     const cardPacks = useTypedSelector(state => state.packs.cardPacks)
     const userID = useTypedSelector(state => state.auth.userInfo?._id)
@@ -56,7 +57,8 @@ export const Cards: FC = () => {
 				<CardsTable cards={cards} cardsPackID={id} isOwner={userID !== packUserId}/>
 				<CardsPagination cardsTotalCount={cardsTotalCount}
 				                 pageCount={pageCount}
-				                 page={page}/>
+				                 page={page}
+                                 countPerPage={countPerPage}/>
 			</> : <h2>Please choose one of Packs <Link to={PATH.PACKS}>here</Link></h2>}
         </div>
     )

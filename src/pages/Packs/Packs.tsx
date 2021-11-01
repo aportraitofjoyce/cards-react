@@ -22,7 +22,8 @@ export const Packs: FC = () => {
         cardPacks,
         privatePacks,
         sortPacksMethod,
-        currentCardsCount
+        currentCardsCount,
+        countPerPage
     } = useTypedSelector(state => state.packs)
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
 
@@ -44,8 +45,9 @@ export const Packs: FC = () => {
             <PrivatePacksToggle privatePacks={privatePacks}/>
             <PacksTable cardPacks={cardPacks}/>
             <PacksPagination totalCount={cardPacksTotalCount}
-                             countPerPage={pageCount}
-                             currentPage={page}/>
+                             pageCount={pageCount}
+                             currentPage={page}
+                             countPerPage={countPerPage}/>
         </div>
     )
 }
