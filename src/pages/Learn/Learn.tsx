@@ -4,6 +4,9 @@ import {Button} from '../../components/UI/Button/Button'
 import {Card} from '../../api/cards-api'
 import {useTypedSelector} from '../../hooks/hooks'
 import {useDispatch} from 'react-redux'
+import {fetchCards} from '../../store/reducers/cards-reducer'
+
+const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал']
 
 const getCard = (cards: Card[]) => {
     const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0)
@@ -25,7 +28,7 @@ export const Learn: FC = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
     const [first, setFirst] = useState<boolean>(true)
 
-    const cards = useTypedSelector(state => state.cards)
+    const cards = useTypedSelector(state => state.cards.cards)
 
     const [card, setCard] = useState<Card>({
         _id: 'fake',
@@ -43,11 +46,11 @@ export const Learn: FC = () => {
     })
 
 
-    /*useEffect(() => {
+    useEffect(() => {
         console.log('LearnContainer useEffect')
 
         if (first) {
-            dispatch(getCards(id))
+            dispatch(fetchCards({cardsPack_id: id}))
             setFirst(false)
         }
 
@@ -68,13 +71,11 @@ export const Learn: FC = () => {
         } else {
 
         }
-    }*/
-
+    }
 
     return (
         <div>
             <h1>Learn</h1>
-            <h1>{id}</h1>
             <div>{card.question}</div>
             <div>
                 <Button onClick={() => setIsChecked(true)}>check</Button>
@@ -83,13 +84,9 @@ export const Learn: FC = () => {
             {isChecked && (
                 <>
                     <div>{card.answer}</div>
-
-                    {/*{grades.map((g, i) => (
-                        <Button key={'grade-' + i} onClick={() => {
-                        }}>{g}</Button>
-                    ))}
-
-                    <div><Button onClick={onNext}>next</Button></div>*/}
+                    {grades.map(g => <Button key={g} onClick={() => {
+                    }}>{g}</Button>)}
+                    <Button onClick={onNext}>next</Button>
                 </>
             )}
         </div>
