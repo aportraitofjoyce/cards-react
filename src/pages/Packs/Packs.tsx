@@ -46,7 +46,6 @@ export const Packs: FC = () => {
             <PacksPagination totalCount={cardPacksTotalCount}
                              countPerPage={pageCount}
                              currentPage={page}/>
-            <ScrollButton/>
         </div>
     )
 }
