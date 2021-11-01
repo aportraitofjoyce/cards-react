@@ -21,13 +21,14 @@ export const Packs: FC = () => {
         maxCardsCount,
         cardPacks,
         privatePacks,
-        sortPacksMethod
+        sortPacksMethod,
+        currentCardsCount
     } = useTypedSelector(state => state.packs)
     const paginationScrollTopRef = useRef<HTMLHeadingElement>(null)
 
     useEffect(() => {
         dispatch(fetchCardPacks())
-    }, [page, pageCount, minCardsCount, maxCardsCount, privatePacks, sortPacksMethod])
+    }, [page, pageCount, currentCardsCount, privatePacks, sortPacksMethod])
 
     useEffect(() => {
         paginationScrollTopRef.current?.scrollIntoView({behavior: 'smooth'})
