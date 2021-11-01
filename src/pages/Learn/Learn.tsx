@@ -46,36 +46,35 @@ export const Learn: FC = () => {
 
     const onNext = () => {
         setIsChecked(false)
+        cards.length > 0 && setCard(getCard(cards))
+    }
 
-        if (cards.length > 0) {
-            // dispatch
-            setCard(getCard(cards))
-        } else {
-        }
+    const gradeHandler = (card_id: string, grade: number) => {
+        dispatch(gradeAnswer({card_id, grade}))
+        onNext()
     }
 
     return (
         <div>
             <h1>Learn</h1>
             <h3>{card.question}</h3>
-            <Button onClick={() => setIsChecked(!isChecked)}>Check yourself</Button>
+
+            <div>
+                <Button onClick={() => setIsChecked(!isChecked)}>Check yourself</Button>
+                <Button onClick={onNext}>Next</Button>
+            </div>
 
             {isChecked &&
 			<>
 				<div>{card.answer}</div>
 				<h3>Оцените свой ответ</h3>
-
 				<div>
                     {grades.map((grade, index) =>
                         <Button key={grade}
-                                onClick={() => dispatch(gradeAnswer({card_id: card._id, grade: index + 1}))}>
+                                onClick={() => gradeHandler(card._id, index + 1)}>
                             {grade}
                         </Button>)}
 				</div>
-
-
-				<Button onClick={onNext}>Next</Button>
-
 			</>}
 
             <Link to={PATH.CARDS + '/' + id}>Show stats</Link>
