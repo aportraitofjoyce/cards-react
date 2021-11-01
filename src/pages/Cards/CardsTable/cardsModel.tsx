@@ -33,6 +33,14 @@ export const cardsModel = (sort: (sort: string) => void, isOwner: boolean): Tabl
     },
     {
         header: index =>
+            <th key={'shots-title-' + index}>
+                <Sort sortBy={'shots'} sortCallback={sort}>Shots</Sort>
+            </th>,
+        body: (item: Card) =>
+            <td key={'shots-cell-' + item._id}>{item.shots}</td>
+    },
+    {
+        header: index =>
             <th key={'updated-title-' + index}>
                 <Sort sortBy={'updated'} sortCallback={sort}>Updated</Sort>
             </th>,
@@ -47,7 +55,8 @@ export const cardsModel = (sort: (sort: string) => void, isOwner: boolean): Tabl
         body: (item: Card) =>
             <td key={'buttons-cell-' + item._id} className={'tablesButtonsCell'}>
                 <DeleteCardModal cardID={item._id} buttonDisable={isOwner}/>
-                <UpdateCardModal cardID={item._id} buttonDisable={isOwner} prevCardName={item.question}/>
+                <UpdateCardModal cardID={item._id} buttonDisable={isOwner}
+                                 prevQuestion={item.question} prevAnswer={item.answer}/>
             </td>
     }
 ]

@@ -57,7 +57,7 @@ export type UpdateCardData = {
     card: {
         _id: string
         question?: string
-        comments?: string
+        answer?: string
     }
 }
 
