@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef} from 'react'
 import {useDispatch} from 'react-redux'
 import {fetchCards, setCardsCountOnPage, setCurrentCardsPackID} from '../../store/reducers/cards-reducer'
-import {Link, useParams} from 'react-router-dom'
+import {Link, Redirect, useParams} from 'react-router-dom'
 import {useTypedSelector} from '../../hooks/hooks'
 import {PATH} from '../../routes/routes'
 import {CardsTable} from './CardsTable/CardsTable'
@@ -45,7 +45,6 @@ export const Cards: FC = () => {
     return (
         <div>
             <h1 ref={paginationScrollTopRef}>Cards</h1>
-
             {currentCardsPack && <div style={{margin: '40px 0'}}>
 				<p>Pack owner: {currentCardsPack.user_name}</p>
 				<p>Pack name: {currentCardsPack.name}</p>
@@ -55,7 +54,10 @@ export const Cards: FC = () => {
                 <CardsSearch/>
                 <CardsGradeRange minGrade={minGrade} maxGrade={maxGrade}/>
 
-                <Link to={PATH.LEARN + '/' + id}>Learn this cards</Link>
+                <div style={{marginBottom: 24}}>
+                    <Link to={PATH.LEARN + '/' + id}>Learn this cards</Link>
+                </div>
+
                 <CardsTable cards={cards} cardsPackID={id} isOwner={userID !== packUserId}/>
 
                 <CardsPagination cardsTotalCount={cardsTotalCount}
