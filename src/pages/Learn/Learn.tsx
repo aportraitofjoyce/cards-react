@@ -4,7 +4,7 @@ import {Button} from '../../components/UI/Button/Button'
 import {Card} from '../../api/cards-api'
 import {useTypedSelector} from '../../hooks/hooks'
 import {useDispatch} from 'react-redux'
-import {fetchCards, gradeAnswer} from '../../store/reducers/cards-reducer'
+import {fetchCards, gradeAnswer, setCardsCountOnPage} from '../../store/reducers/cards-reducer'
 import {getCard, grades} from '../../utils/cardsLearning'
 import {PATH} from '../../routes/routes'
 
@@ -34,13 +34,14 @@ export const Learn: FC = () => {
 
     useEffect(() => {
         if (first) {
-            dispatch(fetchCards({cardsPack_id: id}))
+            dispatch(fetchCards({cardsPack_id: id, pageCount: 100}))
             setFirst(false)
         }
 
         if (cards.length > 0) setCard(getCard(cards))
 
         return () => {
+            dispatch(setCardsCountOnPage({count: 10}))
         }
     }, [dispatch, id, cards, first])
 
