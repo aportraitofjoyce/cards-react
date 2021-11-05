@@ -1,7 +1,6 @@
 import {instance} from './axios-instance'
 import {AxiosResponse} from 'axios'
 
-
 export type ShopProductResponse = {
     id?: string,
     productName?: string,
