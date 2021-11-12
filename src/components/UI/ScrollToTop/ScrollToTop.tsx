@@ -19,6 +19,7 @@ export const ScrollToTop: FC = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', toggleVisible)
+        return () => window.removeEventListener('scroll', toggleVisible)
     }, [])
 
     return <>{visible && <Button className={s.scrollButton} onClick={scrollToTop}>Up</Button>}</>
